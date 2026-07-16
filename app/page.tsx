@@ -12,6 +12,7 @@ import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import FloatingBubbles from "@/components/FloatingBubbles";
 import LoadingScreen from "@/components/LoadingScreen";
+import HowIWorkSection from "@/components/HowIWorkSection";
 
 const CustomCursor = dynamic(() => import("@/components/CustomCursor"), { ssr: false });
 const SeaCreatures = dynamic(() => import("@/components/SeaCreatures"), { ssr: false });
@@ -39,6 +40,7 @@ export default function HomePage() {
       <HeroSection />
       <AboutSection />
       <SkillsSection />
+      <HowIWorkSection />
       <FeaturedProjects />
       <CertificatesSection />
       <ExperienceSection />

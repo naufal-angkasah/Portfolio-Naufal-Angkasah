@@ -1,22 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Waves, Menu, X } from "lucide-react";
 
-const navItems = ["Home", "About", "Skills", "Projects", "Certificates", "Experience", "Contact"];
+const navItems = ["Home", "About", "Skills", "How I Work", "Projects", "Certificates", "Experience", "Contact"];
+
+const sectionIds: Record<string, string> = {
+  "Home": "home",
+  "About": "about",
+  "Skills": "skills",
+  "How I Work": "how-i-work",
+  "Projects": "projects",
+  "Certificates": "certificates",
+  "Experience": "experience",
+  "Contact": "contact",
+};
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
-  const scrollTo = (id: string) => {
-    document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: "smooth" });
+  const scrollTo = useCallback((label: string) => {
+    const id = sectionIds[label] || label.toLowerCase();
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setMenuOpen(false);
-  };
+  }, []);
+
+  // Scroll spy
+  useEffect(() => {
+    const ids = Object.values(sectionIds);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+    );
+
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <header className="fixed left-0 right-0 top-0 z-50 px-4 py-4">
       <nav className="mx-auto flex max-w-7xl items-center justify-between rounded-[2rem] border border-white/20 bg-sky-100/10 px-5 py-3 shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-2xl">
-        <button onClick={() => scrollTo("home")} className="flex items-center gap-3" aria-label="Back to home">
+        <button onClick={() => scrollTo("Home")} className="flex items-center gap-3" aria-label="Back to home">
           <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-sky-300 to-cyan-600 text-slate-950 shadow-[inset_5px_5px_12px_rgba(255,255,255,0.45),inset_-6px_-6px_14px_rgba(0,44,90,0.55)]">
             <Waves size={24} />
           </span>
@@ -27,20 +63,26 @@ export default function Navbar() {
         </button>
 
         <div className="hidden items-center gap-1 lg:flex">
-          {navItems.map((item) => (
-            <button
-              key={item}
-              onClick={() => scrollTo(item)}
-              className="rounded-full px-4 py-2 text-sm font-semibold text-sky-100/80 transition hover:bg-white/12 hover:text-white"
-            >
-              {item}
-            </button>
-          ))}
+          {navItems.map((item) => {
+            const sectionId = sectionIds[item] || item.toLowerCase();
+            const isActive = activeSection === sectionId;
+            return (
+              <button
+                key={item}
+                onClick={() => scrollTo(item)}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition hover:bg-white/12 hover:text-white ${
+                  isActive ? "nav-link-active" : "text-sky-100/80"
+                }`}
+              >
+                {item}
+              </button>
+            );
+          })}
         </div>
 
         <a
           href="#contact"
-          onClick={(e) => { e.preventDefault(); scrollTo("contact"); }}
+          onClick={(e) => { e.preventDefault(); scrollTo("Contact"); }}
           className="hidden rounded-full bg-cyan-300 px-5 py-2.5 text-sm font-black text-slate-950 shadow-[8px_8px_22px_rgba(0,0,0,0.26),inset_4px_4px_9px_rgba(255,255,255,0.65)] transition hover:scale-105 md:inline-flex"
         >
           Hire Me
@@ -57,11 +99,21 @@ export default function Navbar() {
 
       {menuOpen && (
         <div className="mx-auto mt-3 grid max-w-7xl gap-2 rounded-[1.7rem] border border-white/15 bg-[#082544]/90 p-3 shadow-2xl backdrop-blur-2xl lg:hidden">
-          {navItems.map((item) => (
-            <button key={item} onClick={() => scrollTo(item)} className="rounded-2xl px-4 py-3 text-left font-semibold text-cyan-50 hover:bg-white/10">
-              {item}
-            </button>
-          ))}
+          {navItems.map((item) => {
+            const sectionId = sectionIds[item] || item.toLowerCase();
+            const isActive = activeSection === sectionId;
+            return (
+              <button
+                key={item}
+                onClick={() => scrollTo(item)}
+                className={`rounded-2xl px-4 py-3 text-left font-semibold hover:bg-white/10 ${
+                  isActive ? "bg-white/10 text-cyan-200" : "text-cyan-50"
+                }`}
+              >
+                {item}
+              </button>
+            );
+          })}
         </div>
       )}
     </header>

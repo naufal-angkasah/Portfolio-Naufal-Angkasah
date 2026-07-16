@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, LockKeyhole, Mail, Network } from "lucide-react";
 
@@ -12,11 +13,52 @@ const roles = [
   "Cyber Security Enthusiast",
 ];
 
-const quickStats = [
-  { label: "Name", value: "Naufal Angkasah" },
-  { label: "Design Mood", value: "Clay Ocean" },
-  { label: "Focus Area", value: "Web + Security" },
+const stats = [
+  { value: 280, suffix: "+", label: "Students Taught" },
+  { value: 6, suffix: "+", label: "Projects Delivered" },
+  { value: 4, suffix: "+", label: "Years in Tech" },
 ];
+
+function AnimatedCounter({ target, suffix }: { target: number; suffix: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated.current) {
+          hasAnimated.current = true;
+          const duration = 1800;
+          const startTime = performance.now();
+
+          const animate = (currentTime: number) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            // Ease-out cubic
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setCount(Math.floor(eased * target));
+            if (progress < 1) requestAnimationFrame(animate);
+          };
+          requestAnimationFrame(animate);
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target]);
+
+  return (
+    <div ref={ref} className="stat-counter-number">
+      {count}{suffix}
+    </div>
+  );
+}
 
 export default function HeroSection() {
   const scrollTo = (id: string) => {
@@ -61,12 +103,13 @@ export default function HeroSection() {
           ))}
         </div>
 
+        {/* Animated Stats Counter */}
         <div className="mt-8 grid gap-3 sm:grid-cols-3">
-          {quickStats.map((stat) => (
-            <motion.div key={stat.label} whileHover={{ y: -5, scale: 1.02 }} className="rounded-[1.6rem] border border-white/14 bg-white/10 p-4 shadow-[inset_5px_5px_12px_rgba(255,255,255,0.08)] backdrop-blur-xl">
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-cyan-200/80">{stat.label}</p>
-              <p className="mt-2 text-lg font-black text-white">{stat.value}</p>
-            </motion.div>
+          {stats.map((stat) => (
+            <div key={stat.label} className="stat-counter-card">
+              <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+              <p className="mt-2 text-xs font-black uppercase tracking-[0.18em] text-cyan-200/70">{stat.label}</p>
+            </div>
           ))}
         </div>
       </motion.div>

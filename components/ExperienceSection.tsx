@@ -1,7 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { CheckCircle2 } from "lucide-react";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
 
 const experiences = [
   {
@@ -62,7 +63,13 @@ const experiences = [
   },
 ];
 
+const INITIAL_COUNT = 4;
+
 export default function ExperienceSection() {
+  const [showAll, setShowAll] = useState(false);
+  const visibleExperiences = showAll ? experiences : experiences.slice(0, INITIAL_COUNT);
+  const hiddenCount = experiences.length - INITIAL_COUNT;
+
   return (
     <section id="experience" className="mx-auto max-w-7xl px-5 py-24 lg:px-8">
       <div className="mb-10">
@@ -74,27 +81,50 @@ export default function ExperienceSection() {
       </div>
 
       <div className="grid gap-5 md:grid-cols-2">
-        {experiences.map((exp, i) => (
-          <motion.div
-            key={exp.role + exp.company}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.08 }}
-            className="clay-panel rounded-[2rem] p-6"
-          >
-            <div className="mb-3 flex items-start gap-3">
-              <CheckCircle2 className="mt-1 shrink-0 text-emerald-300" size={20} />
-              <div>
-                <h3 className="text-lg font-black text-white">{exp.role}</h3>
-                <p className="text-sm font-semibold text-cyan-200">{exp.company} — <span className="text-sky-100/60">{exp.location}</span></p>
-                <p className="mt-1 text-xs font-bold text-sky-100/50">{exp.period}</p>
+        <AnimatePresence mode="popLayout">
+          {visibleExperiences.map((exp, i) => (
+            <motion.div
+              key={exp.role + exp.company}
+              layout
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ delay: i * 0.06, duration: 0.3 }}
+              className="clay-panel rounded-[2rem] p-6"
+            >
+              <div className="mb-3 flex items-start gap-3">
+                <CheckCircle2 className="mt-1 shrink-0 text-emerald-300" size={20} />
+                <div>
+                  <h3 className="text-lg font-black text-white">{exp.role}</h3>
+                  <p className="text-sm font-semibold text-cyan-200">{exp.company} — <span className="text-sky-100/60">{exp.location}</span></p>
+                  <p className="mt-1 text-xs font-bold text-sky-100/50">{exp.period}</p>
+                </div>
               </div>
-            </div>
-            <p className="ml-8 text-sm leading-7 text-sky-100/68">{exp.desc}</p>
-          </motion.div>
-        ))}
+              <p className="ml-8 text-sm leading-7 text-sky-100/68">{exp.desc}</p>
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
+
+      {/* Show More / Show Less */}
+      {hiddenCount > 0 && (
+        <div className="mt-8 flex justify-center">
+          <button
+            onClick={() => setShowAll((v) => !v)}
+            className="experience-show-more-btn"
+          >
+            {showAll ? (
+              <>
+                <ChevronUp size={18} /> Sembunyikan
+              </>
+            ) : (
+              <>
+                <ChevronDown size={18} /> Lihat {hiddenCount} lainnya
+              </>
+            )}
+          </button>
+        </div>
+      )}
     </section>
   );
 }

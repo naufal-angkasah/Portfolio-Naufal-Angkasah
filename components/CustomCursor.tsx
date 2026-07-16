@@ -122,7 +122,7 @@ export default function CustomCursor() {
   }, []);
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[120] hidden lg:block" aria-hidden="true">
+    <div className="pointer-events-none fixed inset-0 z-[9999] hidden lg:block" aria-hidden="true">
       {cursorBubbles.map((b) => (
         <motion.span
           key={b.id}
