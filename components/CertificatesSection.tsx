@@ -90,7 +90,7 @@ const certificates: Certificate[] = [
     title: "SIB Dicoding Cycle 4 — Front-End & Back-End",
     issuer: "Dicoding Indonesia",
     date: "2023",
-    tags: ["Web Development", "Programming"],
+    tags: ["Web Development", "Programming", "Career"],
     file: "F063XB451_serti_dicoding_batch_4.pdf",
     type: "pdf",
     icon: <Code size={28} />,
