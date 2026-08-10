@@ -268,22 +268,6 @@ const projects: Project[] = [
     ],
   },
   {
-    title: "PlayCourt — Venue Booking Platform",
-    type: "Full Stack",
-    category: "Full Stack",
-    desc: "Platform reservasi & booking lapangan olahraga interaktif.",
-    longDesc:
-      "Platform web reservasi lapangan olahraga (PlayCourt). Pengguna dapat mengecek ketersediaan jadwal lapangan, memilih slot waktu, dan melakukan konfirmasi reservasi dengan antarmuka yang modern dan responsif.",
-    stack: ["Next.js", "TypeScript", "Booking System", "Tailwind CSS", "Vercel"],
-    demoUrl: "https://cv-simpul-project-academy.vercel.app/",
-    screenshot: "/projects/screenshots/playcourt.jpg",
-    visuals: [
-      { icon: "🎾", gradient: "linear-gradient(135deg, #14532d 0%, #15803d 50%, #16a34a 100%)" },
-      { icon: "🏀", gradient: "linear-gradient(135deg, #15803d 0%, #16a34a 50%, #14532d 100%)" },
-      { icon: "📅", gradient: "linear-gradient(135deg, #16a34a 0%, #14532d 50%, #15803d 100%)" },
-    ],
-  },
-  {
     title: "Kokorof Reviewer CV v1",
     type: "Full Stack",
     category: "Full Stack",
