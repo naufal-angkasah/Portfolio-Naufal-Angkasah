@@ -31,17 +31,22 @@ type Project = {
 };
 
 const projects: Project[] = [
-  // ═══ NEW WORKING FULL STACK & WEB DEV PROJECTS ═══
+  // ═══ FULL STACK & WEB DEV PROJECTS WITH SCREENSHOT GALLERIES ═══
   {
     title: "Kokorof Reviewer CV v2",
     type: "Full Stack",
     category: "Full Stack",
-    desc: "ATS Resume Scanner & Career Co-Pilot bertenaga AI untuk analisis CV kandidat.",
+    desc: "ATS Resume Scanner & AI Career Co-Pilot bertenaga AI untuk analisis CV kandidat.",
     longDesc:
-      "Aplikasi web full-stack ATS Resume Scanner & AI Career Co-Pilot versi 2. Mampu menganalisis kesesuaian CV dengan kualifikasi pekerjaan, mendeteksi kata kunci ATS, memberikan saran perbaikan format, serta skor keterbacaan otomatis.",
+      "Aplikasi web full-stack ATS Resume Scanner & AI Career Co-Pilot. Mampu menganalisis kesesuaian CV dengan kualifikasi pekerjaan, mendeteksi kata kunci ATS, memberikan saran perbaikan format, serta rekomendasi jalur belajar interaktif. (Link Utama: AI Studio, Link Alternatif: Vercel).",
     stack: ["Next.js", "TypeScript", "AI Engine", "Tailwind CSS", "Vercel"],
-    demoUrl: "https://koko-reviewer-cv-v2.vercel.app/",
-    screenshot: "/projects/screenshots/koko-reviewer-cv-v2.jpg",
+    demoUrl: "https://kokorof-reviewer-cv.ai.studio",
+    screenshot: "/projects/screenshots/koko-reviewer-cv-v2-1.jpg",
+    screenshots: [
+      "/projects/screenshots/koko-reviewer-cv-v2-1.jpg",
+      "/projects/screenshots/koko-reviewer-cv-v2-2.jpg",
+      "/projects/screenshots/koko-reviewer-cv-v2-3.jpg",
+    ],
     visuals: [
       { icon: "📄", gradient: "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0369a1 100%)" },
       { icon: "🤖", gradient: "linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #0f172a 100%)" },
@@ -156,14 +161,65 @@ const projects: Project[] = [
     category: "Full Stack",
     desc: "Dashboard monitoring terpadu perolehan suara & kegiatan Senayan.",
     longDesc:
-      "Dashboard analytics dan sistem pemantauan data terpadu untuk Daerah Pemilihan Jatim VII serta koordinasi kegiatan Senayan. Menyajikan visualisasi data real-time, grafik perkembangan wilayah, dan rekapitulasi data politik.",
-    stack: ["Next.js", "React", "Data Analytics", "Tailwind CSS", "Vercel"],
+      "Dashboard analytics dan sistem pemantauan data terpadu untuk Daerah Pemilihan Jatim VII serta koordinasi kegiatan Senayan. Menyajikan visualisasi data real-time, peta persebaran lokasi program, grafik tren giat, dan rekapitulasi data aspirasi.",
+    stack: ["Next.js", "React", "Data Analytics", "Interactive Map", "Vercel"],
     demoUrl: "https://dashboard-monitor-dapil-dan-giat-se.vercel.app/",
-    screenshot: "/projects/screenshots/monitoring-dapil.jpg",
+    screenshot: "/projects/screenshots/dapil-giat-senayan-1.jpg",
+    screenshots: [
+      "/projects/screenshots/dapil-giat-senayan-1.jpg",
+      "/projects/screenshots/dapil-giat-senayan-2.jpg",
+      "/projects/screenshots/dapil-giat-senayan-3.jpg",
+      "/projects/screenshots/dapil-giat-senayan-4.jpg",
+      "/projects/screenshots/dapil-giat-senayan-5.jpg",
+    ],
     visuals: [
       { icon: "📊", gradient: "linear-gradient(135deg, #064e3b 0%, #047857 50%, #065f46 100%)" },
       { icon: "🏛️", gradient: "linear-gradient(135deg, #047857 0%, #065f46 50%, #064e3b 100%)" },
       { icon: "📈", gradient: "linear-gradient(135deg, #065f46 0%, #064e3b 50%, #047857 100%)" },
+    ],
+  },
+  {
+    title: "Portal Monitoring Dapil Jatim",
+    type: "Full Stack",
+    category: "Full Stack",
+    desc: "Portal geo-intelligence & monitoring aspirasi Dapil Jawa Timur.",
+    longDesc:
+      "Sistem portal monitoring berbasis geo-intelligence untuk agregasi data aspirasi masyarakat, presensi digital kegiatan Senayan, sinkronisasi otomatis Google Sheets API (cron 15 menit), generator link & QR absen, serta overlay demografis peta Jawa Timur.",
+    stack: ["Next.js", "TypeScript", "Google Sheets API", "Geo-Intelligence", "Vercel"],
+    demoUrl: "https://portal-monitoring-dapil-jatim.vercel.app/",
+    screenshot: "/projects/screenshots/portal-dapil-jatim-1.jpg",
+    screenshots: [
+      "/projects/screenshots/portal-dapil-jatim-1.jpg",
+      "/projects/screenshots/portal-dapil-jatim-2.jpg",
+      "/projects/screenshots/portal-dapil-jatim-3.jpg",
+      "/projects/screenshots/portal-dapil-jatim-4.jpg",
+    ],
+    visuals: [
+      { icon: "🗺️", gradient: "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0369a1 100%)" },
+      { icon: "⚡", gradient: "linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #0f172a 100%)" },
+      { icon: "📱", gradient: "linear-gradient(135deg, #0f172a 0%, #0284c7 50%, #1e293b 100%)" },
+    ],
+  },
+  {
+    title: "Sistem Informasi Program Aspirasi",
+    type: "Full Stack",
+    category: "Full Stack",
+    desc: "Sistem informasi pemantauan program bantuan & aspirasi Dapil Jatim VII.",
+    longDesc:
+      "Aplikasi web manajemen & pemantauan program bantuan aspirasi masyarakat (Pacitan, Ponorogo, Trenggalek, Magetan, Ngawi). Dilengkapi autentikasi multi-role (Admin/Pimpinan), pemetaan titik koordinat program, analisis statistik, serta filter komisi.",
+    stack: ["Next.js", "TypeScript", "Analytics", "Leaflet Map", "Vercel"],
+    demoUrl: "https://dashboard-monitoring-program-dapil.vercel.app/",
+    screenshot: "/projects/screenshots/monitoring-program-dapil-1.jpg",
+    screenshots: [
+      "/projects/screenshots/monitoring-program-dapil-1.jpg",
+      "/projects/screenshots/monitoring-program-dapil-2.jpg",
+      "/projects/screenshots/monitoring-program-dapil-3.jpg",
+      "/projects/screenshots/monitoring-program-dapil-4.jpg",
+    ],
+    visuals: [
+      { icon: "🏛️", gradient: "linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 50%, #2563eb 100%)" },
+      { icon: "📍", gradient: "linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #1e3a8a 100%)" },
+      { icon: "📈", gradient: "linear-gradient(135deg, #2563eb 0%, #1e3a8a 50%, #1d4ed8 100%)" },
     ],
   },
   {
@@ -172,14 +228,43 @@ const projects: Project[] = [
     category: "Full Stack",
     desc: "Dashboard monitoring nasional pemantauan kegiatan anggota Senayan.",
     longDesc:
-      "Sistem dashboard monitoring nasional skala besar untuk tracking laporan dan agenda kegiatan Senayan secara terstruktur. Dilengkapi filter wilayah nasional, visualisasi status proyek, dan laporan real-time.",
-    stack: ["Next.js", "TypeScript", "Dashboard UI", "Analytics", "Vercel"],
+      "Sistem dashboard monitoring nasional skala besar untuk tracking laporan dan presensi digital kegiatan Senayan. Dilengkapi generator QR/Link presensi otomatis ke Firestore & Google Sheets, audit presensi konstituen, dan filter kategori kegiatan.",
+    stack: ["Next.js", "TypeScript", "Firebase Firestore", "Google Sheets", "Vercel"],
     demoUrl: "https://dashboard-monitoring-giat-nasional.vercel.app/",
-    screenshot: "/projects/screenshots/monitoring-nasional.jpg",
+    screenshot: "/projects/screenshots/monitoring-giat-nasional-1.jpg",
+    screenshots: [
+      "/projects/screenshots/monitoring-giat-nasional-1.jpg",
+      "/projects/screenshots/monitoring-giat-nasional-2.jpg",
+      "/projects/screenshots/monitoring-giat-nasional-3.jpg",
+      "/projects/screenshots/monitoring-giat-nasional-4.jpg",
+    ],
     visuals: [
       { icon: "🇮🇩", gradient: "linear-gradient(135deg, #7f1d1d 0%, #991b1b 50%, #b91c1c 100%)" },
       { icon: "📋", gradient: "linear-gradient(135deg, #991b1b 0%, #b91c1c 50%, #7f1d1d 100%)" },
       { icon: "📡", gradient: "linear-gradient(135deg, #b91c1c 0%, #7f1d1d 50%, #991b1b 100%)" },
+    ],
+  },
+  {
+    title: "Esthetico Derma Institute Security",
+    type: "Network Security",
+    category: "Network Security",
+    desc: "Testing keamanan web & perbaikan kerentanan platform medis estetika.",
+    longDesc:
+      "Pengujian keamanan web (Web Penetration Testing & Vulnerability Assessment) serta perbaikan kerentanan sistem pada platform Esthetico Derma Institute — institusi pelatihan kedokteran estetika terakreditasi Kemenkes RI & CIBTAC UK. Menjamin perlindungan data alumni, pendaftaran masterclass, dan katalog kursus medis.",
+    stack: ["Web Security", "Penetration Testing", "Vulnerability Patching", "OWASP", "Security Audit"],
+    demoUrl: "https://estheticodermainstitute.outlookuniverse.space/",
+    screenshot: "/projects/screenshots/esthetico-derma-1.jpg",
+    screenshots: [
+      "/projects/screenshots/esthetico-derma-1.jpg",
+      "/projects/screenshots/esthetico-derma-2.jpg",
+      "/projects/screenshots/esthetico-derma-3.jpg",
+      "/projects/screenshots/esthetico-derma-4.jpg",
+      "/projects/screenshots/esthetico-derma-5.jpg",
+    ],
+    visuals: [
+      { icon: "🛡️", gradient: "linear-gradient(135deg, #881337 0%, #9f1239 50%, #be123c 100%)" },
+      { icon: "🔒", gradient: "linear-gradient(135deg, #9f1239 0%, #be123c 50%, #881337 100%)" },
+      { icon: "⚕️", gradient: "linear-gradient(135deg, #be123c 0%, #881337 50%, #9f1239 100%)" },
     ],
   },
   {
@@ -289,13 +374,15 @@ const projects: Project[] = [
     ],
   },
   {
-    title: "Abyss IT Portfolio",
+    title: "Naufal Angkasah — Portfolio",
     type: "Web Dev",
     category: "Web Dev",
-    desc: "Website portfolio bertema deep ocean claymorphism untuk personal branding.",
+    desc: "Website portfolio personal berdesain premium dengan tema deep ocean & glassmorphism.",
     longDesc:
-      "Website portfolio pribadi dengan tema deep ocean claymorphism yang unik. Menggunakan Next.js, TypeScript, dan Framer Motion untuk animasi yang smooth. Fitur termasuk 3D orb, custom cursor gurita, makhluk laut interaktif, floating bubbles, dan desain yang sepenuhnya responsive.",
-    stack: ["Next.js", "TypeScript", "Framer Motion", "Three.js", "Tailwind CSS"],
+      "Website portfolio pribadi yang dibangun dengan Next.js 16 & TypeScript. Menampilkan karya nyata di bidang Full Stack Web Development, Network Security, dan Systems Engineering. Dilengkapi animasi 3D Orb interaktif, custom cursor gurita, efek glassmorphism & claymorphism, section sertifikasi dengan lightbox PDF, featured projects dengan screenshot asli, dan dark mode premium yang fully responsive.",
+    stack: ["Next.js", "TypeScript", "Framer Motion", "Tailwind CSS", "Vercel"],
+    demoUrl: "https://portfolio-naufal-angkasah.vercel.app/",
+    screenshot: "/projects/screenshots/portfolio-naufal.jpg",
     visuals: [
       { icon: "🌊", gradient: "linear-gradient(135deg, #031226 0%, #08284d 50%, #0c4a6e 100%)" },
       { icon: "🐙", gradient: "linear-gradient(135deg, #08284d 0%, #0c4a6e 50%, #031226 100%)" },
