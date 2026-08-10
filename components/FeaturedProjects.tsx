@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ExternalLink, Eye, X, ChevronLeft, ChevronRight, Globe } from "lucide-react";
 
@@ -17,6 +18,7 @@ type Project = {
   longDesc: string;
   stack: string[];
   visuals: ProjectVisual[];
+  screenshot?: string; // real screenshot from /projects/screenshots/
   demoUrl?: string;
 };
 
@@ -31,6 +33,7 @@ const projects: Project[] = [
       "Aplikasi web full-stack ATS Resume Scanner & AI Career Co-Pilot versi 2. Mampu menganalisis kesesuaian CV dengan kualifikasi pekerjaan, mendeteksi kata kunci ATS, memberikan saran perbaikan format, serta skor keterbacaan otomatis.",
     stack: ["Next.js", "TypeScript", "AI Engine", "Tailwind CSS", "Vercel"],
     demoUrl: "https://koko-reviewer-cv-v2.vercel.app/",
+    screenshot: "/projects/screenshots/koko-reviewer-cv-v2.jpg",
     visuals: [
       { icon: "📄", gradient: "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0369a1 100%)" },
       { icon: "🤖", gradient: "linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #0f172a 100%)" },
@@ -46,6 +49,7 @@ const projects: Project[] = [
       "Aplikasi web Full-Stack untuk pengelolaan kedai kopi Essensia Koffie. Mencakup sistem autentikasi pengguna/kasir, antarmuka pemesanan menu interaktif, pelacakan pesanan, serta manajemen inventaris bahan dan transaksi.",
     stack: ["Node.js", "React", "Express", "Authentication", "Render"],
     demoUrl: "https://essensia-koffie.onrender.com/login",
+    screenshot: "/projects/screenshots/essensia-koffie.jpg",
     visuals: [
       { icon: "☕", gradient: "linear-gradient(135deg, #3b0764 0%, #581c87 50%, #7e22ce 100%)" },
       { icon: "🔐", gradient: "linear-gradient(135deg, #581c87 0%, #7e22ce 50%, #3b0764 100%)" },
@@ -61,6 +65,7 @@ const projects: Project[] = [
       "Aplikasi web Point of Sale (POS) interaktif untuk pengelolaan transaksi cafe dan restoran. Dilengkapi fitur manajemen menu, kalkulasi transaksi real-time, cetak struk digital, serta pencatatan stok dan laporan penjualan.",
     stack: ["React", "TypeScript", "POS Engine", "Tailwind CSS", "Vercel"],
     demoUrl: "https://kasir-cafe-iota.vercel.app/",
+    screenshot: "/projects/screenshots/kasir-cafe.jpg",
     visuals: [
       { icon: "☕", gradient: "linear-gradient(135deg, #451a03 0%, #78350f 50%, #9a3412 100%)" },
       { icon: "🛒", gradient: "linear-gradient(135deg, #78350f 0%, #9a3412 50%, #451a03 100%)" },
@@ -76,6 +81,7 @@ const projects: Project[] = [
       "Dashboard analytics dan sistem pemantauan data terpadu untuk Daerah Pemilihan Jatim VII serta koordinasi kegiatan Senayan. Menyajikan visualisasi data real-time, grafik perkembangan wilayah, dan rekapitulasi data politik.",
     stack: ["Next.js", "React", "Data Analytics", "Tailwind CSS", "Vercel"],
     demoUrl: "https://dashboard-monitor-dapil-dan-giat-se.vercel.app/",
+    screenshot: "/projects/screenshots/monitoring-dapil.jpg",
     visuals: [
       { icon: "📊", gradient: "linear-gradient(135deg, #064e3b 0%, #047857 50%, #065f46 100%)" },
       { icon: "🏛️", gradient: "linear-gradient(135deg, #047857 0%, #065f46 50%, #064e3b 100%)" },
@@ -91,6 +97,7 @@ const projects: Project[] = [
       "Sistem dashboard monitoring nasional skala besar untuk tracking laporan dan agenda kegiatan Senayan secara terstruktur. Dilengkapi filter wilayah nasional, visualisasi status proyek, dan laporan real-time.",
     stack: ["Next.js", "TypeScript", "Dashboard UI", "Analytics", "Vercel"],
     demoUrl: "https://dashboard-monitoring-giat-nasional.vercel.app/",
+    screenshot: "/projects/screenshots/monitoring-nasional.jpg",
     visuals: [
       { icon: "🇮🇩", gradient: "linear-gradient(135deg, #7f1d1d 0%, #991b1b 50%, #b91c1c 100%)" },
       { icon: "📋", gradient: "linear-gradient(135deg, #991b1b 0%, #b91c1c 50%, #7f1d1d 100%)" },
@@ -106,6 +113,7 @@ const projects: Project[] = [
       "Platform web reservasi lapangan olahraga (PlayCourt). Pengguna dapat mengecek ketersediaan jadwal lapangan, memilih slot waktu, dan melakukan konfirmasi reservasi dengan antarmuka yang modern dan responsif.",
     stack: ["Next.js", "TypeScript", "Booking System", "Tailwind CSS", "Vercel"],
     demoUrl: "https://cv-simpul-project-academy.vercel.app/",
+    screenshot: "/projects/screenshots/playcourt.jpg",
     visuals: [
       { icon: "🎾", gradient: "linear-gradient(135deg, #14532d 0%, #15803d 50%, #16a34a 100%)" },
       { icon: "🏀", gradient: "linear-gradient(135deg, #15803d 0%, #16a34a 50%, #14532d 100%)" },
@@ -121,6 +129,7 @@ const projects: Project[] = [
       "Aplikasi web versi awal dari Kokorof Reviewer CV. Membantu pelamar kerja menguji skor ATS resume mereka, memverifikasi ketersediaan elemen kunci CV, serta memberikan rekomendasi perbaikan sebelum melamar kerja.",
     stack: ["React", "JavaScript", "ATS Evaluator", "Vercel"],
     demoUrl: "https://reviewer-cv-v1.vercel.app/",
+    screenshot: "/projects/screenshots/reviewer-cv-v1.jpg",
     visuals: [
       { icon: "📋", gradient: "linear-gradient(135deg, #312e81 0%, #3730a3 50%, #4338ca 100%)" },
       { icon: "🔍", gradient: "linear-gradient(135deg, #3730a3 0%, #4338ca 50%, #312e81 100%)" },
@@ -136,6 +145,7 @@ const projects: Project[] = [
       "Environment laboratorium pengujian untuk eksperimen komponen UI modular, pengujian integrasi widget, serta pengujian logika antarmuka sebelum diimplementasikan pada aplikasi skala besar.",
     stack: ["React", "JavaScript", "Modular UI", "Vercel"],
     demoUrl: "https://tes-modul-aja.vercel.app/",
+    screenshot: "/projects/screenshots/tes-modul.jpg",
     visuals: [
       { icon: "🧩", gradient: "linear-gradient(135deg, #581c87 0%, #6b21a8 50%, #7e22ce 100%)" },
       { icon: "⚡", gradient: "linear-gradient(135deg, #6b21a8 0%, #7e22ce 50%, #581c87 100%)" },
@@ -331,17 +341,29 @@ export default function FeaturedProjects() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: -10 }}
               transition={{ duration: 0.35, delay: i * 0.05 }}
-              className="portfolio-card"
+              className="portfolio-card group"
               onClick={() => openModal(i)}
             >
               {/* Image Area */}
               <div className="portfolio-card-image">
-                <div
-                  className="portfolio-card-image-bg transition-colors duration-500"
-                  style={{ background: project.visuals[0].gradient }}
-                >
-                  <span>{project.visuals[0].icon}</span>
-                </div>
+                {project.screenshot ? (
+                  <div className="portfolio-card-image-bg" style={{ background: project.visuals[0].gradient, padding: 0 }}>
+                    <Image
+                      src={project.screenshot}
+                      alt={project.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                ) : (
+                  <div
+                    className="portfolio-card-image-bg transition-colors duration-500"
+                    style={{ background: project.visuals[0].gradient }}
+                  >
+                    <span>{project.visuals[0].icon}</span>
+                  </div>
+                )}
                 <div className="portfolio-card-overlay">
                   <span className="portfolio-card-overlay-btn">
                     <Eye size={14} /> View Details
@@ -419,18 +441,29 @@ export default function FeaturedProjects() {
                   transition: "background 0.5s ease",
                 }}
               >
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={activeImageIndex}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 1.2 }}
-                    transition={{ duration: 0.3 }}
-                    className="absolute"
-                  >
-                    {selected.visuals[activeImageIndex].icon}
-                  </motion.span>
-                </AnimatePresence>
+                {selected.screenshot ? (
+                  <Image
+                    src={selected.screenshot}
+                    alt={selected.title}
+                    fill
+                    sizes="100vw"
+                    className="object-cover object-top"
+                    priority
+                  />
+                ) : (
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={activeImageIndex}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 1.2 }}
+                      transition={{ duration: 0.3 }}
+                      className="absolute"
+                    >
+                      {selected.visuals[activeImageIndex].icon}
+                    </motion.span>
+                  </AnimatePresence>
+                )}
 
                 {/* Close */}
                 <button
