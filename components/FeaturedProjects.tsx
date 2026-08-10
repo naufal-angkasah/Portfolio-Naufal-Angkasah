@@ -414,6 +414,157 @@ const projects: Project[] = [
 
 const categories = ["All", "Full Stack", "Web Dev", "Network Security", "Education"];
 
+// ════ Project Card Component with Hover-Paused 3s Auto-Slideshow ════
+function ProjectCard({
+  project,
+  index,
+  openModal,
+}: {
+  project: Project;
+  index: number;
+  openModal: () => void;
+}) {
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Resolve array of images (or fallback to visuals)
+  const images =
+    project.screenshots && project.screenshots.length > 0
+      ? project.screenshots
+      : project.screenshot
+      ? [project.screenshot]
+      : null;
+
+  const totalSlides = images ? images.length : project.visuals.length;
+
+  useEffect(() => {
+    if (totalSlides <= 1 || isHovered) return;
+
+    const interval = setInterval(() => {
+      setCurrentImgIndex((prev) => (prev + 1) % totalSlides);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [totalSlides, isHovered]);
+
+  const activeIdx = currentImgIndex % totalSlides;
+
+  return (
+    <motion.article
+      layout
+      initial={{ opacity: 0, scale: 0.9, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.9, y: -10 }}
+      transition={{ duration: 0.35, delay: index * 0.05 }}
+      className="portfolio-card group cursor-pointer"
+      onClick={openModal}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Image Area with Auto-Slide */}
+      <div className="portfolio-card-image relative overflow-hidden">
+        {images ? (
+          <div
+            className="portfolio-card-image-bg relative h-full w-full"
+            style={{ background: project.visuals[0].gradient, padding: 0 }}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIdx}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+                className="absolute inset-0 h-full w-full"
+              >
+                <Image
+                  src={images[activeIdx]}
+                  alt={`${project.title} — Slide ${activeIdx + 1}`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Gallery Indicator Dots */}
+            {images.length > 1 && (
+              <div className="absolute bottom-2.5 left-1/2 z-10 flex -translate-x-1/2 gap-1.5 rounded-full bg-black/50 px-2.5 py-1 backdrop-blur-md">
+                {images.map((_, dotIdx) => (
+                  <div
+                    key={dotIdx}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      dotIdx === activeIdx
+                        ? "w-4 bg-cyan-400"
+                        : "w-1.5 bg-white/40"
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div
+            className="portfolio-card-image-bg transition-colors duration-500"
+            style={{
+              background:
+                project.visuals[activeIdx % project.visuals.length].gradient,
+            }}
+          >
+            <span>{project.visuals[activeIdx % project.visuals.length].icon}</span>
+          </div>
+        )}
+
+        <div className="portfolio-card-overlay">
+          <span className="portfolio-card-overlay-btn">
+            <Eye size={14} /> View Details
+          </span>
+        </div>
+      </div>
+
+      {/* Card Body */}
+      <div className="portfolio-card-body">
+        <div className="mb-4 flex items-center justify-between">
+          <span className="portfolio-card-category">{project.type}</span>
+          {project.demoUrl ? (
+            <a
+              href={project.demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="live-demo-bubble"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <span>Live Demo</span>
+              <ExternalLink size={13} />
+            </a>
+          ) : (
+            <ExternalLink className="text-cyan-200/50" size={16} />
+          )}
+        </div>
+        <h3 className="text-xl font-black text-white">{project.title}</h3>
+        <p className="mt-3 min-h-14 text-sm leading-7 text-sky-100/68">
+          {project.desc}
+        </p>
+        <div className="mt-5 flex flex-wrap gap-2">
+          {project.stack.slice(0, 3).map((item) => (
+            <span
+              key={item}
+              className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold text-cyan-100"
+            >
+              {item}
+            </span>
+          ))}
+          {project.stack.length > 3 && (
+            <span className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold text-cyan-100/50">
+              +{project.stack.length - 3}
+            </span>
+          )}
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
 export default function FeaturedProjects() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -482,7 +633,7 @@ export default function FeaturedProjects() {
     [selected]
   );
 
-  // Autoplay functionality for images within a project
+  // Autoplay functionality for images within modal
   useEffect(() => {
     if (!selected) return;
     const interval = setInterval(() => {
@@ -528,83 +679,12 @@ export default function FeaturedProjects() {
       <motion.div layout className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         <AnimatePresence mode="popLayout">
           {filtered.map((project, i) => (
-            <motion.article
+            <ProjectCard
               key={project.title}
-              layout
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: -10 }}
-              transition={{ duration: 0.35, delay: i * 0.05 }}
-              className="portfolio-card group"
-              onClick={() => openModal(i)}
-            >
-              {/* Image Area */}
-              <div className="portfolio-card-image">
-                {project.screenshot ? (
-                  <div className="portfolio-card-image-bg" style={{ background: project.visuals[0].gradient, padding: 0 }}>
-                    <Image
-                      src={project.screenshot}
-                      alt={project.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                ) : (
-                  <div
-                    className="portfolio-card-image-bg transition-colors duration-500"
-                    style={{ background: project.visuals[0].gradient }}
-                  >
-                    <span>{project.visuals[0].icon}</span>
-                  </div>
-                )}
-                <div className="portfolio-card-overlay">
-                  <span className="portfolio-card-overlay-btn">
-                    <Eye size={14} /> View Details
-                  </span>
-                </div>
-              </div>
-
-              {/* Card Body */}
-              <div className="portfolio-card-body">
-                <div className="mb-4 flex items-center justify-between">
-                  <span className="portfolio-card-category">{project.type}</span>
-                  {project.demoUrl ? (
-                    <a
-                      href={project.demoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="live-demo-bubble"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <span>Live Demo</span>
-                      <ExternalLink size={13} />
-                    </a>
-                  ) : (
-                    <ExternalLink className="text-cyan-200/50" size={16} />
-                  )}
-                </div>
-                <h3 className="text-xl font-black text-white">{project.title}</h3>
-                <p className="mt-3 min-h-14 text-sm leading-7 text-sky-100/68">
-                  {project.desc}
-                </p>
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {project.stack.slice(0, 3).map((item) => (
-                    <span
-                      key={item}
-                      className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold text-cyan-100"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                  {project.stack.length > 3 && (
-                    <span className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold text-cyan-100/50">
-                      +{project.stack.length - 3}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </motion.article>
+              project={project}
+              index={i}
+              openModal={() => openModal(i)}
+            />
           ))}
         </AnimatePresence>
       </motion.div>
