@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ExternalLink, Eye, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ExternalLink, Eye, X, ChevronLeft, ChevronRight, Globe } from "lucide-react";
 
 type ProjectVisual = {
   icon: string;
@@ -17,9 +17,133 @@ type Project = {
   longDesc: string;
   stack: string[];
   visuals: ProjectVisual[];
+  demoUrl?: string;
 };
 
 const projects: Project[] = [
+  // ═══ NEW WORKING FULL STACK & WEB DEV PROJECTS ═══
+  {
+    title: "Kokorof Reviewer CV v2",
+    type: "Full Stack",
+    category: "Full Stack",
+    desc: "ATS Resume Scanner & Career Co-Pilot bertenaga AI untuk analisis CV kandidat.",
+    longDesc:
+      "Aplikasi web full-stack ATS Resume Scanner & AI Career Co-Pilot versi 2. Mampu menganalisis kesesuaian CV dengan kualifikasi pekerjaan, mendeteksi kata kunci ATS, memberikan saran perbaikan format, serta skor keterbacaan otomatis.",
+    stack: ["Next.js", "TypeScript", "AI Engine", "Tailwind CSS", "Vercel"],
+    demoUrl: "https://koko-reviewer-cv-v2.vercel.app/",
+    visuals: [
+      { icon: "📄", gradient: "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0369a1 100%)" },
+      { icon: "🤖", gradient: "linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #0f172a 100%)" },
+      { icon: "✨", gradient: "linear-gradient(135deg, #0f172a 0%, #0284c7 50%, #1e293b 100%)" },
+    ],
+  },
+  {
+    title: "Essensia Koffie App",
+    type: "Full Stack",
+    category: "Full Stack",
+    desc: "Sistem aplikasi web manajemen pesanan & inventaris Essensia Koffie.",
+    longDesc:
+      "Aplikasi web Full-Stack untuk pengelolaan kedai kopi Essensia Koffie. Mencakup sistem autentikasi pengguna/kasir, antarmuka pemesanan menu interaktif, pelacakan pesanan, serta manajemen inventaris bahan dan transaksi.",
+    stack: ["Node.js", "React", "Express", "Authentication", "Render"],
+    demoUrl: "https://essensia-koffie.onrender.com/login",
+    visuals: [
+      { icon: "☕", gradient: "linear-gradient(135deg, #3b0764 0%, #581c87 50%, #7e22ce 100%)" },
+      { icon: "🔐", gradient: "linear-gradient(135deg, #581c87 0%, #7e22ce 50%, #3b0764 100%)" },
+      { icon: "📋", gradient: "linear-gradient(135deg, #7e22ce 0%, #3b0764 50%, #581c87 100%)" },
+    ],
+  },
+  {
+    title: "Kasir Cafe POS System",
+    type: "Full Stack",
+    category: "Full Stack",
+    desc: "Sistem Kasir & Point of Sale (POS) Cafe interaktif berbasis web.",
+    longDesc:
+      "Aplikasi web Point of Sale (POS) interaktif untuk pengelolaan transaksi cafe dan restoran. Dilengkapi fitur manajemen menu, kalkulasi transaksi real-time, cetak struk digital, serta pencatatan stok dan laporan penjualan.",
+    stack: ["React", "TypeScript", "POS Engine", "Tailwind CSS", "Vercel"],
+    demoUrl: "https://kasir-cafe-iota.vercel.app/",
+    visuals: [
+      { icon: "☕", gradient: "linear-gradient(135deg, #451a03 0%, #78350f 50%, #9a3412 100%)" },
+      { icon: "🛒", gradient: "linear-gradient(135deg, #78350f 0%, #9a3412 50%, #451a03 100%)" },
+      { icon: "💳", gradient: "linear-gradient(135deg, #9a3412 0%, #451a03 50%, #78350f 100%)" },
+    ],
+  },
+  {
+    title: "Monitoring Terpadu Dapil Jatim VII",
+    type: "Full Stack",
+    category: "Full Stack",
+    desc: "Dashboard monitoring terpadu perolehan suara & kegiatan Senayan.",
+    longDesc:
+      "Dashboard analytics dan sistem pemantauan data terpadu untuk Daerah Pemilihan Jatim VII serta koordinasi kegiatan Senayan. Menyajikan visualisasi data real-time, grafik perkembangan wilayah, dan rekapitulasi data politik.",
+    stack: ["Next.js", "React", "Data Analytics", "Tailwind CSS", "Vercel"],
+    demoUrl: "https://dashboard-monitor-dapil-dan-giat-se.vercel.app/",
+    visuals: [
+      { icon: "📊", gradient: "linear-gradient(135deg, #064e3b 0%, #047857 50%, #065f46 100%)" },
+      { icon: "🏛️", gradient: "linear-gradient(135deg, #047857 0%, #065f46 50%, #064e3b 100%)" },
+      { icon: "📈", gradient: "linear-gradient(135deg, #065f46 0%, #064e3b 50%, #047857 100%)" },
+    ],
+  },
+  {
+    title: "Monitoring Giat Nasional Senayan",
+    type: "Full Stack",
+    category: "Full Stack",
+    desc: "Dashboard monitoring nasional pemantauan kegiatan anggota Senayan.",
+    longDesc:
+      "Sistem dashboard monitoring nasional skala besar untuk tracking laporan dan agenda kegiatan Senayan secara terstruktur. Dilengkapi filter wilayah nasional, visualisasi status proyek, dan laporan real-time.",
+    stack: ["Next.js", "TypeScript", "Dashboard UI", "Analytics", "Vercel"],
+    demoUrl: "https://dashboard-monitoring-giat-nasional.vercel.app/",
+    visuals: [
+      { icon: "🇮🇩", gradient: "linear-gradient(135deg, #7f1d1d 0%, #991b1b 50%, #b91c1c 100%)" },
+      { icon: "📋", gradient: "linear-gradient(135deg, #991b1b 0%, #b91c1c 50%, #7f1d1d 100%)" },
+      { icon: "📡", gradient: "linear-gradient(135deg, #b91c1c 0%, #7f1d1d 50%, #991b1b 100%)" },
+    ],
+  },
+  {
+    title: "PlayCourt — Venue Booking Platform",
+    type: "Full Stack",
+    category: "Full Stack",
+    desc: "Platform reservasi & booking lapangan olahraga interaktif.",
+    longDesc:
+      "Platform web reservasi lapangan olahraga (PlayCourt). Pengguna dapat mengecek ketersediaan jadwal lapangan, memilih slot waktu, dan melakukan konfirmasi reservasi dengan antarmuka yang modern dan responsif.",
+    stack: ["Next.js", "TypeScript", "Booking System", "Tailwind CSS", "Vercel"],
+    demoUrl: "https://cv-simpul-project-academy.vercel.app/",
+    visuals: [
+      { icon: "🎾", gradient: "linear-gradient(135deg, #14532d 0%, #15803d 50%, #16a34a 100%)" },
+      { icon: "🏀", gradient: "linear-gradient(135deg, #15803d 0%, #16a34a 50%, #14532d 100%)" },
+      { icon: "📅", gradient: "linear-gradient(135deg, #16a34a 0%, #14532d 50%, #15803d 100%)" },
+    ],
+  },
+  {
+    title: "Kokorof Reviewer CV v1",
+    type: "Full Stack",
+    category: "Full Stack",
+    desc: "ATS Resume Scanner & AI Career Co-Pilot generasi pertama.",
+    longDesc:
+      "Aplikasi web versi awal dari Kokorof Reviewer CV. Membantu pelamar kerja menguji skor ATS resume mereka, memverifikasi ketersediaan elemen kunci CV, serta memberikan rekomendasi perbaikan sebelum melamar kerja.",
+    stack: ["React", "JavaScript", "ATS Evaluator", "Vercel"],
+    demoUrl: "https://reviewer-cv-v1.vercel.app/",
+    visuals: [
+      { icon: "📋", gradient: "linear-gradient(135deg, #312e81 0%, #3730a3 50%, #4338ca 100%)" },
+      { icon: "🔍", gradient: "linear-gradient(135deg, #3730a3 0%, #4338ca 50%, #312e81 100%)" },
+      { icon: "💡", gradient: "linear-gradient(135deg, #4338ca 0%, #312e81 50%, #3730a3 100%)" },
+    ],
+  },
+  {
+    title: "Tes Modul & UI Component Showcase",
+    type: "Web Dev",
+    category: "Web Dev",
+    desc: "Showcase pengujian modul UI interaktif dan eksplorasi komponen web.",
+    longDesc:
+      "Environment laboratorium pengujian untuk eksperimen komponen UI modular, pengujian integrasi widget, serta pengujian logika antarmuka sebelum diimplementasikan pada aplikasi skala besar.",
+    stack: ["React", "JavaScript", "Modular UI", "Vercel"],
+    demoUrl: "https://tes-modul-aja.vercel.app/",
+    visuals: [
+      { icon: "🧩", gradient: "linear-gradient(135deg, #581c87 0%, #6b21a8 50%, #7e22ce 100%)" },
+      { icon: "⚡", gradient: "linear-gradient(135deg, #6b21a8 0%, #7e22ce 50%, #581c87 100%)" },
+      { icon: "🛠️", gradient: "linear-gradient(135deg, #7e22ce 0%, #581c87 50%, #6b21a8 100%)" },
+    ],
+  },
+
+  // ═══ EXISTING FEATURED PROJECTS ═══
   {
     title: "DTP Telkom Landing Page v3",
     type: "Web Dev",
@@ -31,7 +155,7 @@ const projects: Project[] = [
     visuals: [
       { icon: "🌐", gradient: "linear-gradient(135deg, #0c4a6e 0%, #164e63 50%, #0e7490 100%)" },
       { icon: "💻", gradient: "linear-gradient(135deg, #083344 0%, #155e75 50%, #0e7490 100%)" },
-      { icon: "📱", gradient: "linear-gradient(135deg, #164e63 0%, #0c4a6e 50%, #155e75 100%)" }
+      { icon: "📱", gradient: "linear-gradient(135deg, #164e63 0%, #0c4a6e 50%, #155e75 100%)" },
     ],
   },
   {
@@ -45,7 +169,7 @@ const projects: Project[] = [
     visuals: [
       { icon: "💧", gradient: "linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0d4f72 100%)" },
       { icon: "📊", gradient: "linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e3a5f 100%)" },
-      { icon: "⚙️", gradient: "linear-gradient(135deg, #1e3a5f 0%, #0d4f72 50%, #0f172a 100%)" }
+      { icon: "⚙️", gradient: "linear-gradient(135deg, #1e3a5f 0%, #0d4f72 50%, #0f172a 100%)" },
     ],
   },
   {
@@ -59,7 +183,7 @@ const projects: Project[] = [
     visuals: [
       { icon: "🛡️", gradient: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)" },
       { icon: "🖥️", gradient: "linear-gradient(135deg, #0f3460 0%, #1a1a2e 50%, #16213e 100%)" },
-      { icon: "🚨", gradient: "linear-gradient(135deg, #16213e 0%, #0f3460 50%, #1a1a2e 100%)" }
+      { icon: "🚨", gradient: "linear-gradient(135deg, #16213e 0%, #0f3460 50%, #1a1a2e 100%)" },
     ],
   },
   {
@@ -73,7 +197,7 @@ const projects: Project[] = [
     visuals: [
       { icon: "🔍", gradient: "linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 50%, #1a1a3e 100%)" },
       { icon: "🐞", gradient: "linear-gradient(135deg, #2d1b4e 0%, #1a1a3e 50%, #1a0a2e 100%)" },
-      { icon: "🔐", gradient: "linear-gradient(135deg, #1a1a3e 0%, #1a0a2e 50%, #2d1b4e 100%)" }
+      { icon: "🔐", gradient: "linear-gradient(135deg, #1a1a3e 0%, #1a0a2e 50%, #2d1b4e 100%)" },
     ],
   },
   {
@@ -87,7 +211,7 @@ const projects: Project[] = [
     visuals: [
       { icon: "🌊", gradient: "linear-gradient(135deg, #031226 0%, #08284d 50%, #0c4a6e 100%)" },
       { icon: "🐙", gradient: "linear-gradient(135deg, #08284d 0%, #0c4a6e 50%, #031226 100%)" },
-      { icon: "✨", gradient: "linear-gradient(135deg, #0c4a6e 0%, #031226 50%, #08284d 100%)" }
+      { icon: "✨", gradient: "linear-gradient(135deg, #0c4a6e 0%, #031226 50%, #08284d 100%)" },
     ],
   },
   {
@@ -101,28 +225,32 @@ const projects: Project[] = [
     visuals: [
       { icon: "📚", gradient: "linear-gradient(135deg, #1a2332 0%, #2d3748 50%, #1a365d 100%)" },
       { icon: "👨‍🏫", gradient: "linear-gradient(135deg, #2d3748 0%, #1a365d 50%, #1a2332 100%)" },
-      { icon: "🎓", gradient: "linear-gradient(135deg, #1a365d 0%, #1a2332 50%, #2d3748 100%)" }
+      { icon: "🎓", gradient: "linear-gradient(135deg, #1a365d 0%, #1a2332 50%, #2d3748 100%)" },
     ],
   },
 ];
 
-const categories = ["All", "Web Dev", "Network Security", "Full Stack", "Education"];
+const categories = ["All", "Full Stack", "Web Dev", "Network Security", "Education"];
 
 export default function FeaturedProjects() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-  const filtered = activeFilter === "All"
-    ? projects
-    : projects.filter((p) => p.category === activeFilter);
+  const filtered =
+    activeFilter === "All"
+      ? projects
+      : projects.filter((p) => p.category === activeFilter);
 
-  const openModal = useCallback((projectIndex: number) => {
-    const project = filtered[projectIndex];
-    const globalIndex = projects.indexOf(project);
-    setSelectedIndex(globalIndex);
-    setActiveImageIndex(0);
-  }, [filtered]);
+  const openModal = useCallback(
+    (projectIndex: number) => {
+      const project = filtered[projectIndex];
+      const globalIndex = projects.indexOf(project);
+      setSelectedIndex(globalIndex);
+      setActiveImageIndex(0);
+    },
+    [filtered]
+  );
 
   const closeModal = useCallback(() => {
     setSelectedIndex(null);
@@ -131,19 +259,27 @@ export default function FeaturedProjects() {
 
   const selected = selectedIndex !== null ? projects[selectedIndex] : null;
 
-  const goNextImage = useCallback((e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    if (selected) {
-      setActiveImageIndex((prev) => (prev + 1) % selected.visuals.length);
-    }
-  }, [selected]);
+  const goNextImage = useCallback(
+    (e?: React.MouseEvent) => {
+      e?.stopPropagation();
+      if (selected) {
+        setActiveImageIndex((prev) => (prev + 1) % selected.visuals.length);
+      }
+    },
+    [selected]
+  );
 
-  const goPrevImage = useCallback((e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    if (selected) {
-      setActiveImageIndex((prev) => (prev - 1 + selected.visuals.length) % selected.visuals.length);
-    }
-  }, [selected]);
+  const goPrevImage = useCallback(
+    (e?: React.MouseEvent) => {
+      e?.stopPropagation();
+      if (selected) {
+        setActiveImageIndex(
+          (prev) => (prev - 1 + selected.visuals.length) % selected.visuals.length
+        );
+      }
+    },
+    [selected]
+  );
 
   // Autoplay functionality for images within a project
   useEffect(() => {
@@ -159,11 +295,15 @@ export default function FeaturedProjects() {
       {/* Header */}
       <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="text-sm font-black uppercase tracking-[0.35em] text-cyan-200">Portfolio</p>
-          <h2 className="mt-3 text-4xl font-black text-white md:text-5xl">Featured Projects</h2>
+          <p className="text-sm font-black uppercase tracking-[0.35em] text-cyan-200">
+            Portfolio
+          </p>
+          <h2 className="mt-3 text-4xl font-black text-white md:text-5xl">
+            Featured Projects
+          </h2>
         </div>
         <p className="max-w-lg text-sm leading-7 text-sky-100/70">
-          Beberapa hasil karya terbaik di bidang Web Development, Cybersecurity, dan IT Operations.
+          Koleksi proyek nyata di bidang Full Stack Web Development, Network Security, dan Systems Engineering.
         </p>
       </div>
 
@@ -190,7 +330,7 @@ export default function FeaturedProjects() {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: -10 }}
-              transition={{ duration: 0.35, delay: i * 0.06 }}
+              transition={{ duration: 0.35, delay: i * 0.05 }}
               className="portfolio-card"
               onClick={() => openModal(i)}
             >
@@ -213,13 +353,31 @@ export default function FeaturedProjects() {
               <div className="portfolio-card-body">
                 <div className="mb-4 flex items-center justify-between">
                   <span className="portfolio-card-category">{project.type}</span>
-                  <ExternalLink className="text-cyan-200/50" size={16} />
+                  {project.demoUrl ? (
+                    <a
+                      href={project.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-bold text-cyan-300 hover:underline"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <span>Live Demo</span>
+                      <ExternalLink size={14} />
+                    </a>
+                  ) : (
+                    <ExternalLink className="text-cyan-200/50" size={16} />
+                  )}
                 </div>
                 <h3 className="text-xl font-black text-white">{project.title}</h3>
-                <p className="mt-3 min-h-14 text-sm leading-7 text-sky-100/68">{project.desc}</p>
+                <p className="mt-3 min-h-14 text-sm leading-7 text-sky-100/68">
+                  {project.desc}
+                </p>
                 <div className="mt-5 flex flex-wrap gap-2">
                   {project.stack.slice(0, 3).map((item) => (
-                    <span key={item} className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold text-cyan-100">
+                    <span
+                      key={item}
+                      className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold text-cyan-100"
+                    >
                       {item}
                     </span>
                   ))}
@@ -256,7 +414,10 @@ export default function FeaturedProjects() {
               {/* Modal Image Gallery */}
               <div
                 className="portfolio-modal-image overflow-hidden"
-                style={{ background: selected.visuals[activeImageIndex].gradient, transition: "background 0.5s ease" }}
+                style={{
+                  background: selected.visuals[activeImageIndex].gradient,
+                  transition: "background 0.5s ease",
+                }}
               >
                 <AnimatePresence mode="wait">
                   <motion.span
@@ -272,25 +433,39 @@ export default function FeaturedProjects() {
                 </AnimatePresence>
 
                 {/* Close */}
-                <button onClick={closeModal} className="portfolio-modal-close" aria-label="Close">
+                <button
+                  onClick={closeModal}
+                  className="portfolio-modal-close"
+                  aria-label="Close"
+                >
                   <X size={20} />
                 </button>
 
                 {/* Prev / Next Image */}
-                <button onClick={goPrevImage} className="portfolio-modal-nav prev" aria-label="Previous image">
+                <button
+                  onClick={goPrevImage}
+                  className="portfolio-modal-nav prev"
+                  aria-label="Previous image"
+                >
                   <ChevronLeft size={22} />
                 </button>
-                <button onClick={goNextImage} className="portfolio-modal-nav next" aria-label="Next image">
+                <button
+                  onClick={goNextImage}
+                  className="portfolio-modal-nav next"
+                  aria-label="Next image"
+                >
                   <ChevronRight size={22} />
                 </button>
-                
+
                 {/* Image Dots */}
                 <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
                   {selected.visuals.map((_, i) => (
-                    <div 
-                      key={i} 
+                    <div
+                      key={i}
                       onClick={() => setActiveImageIndex(i)}
-                      className={`h-2 cursor-pointer rounded-full transition-all duration-300 ${i === activeImageIndex ? "bg-white w-6" : "bg-white/30 w-2"}`} 
+                      className={`h-2 cursor-pointer rounded-full transition-all duration-300 ${
+                        i === activeImageIndex ? "bg-white w-6" : "bg-white/30 w-2"
+                      }`}
                     />
                   ))}
                 </div>
@@ -298,11 +473,25 @@ export default function FeaturedProjects() {
 
               {/* Modal Content */}
               <div className="portfolio-modal-content">
-                <div className="mb-4 flex flex-wrap items-center gap-3">
-                  <span className="portfolio-card-category">{selected.type}</span>
-                  <span className="text-xs text-sky-100/40">
-                    Gambar {activeImageIndex + 1} / {selected.visuals.length}
-                  </span>
+                <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="portfolio-card-category">{selected.type}</span>
+                    <span className="text-xs text-sky-100/40">
+                      Visual {activeImageIndex + 1} / {selected.visuals.length}
+                    </span>
+                  </div>
+                  {selected.demoUrl && (
+                    <a
+                      href={selected.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-cyan-500/20 px-3.5 py-1.5 text-xs font-bold text-cyan-200 transition hover:bg-cyan-500/30"
+                    >
+                      <Globe size={14} />
+                      <span>Kunjungi Website</span>
+                      <ExternalLink size={12} />
+                    </a>
+                  )}
                 </div>
 
                 <h3 className="text-3xl font-black text-white">{selected.title}</h3>
@@ -310,19 +499,40 @@ export default function FeaturedProjects() {
 
                 {/* Tech Stack */}
                 <div className="mt-8">
-                  <p className="mb-3 text-xs font-black uppercase tracking-[0.28em] text-cyan-200/70">Tech Stack</p>
+                  <p className="mb-3 text-xs font-black uppercase tracking-[0.28em] text-cyan-200/70">
+                    Tech Stack
+                  </p>
                   <div className="flex flex-wrap gap-2">
                     {selected.stack.map((item) => (
-                      <span key={item} className="rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-cyan-100">
+                      <span
+                        key={item}
+                        className="rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-cyan-100"
+                      >
                         {item}
                       </span>
                     ))}
                   </div>
                 </div>
 
+                {/* Action button if demoUrl exists */}
+                {selected.demoUrl && (
+                  <div className="mt-8 flex justify-start">
+                    <a
+                      href={selected.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 to-sky-600 px-6 py-3 text-sm font-black text-white shadow-lg transition hover:scale-[1.02]"
+                    >
+                      <Globe size={16} />
+                      <span>Buka Live Demo Application</span>
+                      <ExternalLink size={14} />
+                    </a>
+                  </div>
+                )}
+
                 {/* Navigation hint */}
                 <p className="mt-8 text-center text-xs text-sky-100/40">
-                  Gunakan tombol ← → untuk melihat gambar lain, atau klik area gelap untuk menutup.
+                  Gunakan tombol ← → untuk melihat visual lain, atau klik area gelap untuk menutup.
                 </p>
               </div>
             </motion.div>
