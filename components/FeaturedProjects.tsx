@@ -358,11 +358,11 @@ export default function FeaturedProjects() {
                       href={project.demoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs font-bold text-cyan-300 hover:underline"
+                      className="live-demo-bubble"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <span>Live Demo</span>
-                      <ExternalLink size={14} />
+                      <ExternalLink size={13} />
                     </a>
                   ) : (
                     <ExternalLink className="text-cyan-200/50" size={16} />
