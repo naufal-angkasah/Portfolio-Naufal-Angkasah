@@ -10,6 +10,12 @@ type ProjectVisual = {
   gradient: string;
 };
 
+type FeatureModule = {
+  icon: string;
+  module: string;
+  features: { name: string; desc: string }[];
+};
+
 type Project = {
   title: string;
   type: string;
@@ -18,8 +24,9 @@ type Project = {
   longDesc: string;
   stack: string[];
   visuals: ProjectVisual[];
-  screenshot?: string;     // single real screenshot
-  screenshots?: string[];  // multi-image gallery (overrides screenshot in modal)
+  screenshot?: string;
+  screenshots?: string[];
+  featureModules?: FeatureModule[];
   demoUrl?: string;
 };
 
@@ -51,6 +58,76 @@ const projects: Project[] = [
     stack: ["Node.js", "React", "Express", "Authentication", "Render"],
     demoUrl: "https://essensia-koffie.onrender.com/login",
     screenshot: "/projects/screenshots/essensia-koffie.jpg",
+    featureModules: [
+      {
+        icon: "🛒",
+        module: "Customer Ordering",
+        features: [
+          { name: "QR Code Table Order", desc: "Pemesanan via scan QR Code unik per meja (`/order/{token}`)" },
+          { name: "Katalog & Filter Menu", desc: "Filter kategori, pencarian cepat, badge rekomendasi & stok" },
+          { name: "Keranjang Belanja", desc: "Tambah/kurang item, hapus, proteksi stok habis" },
+          { name: "Checkout & Metode Bayar", desc: "Dine-in/Takeaway, Tunai atau QRIS Midtrans" },
+          { name: "Live Order Tracking", desc: "Pelacakan status pesanan real-time setelah checkout" },
+        ],
+      },
+      {
+        icon: "🖥️",
+        module: "Kasir / POS",
+        features: [
+          { name: "Antarmuka POS Kasir", desc: "Layar cepat khusus kasir untuk pelanggan takeaway (/cashier)" },
+          { name: "Pembayaran QRIS & Tunai", desc: "Integrasi gateway QRIS Midtrans + konfirmasi tunai" },
+          { name: "Cetak Struk", desc: "Format cetak struk fisik/termal transaksi (/cashier/receipt)" },
+        ],
+      },
+      {
+        icon: "📋",
+        module: "Manajemen Pesanan",
+        features: [
+          { name: "Tabel Pesanan Terpusat", desc: "Ringkasan seluruh pesanan meja & kasir + filter & paginasi" },
+          { name: "Order Lifecycle Buttons", desc: "Tombol Proses, Sampai, Batal Proses, Batal, & Bayar" },
+          { name: "Occupancy Auto-Reset", desc: "Otomatis ubah status meja occupied→available saat selesai" },
+        ],
+      },
+      {
+        icon: "🔔",
+        module: "Notifikasi & Suara",
+        features: [
+          { name: "Voice Alert Bahasa Indonesia", desc: "Ucapan otomatis: \"Pesanan dari meja nomor X telah masuk\"" },
+          { name: "Audio Chime (Ding-Dong)", desc: "Nada bel kafe via Web Audio API sebelum ucapan suara" },
+          { name: "Polling 2s & Tab Wake-Up", desc: "Cek pesanan baru setiap 2 detik + pemicu saat tab dibuka" },
+          { name: "Floating Toast Banner", desc: "Pop-up melayang dengan info meja, nama, total & tombol detail" },
+          { name: "Sakelar Suara ON/OFF", desc: "Kontrol audio di Navbar Topbar Admin" },
+        ],
+      },
+      {
+        icon: "⚙️",
+        module: "Pengaturan Operasional",
+        features: [
+          { name: "Real-time Clock & Timer", desc: "Jam digital & countdown tutup kafe di topbar" },
+          { name: "Peringatan Otomatis", desc: "Pop-up ganti shift, kafe akan tutup, & batas order" },
+          { name: "Pengaturan Kafe (/settings)", desc: "Atur jam buka/tutup, durasi shift, & menit peringatan" },
+        ],
+      },
+      {
+        icon: "📦",
+        module: "Katalog & Data",
+        features: [
+          { name: "Manajemen Kategori", desc: "CRUD kategori + toggle aktif/non-aktif" },
+          { name: "Manajemen Menu", desc: "CRUD menu, harga, deskripsi, foto, & toggle rekomendasi" },
+          { name: "Manajemen Meja & QR", desc: "CRUD meja, generator token QR, download PNG/SVG, cetak massal" },
+        ],
+      },
+      {
+        icon: "📊",
+        module: "Laporan & System",
+        features: [
+          { name: "Dashboard Analytics", desc: "Grafik tren penjualan, omzet harian/bulanan, status meja" },
+          { name: "Ekspor CSV/Excel", desc: "Download laporan transaksi untuk pembukuan keuangan" },
+          { name: "Auth & Security", desc: "Login Admin/Kasir, proteksi rute, CSRF, & HTTPS paksa" },
+          { name: "Docker Production Ready", desc: "Dockerfile PHP 8.3 Apache + docker-entrypoint.sh otomatis" },
+        ],
+      },
+    ],
     visuals: [
       { icon: "☕", gradient: "linear-gradient(135deg, #3b0764 0%, #581c87 50%, #7e22ce 100%)" },
       { icon: "🔐", gradient: "linear-gradient(135deg, #581c87 0%, #7e22ce 50%, #3b0764 100%)" },
@@ -622,6 +699,48 @@ export default function FeaturedProjects() {
                       <span>Buka Live Demo Application</span>
                       <ExternalLink size={14} />
                     </a>
+                  </div>
+                )}
+
+                {/* Feature Modules Accordion */}
+                {selected.featureModules && selected.featureModules.length > 0 && (
+                  <div className="mt-8">
+                    <p className="mb-4 text-xs font-black uppercase tracking-[0.28em] text-cyan-200/70">
+                      Fitur Lengkap
+                    </p>
+                    <div className="flex flex-col gap-3">
+                      {selected.featureModules.map((mod) => (
+                        <details
+                          key={mod.module}
+                          className="group rounded-xl border border-white/10 bg-white/5 px-4 py-3 transition hover:border-cyan-400/30"
+                        >
+                          <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
+                            <span className="flex items-center gap-2 text-sm font-black text-white">
+                              <span>{mod.icon}</span>
+                              <span>{mod.module}</span>
+                              <span className="rounded-full bg-cyan-500/20 px-2 py-0.5 text-[10px] font-bold text-cyan-300">
+                                {mod.features.length} fitur
+                              </span>
+                            </span>
+                            <span className="text-xs text-sky-100/40 transition-transform duration-200 group-open:rotate-180">
+                              ▼
+                            </span>
+                          </summary>
+                          <ul className="mt-3 flex flex-col gap-2 border-t border-white/10 pt-3">
+                            {mod.features.map((f) => (
+                              <li key={f.name} className="flex gap-2 text-xs">
+                                <span className="mt-0.5 flex-shrink-0 text-cyan-400">✓</span>
+                                <span>
+                                  <span className="font-bold text-sky-100">{f.name}</span>
+                                  {" — "}
+                                  <span className="text-sky-100/60">{f.desc}</span>
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </details>
+                      ))}
+                    </div>
                   </div>
                 )}
 
