@@ -247,6 +247,17 @@ export default function FeaturedProjects() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
+  // Count projects per category
+  const projectCounts: Record<string, number> = {
+    All: projects.length,
+    ...Object.fromEntries(
+      categories.slice(1).map((cat) => [
+        cat,
+        projects.filter((p) => p.category === cat).length,
+      ])
+    ),
+  };
+
   const filtered =
     activeFilter === "All"
       ? projects
@@ -326,6 +337,9 @@ export default function FeaturedProjects() {
             className={`portfolio-filter-btn ${activeFilter === cat ? "active" : ""}`}
           >
             {cat}
+            <span className={`portfolio-filter-count ${activeFilter === cat ? "active" : ""}`}>
+              {projectCounts[cat]}
+            </span>
           </button>
         ))}
       </div>
