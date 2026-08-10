@@ -18,7 +18,8 @@ type Project = {
   longDesc: string;
   stack: string[];
   visuals: ProjectVisual[];
-  screenshot?: string; // real screenshot from /projects/screenshots/
+  screenshot?: string;     // single real screenshot
+  screenshots?: string[];  // multi-image gallery (overrides screenshot in modal)
   demoUrl?: string;
 };
 
@@ -225,13 +226,20 @@ const projects: Project[] = [
     ],
   },
   {
-    title: "Coding Education Platform",
+    title: "Coding Education Module",
     type: "Education",
     category: "Education",
     desc: "Kurikulum mengajar 280+ siswa tentang web development dan deployment.",
     longDesc:
       "Merancang dan menyampaikan kurikulum pengajaran coding kepada 280+ siswa di MAN 1 Banda Aceh. Materi mencakup web development flow, penggunaan repository (Git/GitHub), front-end development (HTML, CSS, JavaScript), back-end development, database management, dan proses deployment. Pendekatan hands-on dengan proyek nyata.",
     stack: ["Teaching", "Web Dev", "Curriculum Design", "Git", "Deployment"],
+    demoUrl: "https://docs.google.com/document/d/1dZhV8GB3I2ND9uEE85hBc8B-G67IB5gSQmYzOE74VxA/edit?usp=sharing",
+    screenshot: "/projects/edu-module-1.jpg",
+    screenshots: [
+      "/projects/edu-module-1.jpg",
+      "/projects/edu-module-2.jpg",
+      "/projects/edu-module-3.jpg",
+    ],
     visuals: [
       { icon: "📚", gradient: "linear-gradient(135deg, #1a2332 0%, #2d3748 50%, #1a365d 100%)" },
       { icon: "👨‍🏫", gradient: "linear-gradient(135deg, #2d3748 0%, #1a365d 50%, #1a2332 100%)" },
@@ -284,7 +292,12 @@ export default function FeaturedProjects() {
     (e?: React.MouseEvent) => {
       e?.stopPropagation();
       if (selected) {
-        setActiveImageIndex((prev) => (prev + 1) % selected.visuals.length);
+        const len = selected.screenshots
+          ? selected.screenshots.length
+          : selected.screenshot
+          ? 1
+          : selected.visuals.length;
+        setActiveImageIndex((prev) => (prev + 1) % len);
       }
     },
     [selected]
@@ -294,9 +307,12 @@ export default function FeaturedProjects() {
     (e?: React.MouseEvent) => {
       e?.stopPropagation();
       if (selected) {
-        setActiveImageIndex(
-          (prev) => (prev - 1 + selected.visuals.length) % selected.visuals.length
-        );
+        const len = selected.screenshots
+          ? selected.screenshots.length
+          : selected.screenshot
+          ? 1
+          : selected.visuals.length;
+        setActiveImageIndex((prev) => (prev - 1 + len) % len);
       }
     },
     [selected]
@@ -448,75 +464,107 @@ export default function FeaturedProjects() {
               onClick={(e) => e.stopPropagation()}
             >
               {/* Modal Image Gallery */}
-              <div
-                className="portfolio-modal-image overflow-hidden"
-                style={{
-                  background: selected.visuals[activeImageIndex].gradient,
-                  transition: "background 0.5s ease",
-                }}
-              >
-                {selected.screenshot ? (
-                  <Image
-                    src={selected.screenshot}
-                    alt={selected.title}
-                    fill
-                    sizes="100vw"
-                    className="object-cover object-top"
-                    priority
-                  />
-                ) : (
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={activeImageIndex}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 1.2 }}
-                      transition={{ duration: 0.3 }}
-                      className="absolute"
+              {(() => {
+                // Resolve image list: screenshots[] > single screenshot > emoji visuals
+                const gallery = selected.screenshots
+                  ? selected.screenshots
+                  : selected.screenshot
+                  ? [selected.screenshot]
+                  : null;
+                const galleryLen = gallery ? gallery.length : selected.visuals.length;
+                const safeClamped = Math.min(activeImageIndex, galleryLen - 1);
+
+                return (
+                  <div
+                    className="portfolio-modal-image overflow-hidden"
+                    style={{
+                      background: selected.visuals[
+                        Math.min(safeClamped, selected.visuals.length - 1)
+                      ].gradient,
+                      transition: "background 0.5s ease",
+                    }}
+                  >
+                    {gallery ? (
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={safeClamped}
+                          initial={{ opacity: 0, x: 40 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -40 }}
+                          transition={{ duration: 0.3 }}
+                          className="absolute inset-0"
+                        >
+                          <Image
+                            src={gallery[safeClamped]}
+                            alt={`${selected.title} – image ${safeClamped + 1}`}
+                            fill
+                            sizes="100vw"
+                            className="object-cover object-top"
+                            priority
+                          />
+                        </motion.div>
+                      </AnimatePresence>
+                    ) : (
+                      <AnimatePresence mode="wait">
+                        <motion.span
+                          key={safeClamped}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 1.2 }}
+                          transition={{ duration: 0.3 }}
+                          className="absolute"
+                        >
+                          {selected.visuals[safeClamped].icon}
+                        </motion.span>
+                      </AnimatePresence>
+                    )}
+
+                    {/* Close */}
+                    <button
+                      onClick={closeModal}
+                      className="portfolio-modal-close"
+                      aria-label="Close"
                     >
-                      {selected.visuals[activeImageIndex].icon}
-                    </motion.span>
-                  </AnimatePresence>
-                )}
+                      <X size={20} />
+                    </button>
 
-                {/* Close */}
-                <button
-                  onClick={closeModal}
-                  className="portfolio-modal-close"
-                  aria-label="Close"
-                >
-                  <X size={20} />
-                </button>
+                    {/* Prev / Next — only show if gallery has >1 image */}
+                    {galleryLen > 1 && (
+                      <>
+                        <button
+                          onClick={goPrevImage}
+                          className="portfolio-modal-nav prev"
+                          aria-label="Previous image"
+                        >
+                          <ChevronLeft size={22} />
+                        </button>
+                        <button
+                          onClick={goNextImage}
+                          className="portfolio-modal-nav next"
+                          aria-label="Next image"
+                        >
+                          <ChevronRight size={22} />
+                        </button>
+                      </>
+                    )}
 
-                {/* Prev / Next Image */}
-                <button
-                  onClick={goPrevImage}
-                  className="portfolio-modal-nav prev"
-                  aria-label="Previous image"
-                >
-                  <ChevronLeft size={22} />
-                </button>
-                <button
-                  onClick={goNextImage}
-                  className="portfolio-modal-nav next"
-                  aria-label="Next image"
-                >
-                  <ChevronRight size={22} />
-                </button>
-
-                {/* Image Dots */}
-                <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
-                  {selected.visuals.map((_, i) => (
-                    <div
-                      key={i}
-                      onClick={() => setActiveImageIndex(i)}
-                      className={`h-2 cursor-pointer rounded-full transition-all duration-300 ${
-                        i === activeImageIndex ? "bg-white w-6" : "bg-white/30 w-2"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
+                    {/* Image Dots */}
+                    {galleryLen > 1 && (
+                      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
+                        {Array.from({ length: galleryLen }).map((_, i) => (
+                          <div
+                            key={i}
+                            onClick={() => setActiveImageIndex(i)}
+                            className={`h-2 cursor-pointer rounded-full transition-all duration-300 ${
+                              i === safeClamped ? "bg-white w-6" : "bg-white/30 w-2"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
 
               {/* Modal Content */}
               <div className="portfolio-modal-content">
