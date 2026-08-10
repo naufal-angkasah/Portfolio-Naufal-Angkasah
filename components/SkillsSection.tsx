@@ -1,78 +1,149 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-const skills = [
-  "Next.js",
-  "React",
-  "Vue.js",
-  "TypeScript",
-  "JavaScript",
-  "Tailwind CSS",
-  "Node.js",
-  "REST API",
-  "Linux",
-  "Git & GitHub",
-  "Docker Basic",
-  "WordPress",
-  "TCP/IP",
-  "Firewall",
-  "OWASP Basic",
-  "Network Monitoring",
-  "Wazuh",
-  "Splunk",
-  "Honeypots",
-  "Redis",
-  "MikroTik",
-  "GNS-3",
-  "Cloud Deployment",
-  "Database Management",
+type SkillCategory = "All" | "Full Stack" | "Security" | "Data & Tools";
+
+type SkillItem = {
+  name: string;
+  category: "Full Stack" | "Security" | "Data & Tools";
+  icon: string;
+};
+
+const skills: SkillItem[] = [
+  // ═══ FULL STACK & WEB DEV ═══
+  { name: "Next.js 16", category: "Full Stack", icon: "⚡" },
+  { name: "React.js", category: "Full Stack", icon: "⚛️" },
+  { name: "Vue.js 3", category: "Full Stack", icon: "🟢" },
+  { name: "TypeScript", category: "Full Stack", icon: "📘" },
+  { name: "JavaScript (ES6+)", category: "Full Stack", icon: "🟨" },
+  { name: "Tailwind CSS", category: "Full Stack", icon: "🎨" },
+  { name: "Framer Motion", category: "Full Stack", icon: "✨" },
+  { name: "Node.js", category: "Full Stack", icon: "🟩" },
+  { name: "Express.js", category: "Full Stack", icon: "🚂" },
+  { name: "PHP 8.3 & Laravel", category: "Full Stack", icon: "🐘" },
+  { name: "RESTful API", category: "Full Stack", icon: "🔌" },
+  { name: "GraphQL", category: "Full Stack", icon: "🕸️" },
+  { name: "Python", category: "Full Stack", icon: "🐍" },
+  { name: "HTML5 & CSS3", category: "Full Stack", icon: "🌐" },
+
+  // ═══ DATA, CLOUD & INTEGRATION ═══
+  { name: "PostgreSQL & MySQL", category: "Data & Tools", icon: "🐬" },
+  { name: "Redis Cache", category: "Data & Tools", icon: "🔴" },
+  { name: "Firebase Firestore", category: "Data & Tools", icon: "🔥" },
+  { name: "Midtrans QRIS Gateway", category: "Data & Tools", icon: "💳" },
+  { name: "Google Sheets API Pipeline", category: "Data & Tools", icon: "📊" },
+  { name: "Leaflet & GeoJSON Maps", category: "Data & Tools", icon: "🗺️" },
+  { name: "Web Audio & Speech API", category: "Data & Tools", icon: "🔔" },
+  { name: "POS Engine & Receipt Print", category: "Data & Tools", icon: "🧾" },
+
+  // ═══ SECURITY, NETWORKING & DEVOPS ═══
+  { name: "Web Penetration Testing", category: "Security", icon: "🔍" },
+  { name: "Vulnerability Patching", category: "Security", icon: "🛡️" },
+  { name: "OWASP Top 10 Security", category: "Security", icon: "🔐" },
+  { name: "Wazuh SIEM", category: "Security", icon: "🚨" },
+  { name: "Splunk Log Analytics", category: "Security", icon: "📈" },
+  { name: "Zabbix Monitoring", category: "Security", icon: "🖥️" },
+  { name: "Honeypots Threat Intel", category: "Security", icon: "🍯" },
+  { name: "Linux Server (Ubuntu/Debian)", category: "Security", icon: "🐧" },
+  { name: "Docker & Docker Compose", category: "Security", icon: "🐳" },
+  { name: "Git & GitHub CI/CD", category: "Security", icon: "🐙" },
+  { name: "Vercel & Render Deploy", category: "Security", icon: "☁️" },
+  { name: "MikroTik & GNS-3", category: "Security", icon: "🌐" },
+  { name: "TCP/IP & Firewall", category: "Security", icon: "🔒" },
 ];
 
+const categoryTabs: SkillCategory[] = ["All", "Full Stack", "Security", "Data & Tools"];
+
 export default function SkillsSection() {
+  const [activeTab, setActiveTab] = useState<SkillCategory>("All");
+
+  const filteredSkills =
+    activeTab === "All" ? skills : skills.filter((s) => s.category === activeTab);
+
   return (
     <section id="skills" className="mx-auto max-w-7xl px-5 py-24 lg:px-8">
       <div className="clay-panel rounded-[3rem] p-8 md:p-12">
+        {/* Header */}
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-sm font-black uppercase tracking-[0.35em] text-cyan-200">Tech Arsenal</p>
-            <h2 className="mt-3 text-4xl font-black text-white md:text-5xl">Skills & Tools</h2>
+            <p className="text-sm font-black uppercase tracking-[0.35em] text-cyan-200">
+              Tech Arsenal
+            </p>
+            <h2 className="mt-3 text-4xl font-black text-white md:text-5xl">
+              Skills & Tools
+            </h2>
           </div>
           <p className="max-w-lg text-sm leading-7 text-sky-100/70">
-            Teknologi dan tools yang saya gunakan dalam web development, network security, dan IT operations.
+            Teknologi dan tools yang saya kuasai dan gunakan secara aktif dalam proyek Web Development, Network Security, dan Systems Engineering.
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-3">
-          {skills.map((skill, i) => (
-            <motion.span
-              key={skill}
-              className="skill-chip"
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.04 }}
-              whileHover={{ y: -4, scale: 1.05 }}
+        {/* Category Filter Pills */}
+        <div className="mb-8 flex flex-wrap gap-2.5">
+          {categoryTabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`rounded-full px-4 py-2 text-xs font-black uppercase tracking-wider transition-all duration-300 ${
+                activeTab === tab
+                  ? "bg-cyan-500/25 text-cyan-200 border border-cyan-400/60 shadow-[0_0_15px_rgba(34,211,238,0.3)]"
+                  : "bg-white/5 text-sky-100/60 border border-white/10 hover:bg-white/10 hover:text-white"
+              }`}
             >
-              {skill}
-            </motion.span>
+              {tab === "All" ? `Semua Skill (${skills.length})` : tab}
+            </button>
           ))}
         </div>
 
-        {/* Education & Certifications Summary */}
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6">
-            <p className="text-xs font-black uppercase tracking-[0.28em] text-emerald-300">Pendidikan</p>
+        {/* Floating Glassmorphism Skill Bubbles Cloud */}
+        <motion.div layout className="flex flex-wrap gap-3.5">
+          <AnimatePresence mode="popLayout">
+            {filteredSkills.map((skill, i) => (
+              <motion.span
+                key={skill.name}
+                layout
+                initial={{ opacity: 0, scale: 0.8, y: 15 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8, y: -10 }}
+                transition={{ duration: 0.3, delay: i * 0.02 }}
+                className="skill-bubble"
+                style={{
+                  animationDelay: `${(i % 6) * 0.45}s`,
+                }}
+              >
+                <span>{skill.icon}</span>
+                <span>{skill.name}</span>
+              </motion.span>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* Education & Language Summary */}
+        <div className="mt-12 grid gap-6 md:grid-cols-2">
+          <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur-md">
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-emerald-300">
+              Pendidikan
+            </p>
             <h3 className="mt-2 text-xl font-black text-white">Universitas Syiah Kuala</h3>
-            <p className="mt-1 text-sm text-sky-100/70">Gelar Sarjana, Informatika</p>
+            <p className="mt-1 text-sm text-sky-100/70">Gelar Sarjana (S.Kom), Informatika</p>
             <p className="mt-1 text-xs font-semibold text-cyan-200/60">August 2020 - July 2025</p>
           </div>
-          <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6">
-            <p className="text-xs font-black uppercase tracking-[0.28em] text-emerald-300">Bahasa</p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              <span className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold text-cyan-100">Indonesian (Native)</span>
-              <span className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold text-cyan-100">English (Limited Working)</span>
-              <span className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold text-cyan-100">Japanese (Elementary)</span>
+          <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur-md">
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-emerald-300">
+              Kemampuan Bahasa
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2.5">
+              <span className="skill-bubble !py-1.5 !px-3.5 !text-xs" style={{ animationDelay: "0s" }}>
+                🇮🇩 Indonesian (Native)
+              </span>
+              <span className="skill-bubble !py-1.5 !px-3.5 !text-xs" style={{ animationDelay: "0.5s" }}>
+                🇬🇧 English (Limited Working)
+              </span>
+              <span className="skill-bubble !py-1.5 !px-3.5 !text-xs" style={{ animationDelay: "1s" }}>
+                🇯🇵 Japanese (Elementary)
+              </span>
             </div>
           </div>
         </div>
