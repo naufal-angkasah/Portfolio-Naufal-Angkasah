@@ -25,7 +25,7 @@ const goodFit = [
   "Mencari fresh graduate yang siap belajar dan berkembang cepat",
   "Butuh orang yang bisa mengerjakan frontend + memahami security",
   "Menghargai kode bersih, terstruktur, dan terdokumentasi",
-  "Tim yang menggunakan modern tech stack (React, Next.js, Vue)",
+  "Tim yang menggunakan modern tech stack (React, Next.js, Vue, Angular, PHP, Laravel, Python)",
   "Open terhadap remote/hybrid work arrangement",
 ];
 

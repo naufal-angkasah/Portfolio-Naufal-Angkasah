@@ -16,6 +16,7 @@ const skills: SkillItem[] = [
   { name: "Next.js 16", category: "Full Stack", icon: "⚡" },
   { name: "React.js", category: "Full Stack", icon: "⚛️" },
   { name: "Vue.js 3", category: "Full Stack", icon: "🟢" },
+  { name: "Angular", category: "Full Stack", icon: "🅰️" },
   { name: "TypeScript", category: "Full Stack", icon: "📘" },
   { name: "JavaScript (ES6+)", category: "Full Stack", icon: "🟨" },
   { name: "Tailwind CSS", category: "Full Stack", icon: "🎨" },

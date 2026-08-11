@@ -151,7 +151,14 @@ const projects: Project[] = [
       "Aplikasi web Full-Stack untuk pengelolaan kedai kopi Essensia Koffie. Mencakup sistem autentikasi pengguna/kasir, antarmuka pemesanan menu interaktif, pelacakan pesanan, serta manajemen inventaris bahan dan transaksi.",
     stack: ["Node.js", "React", "Express", "Authentication", "Render"],
     demoUrl: "https://essensia-koffie.onrender.com/login",
-    screenshot: "/projects/screenshots/essensia-koffie.jpg",
+    screenshot: "/projects/screenshots/essensia-koffie-1.jpg",
+    screenshots: [
+      "/projects/screenshots/essensia-koffie-1.jpg",
+      "/projects/screenshots/essensia-koffie-2.jpg",
+      "/projects/screenshots/essensia-koffie-3.jpg",
+      "/projects/screenshots/essensia-koffie-4.jpg",
+      "/projects/screenshots/essensia-koffie-5.jpg",
+    ],
     featureModules: [
       {
         icon: "🛒",
