@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, LockKeyhole, Mail, Network } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const roles = [
   "Web Developer",
@@ -11,12 +12,6 @@ const roles = [
   "IT Support",
   "Network Security Junior",
   "Cyber Security Enthusiast",
-];
-
-const stats = [
-  { value: 280, suffix: "+", label: "Students Taught" },
-  { value: 6, suffix: "+", label: "Projects Delivered" },
-  { value: 4, suffix: "+", label: "Years in Tech" },
 ];
 
 function AnimatedCounter({ target, suffix }: { target: number; suffix: string }) {
@@ -38,7 +33,6 @@ function AnimatedCounter({ target, suffix }: { target: number; suffix: string })
           const animate = (currentTime: number) => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            // Ease-out cubic
             const eased = 1 - Math.pow(1 - progress, 3);
             setCount(Math.floor(eased * target));
             if (progress < 1) requestAnimationFrame(animate);
@@ -61,8 +55,26 @@ function AnimatedCounter({ target, suffix }: { target: number; suffix: string })
 }
 
 export default function HeroSection() {
+  const { language } = useLanguage();
+
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const t = {
+    badge: language === "id" ? "Terbuka untuk Peran Web Dev & Network Security" : "Open to Web Dev & Network Security Roles",
+    titleSub: language === "id" ? "Portfolio IT" : "IT Portfolio",
+    subtitle:
+      language === "id"
+        ? "Saya profesional IT yang fokus pada pengembangan web modern, UI responsive, dan fondasi network security. Siap membantu membuat produk digital yang rapi, aman, cepat, dan mudah dirawat."
+        : "I am an IT professional focusing on modern web development, responsive UI, and network security foundations. Ready to help build clean, secure, fast, and easily maintainable digital products.",
+    viewProjects: language === "id" ? "Lihat Proyek" : "View Projects",
+    contactBtn: language === "id" ? "Kontak" : "Contact",
+    stats: [
+      { value: 280, suffix: "+", label: language === "id" ? "Siswa Diajar" : "Students Taught" },
+      { value: 6, suffix: "+", label: language === "id" ? "Proyek Diselesaikan" : "Projects Delivered" },
+      { value: 4, suffix: "+", label: language === "id" ? "Tahun Pengalaman Tech" : "Years in Tech" },
+    ],
   };
 
   return (
@@ -70,17 +82,17 @@ export default function HeroSection() {
       <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
         {/* Badge */}
         <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-cyan-200/25 bg-white/10 px-3.5 py-1.5 text-xs font-bold text-cyan-100 shadow-[inset_4px_4px_10px_rgba(255,255,255,0.12)] backdrop-blur-xl md:text-sm">
-          <LockKeyhole size={15} /> Open to Web Dev & Network Security Roles
+          <LockKeyhole size={15} /> {t.badge}
         </div>
 
         {/* Title */}
         <h1 className="max-w-4xl text-3xl font-black leading-[1.05] tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
-          Naufal Angkasah —<span className="text-gradient">Portfolio IT</span>.
+          Naufal Angkasah —<span className="text-gradient">{t.titleSub}</span>.
         </h1>
 
         {/* Subtitle */}
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-sky-100/78 md:text-lg">
-          Saya profesional IT yang fokus pada pengembangan web modern, UI responsive, dan fondasi network security. Siap membantu membuat produk digital yang rapi, aman, cepat, dan mudah dirawat.
+          {t.subtitle}
         </p>
 
         {/* Action Buttons */}
@@ -89,13 +101,13 @@ export default function HeroSection() {
             onClick={() => scrollTo("projects")}
             className="clay-button group inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-black text-slate-950 md:text-base"
           >
-            Lihat Projects <ArrowRight className="transition group-hover:translate-x-1" size={18} />
+            {t.viewProjects} <ArrowRight className="transition group-hover:translate-x-1" size={18} />
           </button>
           <button
             onClick={() => scrollTo("contact")}
             className="inline-flex items-center justify-center gap-2 rounded-full border border-cyan-200/25 bg-white/10 px-6 py-3.5 text-sm font-black text-cyan-50 backdrop-blur-xl transition hover:bg-white/16 md:text-base"
           >
-            <Mail size={18} /> Contact
+            <Mail size={18} /> {t.contactBtn}
           </button>
         </div>
 
@@ -110,7 +122,7 @@ export default function HeroSection() {
 
         {/* Animated Stats Counter */}
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          {stats.map((stat) => (
+          {t.stats.map((stat) => (
             <div key={stat.label} className="stat-counter-card">
               <AnimatedCounter target={stat.value} suffix={stat.suffix} />
               <p className="mt-1 text-[0.65rem] font-black uppercase tracking-[0.18em] text-cyan-200/70 md:text-xs">{stat.label}</p>

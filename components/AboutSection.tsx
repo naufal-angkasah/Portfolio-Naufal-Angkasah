@@ -3,29 +3,40 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Code2, ShieldCheck, ServerCog } from "lucide-react";
-
-const services = [
-  {
-    icon: Code2,
-    title: "Web Development",
-    desc: "Membangun website dan aplikasi web modern yang responsive, rapi, cepat, serta siap dikembangkan dengan React, Next.js, Vue, dan integrasi API.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Network Security",
-    desc: "Memahami dasar hardening jaringan, firewall rules, vulnerability assessment, secure configuration, dan monitoring keamanan dengan Wazuh & Splunk.",
-  },
-  {
-    icon: ServerCog,
-    title: "IT & System Support",
-    desc: "Siap membantu troubleshooting sistem, deployment, dokumentasi teknis, Linux administration, server configuration, dan operasional IT harian.",
-  },
-];
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function AboutSection() {
+  const { language } = useLanguage();
   const marqueeRef = useRef<HTMLDivElement | null>(null);
   const marqueePaused = useRef(false);
   const marqueeOffset = useRef(0);
+
+  const services = [
+    {
+      icon: Code2,
+      title: "Web Development",
+      desc:
+        language === "id"
+          ? "Membangun website dan aplikasi web modern yang responsive, rapi, cepat, serta siap dikembangkan dengan React, Next.js, Vue, dan integrasi API."
+          : "Building modern, responsive, fast, and scalable websites and web applications using React, Next.js, Vue, and API integration.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Network Security",
+      desc:
+        language === "id"
+          ? "Memahami dasar hardening jaringan, firewall rules, vulnerability assessment, secure configuration, dan monitoring keamanan dengan Wazuh & Splunk."
+          : "Understanding network hardening, firewall rules, vulnerability assessment, secure configuration, and security monitoring using Wazuh & Splunk.",
+    },
+    {
+      icon: ServerCog,
+      title: "IT & System Support",
+      desc:
+        language === "id"
+          ? "Siap membantu troubleshooting sistem, deployment, dokumentasi teknis, Linux administration, server configuration, dan operasional IT harian."
+          : "Ready to assist with system troubleshooting, deployment, technical documentation, Linux administration, server configuration, and daily IT operations.",
+    },
+  ];
 
   useEffect(() => {
     let frameId = 0;
@@ -56,17 +67,19 @@ export default function AboutSection() {
               <span className="absolute -right-2 -top-2 h-5 w-5 rounded-full border-4 border-[#082544] bg-emerald-300" />
             </div>
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-emerald-300">Available</p>
+              <p className="text-xs font-black uppercase tracking-[0.28em] text-emerald-300">{language === "id" ? "Tersedia" : "Available"}</p>
               <p className="mt-1 text-xl font-black text-white">Future IT Professional</p>
               <p className="text-sm text-sky-100/68">Web Dev • Network Security • IT Ops</p>
             </div>
           </div>
-          <p className="text-sm font-black uppercase tracking-[0.35em] text-cyan-200">About Me</p>
-          <h2 className="mt-4 text-4xl font-black text-white md:text-5xl">Web developer yang juga peduli keamanan.</h2>
+          <p className="text-sm font-black uppercase tracking-[0.35em] text-cyan-200">{language === "id" ? "Tentang Saya" : "About Me"}</p>
+          <h2 className="mt-4 text-4xl font-black text-white md:text-5xl">
+            {language === "id" ? "Web developer yang juga peduli keamanan." : "Web developer who also cares about security."}
+          </h2>
           <p className="mt-5 leading-8 text-sky-100/75">
-            Saya Naufal Angkasah, fokus mendalami Web Development (Front-end & Full-stack) dan Network Security.
-            Dengan pengalaman di Telkom Indonesia, Swiss German University SOC Lab, dan mengajar 280+ siswa coding,
-            saya menggabungkan UI yang nyaman, kode yang maintainable, serta kebiasaan security-first.
+            {language === "id"
+              ? "Saya Naufal Angkasah, fokus mendalami Web Development (Front-end & Full-stack) dan Network Security. Dengan pengalaman di Telkom Indonesia, Swiss German University SOC Lab, dan mengajar 280+ siswa coding, saya menggabungkan UI yang nyaman, kode yang maintainable, serta kebiasaan security-first."
+              : "I am Naufal Angkasah, focusing on Web Development (Front-end & Full-stack) and Network Security. With experience at Telkom Indonesia, Swiss German University SOC Lab, and teaching 280+ coding students, I combine comfortable UI, maintainable code, and a security-first mindset."}
           </p>
         </div>
 

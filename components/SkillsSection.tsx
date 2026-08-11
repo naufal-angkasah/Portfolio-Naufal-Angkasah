@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 
 type SkillCategory = "All" | "Full Stack" | "Security" | "Data & Tools";
 
@@ -58,6 +59,7 @@ const skills: SkillItem[] = [
 const categoryTabs: SkillCategory[] = ["All", "Full Stack", "Security", "Data & Tools"];
 
 export default function SkillsSection() {
+  const { language } = useLanguage();
   const [activeTab, setActiveTab] = useState<SkillCategory>("All");
 
   const filteredSkills =
@@ -77,25 +79,36 @@ export default function SkillsSection() {
             </h2>
           </div>
           <p className="max-w-lg text-sm leading-7 text-sky-100/70">
-            Teknologi dan tools yang saya kuasai dan gunakan secara aktif dalam proyek Web Development, Network Security, dan Systems Engineering.
+            {language === "id"
+              ? "Teknologi dan tools yang saya kuasai dan gunakan secara aktif dalam proyek Web Development, Network Security, dan Systems Engineering."
+              : "Technologies and tools I master and actively use in Web Development, Network Security, and Systems Engineering projects."}
           </p>
         </div>
 
         {/* Category Filter Pills */}
         <div className="mb-8 flex flex-wrap gap-2.5">
-          {categoryTabs.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`rounded-full px-4 py-2 text-xs font-black uppercase tracking-wider transition-all duration-300 ${
-                activeTab === tab
-                  ? "bg-cyan-500/25 text-cyan-200 border border-cyan-400/60 shadow-[0_0_15px_rgba(34,211,238,0.3)]"
-                  : "bg-white/5 text-sky-100/60 border border-white/10 hover:bg-white/10 hover:text-white"
-              }`}
-            >
-              {tab === "All" ? `Semua Skill (${skills.length})` : tab}
-            </button>
-          ))}
+          {categoryTabs.map((tab) => {
+            const displayLabel =
+              tab === "All"
+                ? language === "id"
+                  ? `Semua Skill (${skills.length})`
+                  : `All Skills (${skills.length})`
+                : tab;
+
+            return (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`rounded-full px-4 py-2 text-xs font-black uppercase tracking-wider transition-all duration-300 ${
+                  activeTab === tab
+                    ? "bg-cyan-500/25 text-cyan-200 border border-cyan-400/60 shadow-[0_0_15px_rgba(34,211,238,0.3)]"
+                    : "bg-white/5 text-sky-100/60 border border-white/10 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                {displayLabel}
+              </button>
+            );
+          })}
         </div>
 
         {/* Floating Glassmorphism Skill Bubbles Cloud */}

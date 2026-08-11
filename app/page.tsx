@@ -14,12 +14,15 @@ import FloatingBubbles from "@/components/FloatingBubbles";
 import LoadingScreen from "@/components/LoadingScreen";
 import HowIWorkSection from "@/components/HowIWorkSection";
 
+import { LanguageProvider } from "@/context/LanguageContext";
+
 const CustomCursor = dynamic(() => import("@/components/CustomCursor"), { ssr: false });
 const SeaCreatures = dynamic(() => import("@/components/SeaCreatures"), { ssr: false });
 
 export default function HomePage() {
   return (
-    <main className="relative isolate min-h-screen overflow-hidden text-slate-100">
+    <LanguageProvider>
+      <main className="relative isolate min-h-screen overflow-hidden text-slate-100">
       {/* Loading Screen */}
       <LoadingScreen />
 
@@ -47,5 +50,6 @@ export default function HomePage() {
       <ContactSection />
       <Footer />
     </main>
+    </LanguageProvider>
   );
 }
