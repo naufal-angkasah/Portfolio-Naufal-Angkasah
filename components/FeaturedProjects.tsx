@@ -236,6 +236,47 @@ const projects: Project[] = [
       { icon: "🏛️", gradient: "linear-gradient(135deg, #047857 0%, #065f46 50%, #064e3b 100%)" },
       { icon: "📈", gradient: "linear-gradient(135deg, #065f46 0%, #064e3b 50%, #047857 100%)" },
     ],
+    featureModules: [
+      {
+        icon: "🗺️",
+        module: "Modul Monitoring Dapil Jatim VII",
+        features: [
+          { name: "Overview & Peta Sebaran", desc: "KPI summary, peta sebaran polygon 5 kabupaten (Leaflet), filter komisi/tahun/lokasi & tabel detail" },
+          { name: "Analytic Distribution", desc: "Visualisasi grafik statistik alokasi anggaran, status program, & distribusi kabupaten" },
+          { name: "Daftar Program (Card Directory)", desc: "Direktori kartu seluruh program dapil dengan status, komisi, anggaran & tooltip" },
+        ],
+      },
+      {
+        icon: "🏛️",
+        module: "Modul Giat Senayan & EBY Connect",
+        features: [
+          { name: "Overview Giat Senayan", desc: "Ringkasan eksekutif kegiatan nasional (MPR & DPR), grafik komparasi & tabel direktori" },
+          { name: "Giat MPR RI & DPR RI", desc: "Filter khusus Sosialisasi 4 Pilar, Temu Tokoh, RDP, Kunker, Serapan Aspirasi & Bimtek" },
+          { name: "EBY Connect", desc: "Monitoring 7.293 penerima manfaat (KIP-K, LPDP, Bus Mudik, Alsintan, Santri)" },
+          { name: "Daftar Hadir Real-Time", desc: "Rekapitulasi 1.895+ presensi digital peserta terhubung Firebase Firestore cloud" },
+        ],
+      },
+      {
+        icon: "🛡️",
+        module: "Hak Akses (Role Management)",
+        features: [
+          { name: "Akses Admin", desc: "Akses penuh: Tambah/Edit/Hapus program, Master Data, Upload Excel, QR Generator, Ekspor" },
+          { name: "Akses Pimpinan", desc: "View dashboard, filter, QR generator, & ekspor data (tanpa tombol edit/hapus/upload)" },
+          { name: "Akses Publik", desc: "Mode ringkasan publik, pencarian, & filter data" },
+        ],
+      },
+      {
+        icon: "🛠️",
+        module: "Otomatisasi, Modals & Ekspor/Impor",
+        features: [
+          { name: "Custom Tooltip Viewport", desc: "Teks melayang utuh saat hover, otomatis membalik posisi di tepi layar" },
+          { name: "Generator Link & QR Presensi", desc: "Generate QR & link presensi otomatis + Live Search Bar 1.895 kegiatan (`qrcode` engine)" },
+          { name: "Database & Cloud Sync", desc: "Firebase Firestore Cloud DB + Auto-Sync Google Spreadsheet API eksternal" },
+          { name: "Ekspor & Cetak Laporan", desc: "Unduh Excel (`.xlsx`) & cetak PDF ber-kop resmi (`jspdf` & `jspdf-autotable`)" },
+          { name: "Impor Massal & Keamanan Sesi", desc: "Impor file Excel data baru + Proteksi timeout sesi 30 menit otomatis" },
+        ],
+      },
+    ],
   },
   {
     title: "Portal Monitoring Dapil Jatim",
