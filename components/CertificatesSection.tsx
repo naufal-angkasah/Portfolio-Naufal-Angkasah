@@ -17,6 +17,8 @@ import {
   Brain,
   Users,
   Briefcase,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 /* ─────────────────── Types ─────────────────── */
@@ -392,6 +394,7 @@ const certificates: Certificate[] = [
 export default function CertificatesSection() {
   const [activeTag, setActiveTag] = useState<CertificateTag>("All");
   const [selected, setSelected] = useState<Certificate | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
   const tags = Object.keys(TAG_CONFIG) as CertificateTag[];
 
@@ -402,6 +405,9 @@ export default function CertificatesSection() {
         : certificates.filter((c) => c.tags.includes(activeTag)),
     [activeTag]
   );
+
+  const visibleCertificates = showAll ? filtered : filtered.slice(0, 6);
+  const hiddenCount = filtered.length - 6;
 
   const rawFilePath = (file: string) => `/certificates/${file}`;
 
@@ -461,7 +467,7 @@ export default function CertificatesSection() {
         className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3"
       >
         <AnimatePresence mode="popLayout">
-          {filtered.map((cert) => {
+          {visibleCertificates.map((cert) => {
             const previewUrl = getPreviewImage(cert);
             return (
               <motion.article
@@ -558,6 +564,26 @@ export default function CertificatesSection() {
           })}
         </AnimatePresence>
       </motion.div>
+
+      {/* Show More / Show Less Button */}
+      {filtered.length > 6 && (
+        <div className="mt-10 flex justify-center">
+          <button
+            onClick={() => setShowAll((v) => !v)}
+            className="experience-show-more-btn"
+          >
+            {showAll ? (
+              <>
+                <ChevronUp size={18} /> Tampilkan Lebih Sedikit
+              </>
+            ) : (
+              <>
+                <ChevronDown size={18} /> Lihat {hiddenCount} lainnya
+              </>
+            )}
+          </button>
+        </div>
+      )}
 
       {/* ── Lightbox Modal ── */}
       <AnimatePresence>

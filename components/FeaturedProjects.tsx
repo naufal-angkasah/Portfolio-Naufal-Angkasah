@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { ExternalLink, Eye, X, ChevronLeft, ChevronRight, Globe } from "lucide-react";
+import { ExternalLink, Eye, X, ChevronLeft, ChevronRight, Globe, ChevronDown, ChevronUp } from "lucide-react";
 
 type ProjectVisual = {
   icon: string;
@@ -742,6 +742,7 @@ export default function FeaturedProjects() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [showAll, setShowAll] = useState(false);
 
   // Count projects per category
   const projectCounts: Record<string, number> = {
@@ -759,14 +760,16 @@ export default function FeaturedProjects() {
       ? projects
       : projects.filter((p) => p.category === activeFilter);
 
+  const visibleProjects = showAll ? filtered : filtered.slice(0, 6);
+  const hiddenCount = filtered.length - 6;
+
   const openModal = useCallback(
-    (projectIndex: number) => {
-      const project = filtered[projectIndex];
+    (project: Project) => {
       const globalIndex = projects.indexOf(project);
       setSelectedIndex(globalIndex);
       setActiveImageIndex(0);
     },
-    [filtered]
+    []
   );
 
   const closeModal = useCallback(() => {
@@ -851,16 +854,36 @@ export default function FeaturedProjects() {
       {/* Project Grid */}
       <motion.div layout className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         <AnimatePresence mode="popLayout">
-          {filtered.map((project, i) => (
+          {visibleProjects.map((project, i) => (
             <ProjectCard
               key={project.title}
               project={project}
               index={i}
-              openModal={() => openModal(i)}
+              openModal={() => openModal(project)}
             />
           ))}
         </AnimatePresence>
       </motion.div>
+
+      {/* Show More / Show Less Button */}
+      {filtered.length > 6 && (
+        <div className="mt-10 flex justify-center">
+          <button
+            onClick={() => setShowAll((v) => !v)}
+            className="experience-show-more-btn"
+          >
+            {showAll ? (
+              <>
+                <ChevronUp size={18} /> Tampilkan Lebih Sedikit
+              </>
+            ) : (
+              <>
+                <ChevronDown size={18} /> Lihat {hiddenCount} lainnya
+              </>
+            )}
+          </button>
+        </div>
+      )}
 
       {/* Detail Modal */}
       <AnimatePresence>
