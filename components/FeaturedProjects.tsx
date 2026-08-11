@@ -33,6 +33,64 @@ type Project = {
 const projects: Project[] = [
   // ═══ FULL STACK & WEB DEV PROJECTS WITH SCREENSHOT GALLERIES ═══
   {
+    title: "Kawaii Animal Sticker Studio",
+    type: "Full Stack",
+    category: "Full Stack",
+    desc: "Studio pembuat stiker hewan kawaii otomatis bertenaga AI Gemini.",
+    longDesc:
+      "Aplikasi web full-stack pembuat stiker hewan lucu (Kawaii Animal Sticker Studio) bertenaga AI Google Gemini. Dilengkapi generator multi-model, fallback vektor SVG otomatis, pilihan palet warna estetis, tema kustom, manajemen riwayat lokal, serta ekspor tunggal & paket ZIP.",
+    stack: ["Next.js", "TypeScript", "Gemini AI Engine", "Node.js Proxy", "Tailwind CSS", "Vercel"],
+    demoUrl: "https://kawaii-animal-sticker-studio.ai.studio",
+    screenshot: "/projects/screenshots/kawaii-sticker-1.jpg",
+    screenshots: [
+      "/projects/screenshots/kawaii-sticker-1.jpg",
+      "/projects/screenshots/kawaii-sticker-2.jpg",
+      "/projects/screenshots/kawaii-sticker-3.jpg",
+      "/projects/screenshots/kawaii-sticker-4.jpg",
+      "/projects/screenshots/kawaii-sticker-5.jpg",
+    ],
+    visuals: [
+      { icon: "🎨", gradient: "linear-gradient(135deg, #831843 0%, #be185d 50%, #db2777 100%)" },
+      { icon: "🐾", gradient: "linear-gradient(135deg, #be185d 0%, #db2777 50%, #831843 100%)" },
+      { icon: "✨", gradient: "linear-gradient(135deg, #db2777 0%, #831843 50%, #be185d 100%)" },
+    ],
+    featureModules: [
+      {
+        icon: "🎨",
+        module: "AI Generator & Vector Fallback",
+        features: [
+          { name: "Multi-Model Gemini AI", desc: "Menggunakan AI Gemini (gemini-2.5-flash-image & 3.1-flash-image) untuk pemrosesan instruksi visual rasio 1:1" },
+          { name: "Automatic Vector Fallback", desc: "Sistem pencadangan cerdas yang menggambar stiker Kawaii SVG jika API AI mencapai batas kuota" },
+        ],
+      },
+      {
+        icon: "🐾",
+        module: "Pilihan Hewan & Gaya Visual",
+        features: [
+          { name: "Koleksi Hewan Lengkap", desc: "Mendukung Panda, Kucing, Kelinci, Rubah, Katak, Axolotl, Burung Hantu, Hamster, Meerkat (batch 3 hewan)" },
+          { name: "Preset Tema & Custom Prompt", desc: "Pilihan tema siap pakai (Tea Party, French Patisserie, Cosmic Wizard) & input tema kustom bebas" },
+          { name: "Aesthetic Color Palette", desc: "Pilihan 5 palet warna estetis (Sakura Pink, Ocean Breeze, Matcha Mint, Lavender Dream, Sunset Peach)" },
+        ],
+      },
+      {
+        icon: "📂",
+        module: "Manajemen Koleksi & Riwayat",
+        features: [
+          { name: "Sesi & Riwayat Penyimpanan", desc: "Setiap set stiker tersimpan otomatis di Local Storage browser untuk diakses kembali kapan saja" },
+          { name: "Katalog Stiker Interaktif", desc: "Tampilan antarmuka katalog kartu dengan efek bayangan dan border die-cut putih khas stiker fisik" },
+        ],
+      },
+      {
+        icon: "💾",
+        module: "Ekspor & Keamanan API Proxy",
+        features: [
+          { name: "Ekspor PNG, ZIP & Clipboard", desc: "Unduh stiker individu PNG transparan, batch download paket .ZIP, dan copy langsung ke clipboard" },
+          { name: "Server-Side API Proxy & Anti-Limit", desc: "API key Gemini tersimpan aman di server backend Node.js/Express + retry delay otomatis" },
+        ],
+      },
+    ],
+  },
+  {
     title: "Kokorof Reviewer CV v2",
     type: "Full Stack",
     category: "Full Stack",
