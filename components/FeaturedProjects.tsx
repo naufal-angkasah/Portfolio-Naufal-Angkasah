@@ -505,17 +505,50 @@ const projects: Project[] = [
     ],
   },
   {
-    title: "Hydrological Cycle Web App",
+    title: "Ecoliteration — Hydrological Cycle App",
     type: "Full Stack",
     category: "Full Stack",
-    desc: "Full-stack web application with authentication and database integration.",
+    desc: "Aplikasi web pembelajaran ekoliterasi & pemahaman spiritual siklus hidrologi.",
     longDesc:
-      "Aplikasi web full-stack untuk manajemen data Siklus Hidrologi. Mencakup rework interface, integrasi API, penyelarasan back-end, autentikasi client, admin front-end, dan integrasi database lengkap. Dibangun dengan pendekatan modular dan clean architecture.",
-    stack: ["React", "Node.js", "Auth", "Database", "REST API"],
+      "Aplikasi web e-modul ECOLITERATION untuk pembelajaran pemahaman spiritual siklus hidrologi terintegrasi ayat Al-Qur'an (Tahun 2024). Bertujuan menyadarkan pentingnya konservasi air dan penerapannya dalam kehidupan sehari-hari. Dibangun menggunakan Vue.js, arsitektur REST API, dan pengelolaan data tidak terstruktur (unstructured data).",
+    stack: ["Vue.js", "JavaScript", "REST API", "Full Stack", "Problem Solving"],
+    screenshot: "/projects/screenshots/ecoliteration-1.jpg",
+    screenshots: [
+      "/projects/screenshots/ecoliteration-1.jpg",
+      "/projects/screenshots/ecoliteration-2.jpg",
+      "/projects/screenshots/ecoliteration-3.jpg",
+      "/projects/screenshots/ecoliteration-4.jpg",
+    ],
     visuals: [
       { icon: "💧", gradient: "linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0d4f72 100%)" },
-      { icon: "📊", gradient: "linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e3a5f 100%)" },
-      { icon: "⚙️", gradient: "linear-gradient(135deg, #1e3a5f 0%, #0d4f72 50%, #0f172a 100%)" },
+      { icon: "📖", gradient: "linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e3a5f 100%)" },
+      { icon: "🌱", gradient: "linear-gradient(135deg, #1e3a5f 0%, #0d4f72 50%, #0f172a 100%)" },
+    ],
+    featureModules: [
+      {
+        icon: "💧",
+        module: "Ekoliterasi & Pemahaman Spiritual",
+        features: [
+          { name: "E-Modul Siklus Hidrologi", desc: "Pembelajaran ilmiah siklus air terintegrasi dengan pemahaman spiritual & ayat Al-Qur'an" },
+          { name: "Konservasi & Kepedulian Air", desc: "Penanaman kesadaran konservasi air dan penerapan sikap peduli lingkungan sehari-hari" },
+        ],
+      },
+      {
+        icon: "⚙️",
+        module: "Arsitektur REST API & Data",
+        features: [
+          { name: "Integrasi RESTful API", desc: "Implementasi REST API untuk pertukaran data asynchronous yang cepat berbasis Vue.js" },
+          { name: "Unstructured Data Management", desc: "Pengelolaan data materi tidak terstruktur, media video, artikel fenomena & modul interaktif" },
+        ],
+      },
+      {
+        icon: "📊",
+        module: "Portal Admin & Rekap Evaluasi",
+        features: [
+          { name: "Halaman Administrator", desc: "Direktori data pengguna/siswa dari MAN 1, SMA, dan USK lengkap dengan tabel pencarian" },
+          { name: "Tracking Pretest & Posttest", desc: "Pelacakan status penyelesaian ujian pretest & posttest peserta secara real-time" },
+        ],
+      },
     ],
   },
   {
@@ -655,7 +688,7 @@ function ProjectCard({
                   alt={`${project.title} — Slide ${activeIdx + 1}`}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-contain p-1.5 transition-transform duration-500 group-hover:scale-105"
                 />
               </motion.div>
             </AnimatePresence>
@@ -939,7 +972,7 @@ export default function FeaturedProjects() {
                             alt={`${selected.title} – image ${safeClamped + 1}`}
                             fill
                             sizes="100vw"
-                            className="object-cover object-top"
+                            className="object-contain p-2.5"
                             priority
                           />
                         </motion.div>
