@@ -52,6 +52,37 @@ const projects: Project[] = [
       { icon: "🤖", gradient: "linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #0f172a 100%)" },
       { icon: "✨", gradient: "linear-gradient(135deg, #0f172a 0%, #0284c7 50%, #1e293b 100%)" },
     ],
+    featureModules: [
+      {
+        icon: "🔐",
+        module: "Auth, Workspace & Multi-Language",
+        features: [
+          { name: "Sistem Otentikasi Multi-User", desc: "Login akun lokal & integrasi Google OAuth 2.0 dengan ruang kerja terisolasi" },
+          { name: "Impor & Ekspor Workspace JSON", desc: "Backup & restore data CV, riwayat pindaian, & pelacak lamaran file JSON" },
+          { name: "Dukungan Multi-Bahasa (ID & EN)", desc: "Sakelar instan Bahasa Indonesia & Inggris untuk UI & respon AI" },
+        ],
+      },
+      {
+        icon: "🤖",
+        module: "AI ATS Scanner & Translation",
+        features: [
+          { name: "Multimodal ATS Scanner v2", desc: "Pemindaian PDF/DOCX base64 tingkat tinggi menggunakan Gemini 2.5 Flash" },
+          { name: "CV Auto-Translation (ID ↔ EN)", desc: "Penerjemah otomatis seluruh isi CV ke bahasa target mempertahankan struktur" },
+          { name: "Dual Score Indicators", desc: "Skor Keterbacaan ATS (0-100%) & Skor Kecocokan Kualifikasi (0-100%)" },
+          { name: "Formatter & Layout Auditor", desc: "Deteksi otomatis masalah layout, tabel rumit & karakter pemisah" },
+        ],
+      },
+      {
+        icon: "💼",
+        module: "Career Co-Pilot & Tools",
+        features: [
+          { name: "Job Roadmap & Salary Tracker", desc: "Pelacak lamaran kerja + kalkulator perbandingan gaji vs offering" },
+          { name: "ATS Parsing Sandbox", desc: "Visualisasi penguraian teks mentah robot ATS (single vs multi-column)" },
+          { name: "AI Cover Letter & STAR Prep", desc: "Generator surat lamaran & simulasi wawancara teknis STAR multi-bahasa" },
+          { name: "LinkedIn Bio Strategist", desc: "Generator headline profesional, storytelling profil & skill endorsement" },
+        ],
+      },
+    ],
   },
   {
     title: "Essensia Koffie App",
@@ -153,6 +184,34 @@ const projects: Project[] = [
       { icon: "☕", gradient: "linear-gradient(135deg, #451a03 0%, #78350f 50%, #9a3412 100%)" },
       { icon: "🛒", gradient: "linear-gradient(135deg, #78350f 0%, #9a3412 50%, #451a03 100%)" },
       { icon: "💳", gradient: "linear-gradient(135deg, #9a3412 0%, #451a03 50%, #78350f 100%)" },
+    ],
+    featureModules: [
+      {
+        icon: "🖥️",
+        module: "Point of Sale (POS) & Denah Meja",
+        features: [
+          { name: "Point of Sale (POS) Kasir", desc: "Transaksi cepat, kalkulasi diskon & pajak, cetak struk, Tunai / QRIS" },
+          { name: "Denah Meja Visual (Interactive)", desc: "Tata letak meja drag & drop, status terisi/kosong/reservasi & order langsung" },
+          { name: "Rekap Shift Kasir (Cash Reconciliation)", desc: "Buka/tutup shift kasir, pencatatan kas awal vs akhir & selisih kas" },
+        ],
+      },
+      {
+        icon: "🍳",
+        module: "Dapur & Inventaris Bahan Baku",
+        features: [
+          { name: "Kitchen Display System (KDS)", desc: "Layar dapur real-time (Preparing, Ready, Served) & order timer" },
+          { name: "Manajemen Menu & Stok Bahan", desc: "Pengelolaan HPP menu & pemotongan otomatis stok bahan saat terjual" },
+        ],
+      },
+      {
+        icon: "📊",
+        module: "Analytics, AI Consult & Audit",
+        features: [
+          { name: "Konsultan Bisnis AI Gemini", desc: "Analisis omset, menu terlaris, bahan kritis & rekomendasi bundling promo" },
+          { name: "Dashboard & Laporan Keuangan", desc: "Grafik omset harian/mingguan, statistik metode bayar & rekap audit" },
+          { name: "Audit Trail & Offline Sync", desc: "Log histori aktivitas pengguna, mode offline & sinkronisasi Cloud SQL" },
+        ],
+      },
     ],
   },
   {
@@ -281,6 +340,30 @@ const projects: Project[] = [
       { icon: "📋", gradient: "linear-gradient(135deg, #312e81 0%, #3730a3 50%, #4338ca 100%)" },
       { icon: "🔍", gradient: "linear-gradient(135deg, #3730a3 0%, #4338ca 50%, #312e81 100%)" },
       { icon: "💡", gradient: "linear-gradient(135deg, #4338ca 0%, #312e81 50%, #3730a3 100%)" },
+    ],
+    featureModules: [
+      {
+        icon: "📋",
+        module: "ATS Scanner & Evaluator",
+        features: [
+          { name: "ATS Resume Scanner", desc: "Pindai dokumen PDF, DOCX, atau teks mentah terhadap Job Description target" },
+          { name: "Dual Score Indicators", desc: "Skor Keterbacaan ATS (0-100%) dan Skor Kecocokan Kualifikasi (0-100%)" },
+          { name: "Formatter & Layout Auditor", desc: "Deteksi otomatis tabel rumit, karakter pemisah & struktur header" },
+          { name: "Skill Gap & Learning Path", desc: "Rekomendasi kata kunci yang hilang & panduan belajar mengisi kesenjangan" },
+        ],
+      },
+      {
+        icon: "✍️",
+        module: "Live Editor & AI Career Tools",
+        features: [
+          { name: "Live CV Editor & PDF", desc: "Editor teks interaktif real-time dengan tombol download PDF standar ATS" },
+          { name: "AI Cover Letter Builder", desc: "Menghasilkan surat lamaran kustom Markdown dengan poin keunggulan" },
+          { name: "AI Mock Interview STAR", desc: "5–7 pertanyaan wawancara teknis & perilaku dengan metode STAR" },
+          { name: "LinkedIn Optimizer", desc: "3 opsi headline, ringkasan About storytelling & kalimat pengalaman" },
+          { name: "Job Application Tracker", desc: "Pelacak status lamaran (Interested, Applied, Interview, Offered, Rejected)" },
+          { name: "ATS Parsing Sandbox", desc: "Tampilan teks mentah hasil ekstraksi mesin ATS untuk verifikasi layout" },
+        ],
+      },
     ],
   },
   {
