@@ -4,7 +4,6 @@ import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ExternalLink, Eye, X, ChevronLeft, ChevronRight, Globe, ChevronDown, ChevronUp } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
 
 type ProjectVisual = {
   icon: string;
@@ -33,55 +32,6 @@ type Project = {
 
 const projects: Project[] = [
   // ═══ FULL STACK & WEB DEV PROJECTS WITH SCREENSHOT GALLERIES ═══
-  {
-    title: "Automation Sentiment",
-    type: "Data Science",
-    category: "Data Science",
-    desc: "Automation untuk analisis sentiment berita menggunakan Langflow & Gemini AI.",
-    longDesc:
-      "Sistem otomasi analisis sentimen berita dan ulasan produk e-commerce menggunakan Langflow sebagai visual workflow builder. Memanfaatkan Gemini AI (gemini-3.5-flash) untuk memproses data review CSV, menghasilkan ringkasan sentimen (Positive/Neutral/Negative), action item bisnis berbasis data, serta rekomendasi teknis dan pemasaran yang terstruktur.",
-    stack: ["Langflow", "API Key", "Data Science", "Data Automation", "Gemini AI"],
-    demoUrl: "https://github.com/naufal-angkasah/automation-sentiment-analyst.git",
-    screenshot: "/projects/screenshots/automation-sentiment-1.jpg",
-    screenshots: [
-      "/projects/screenshots/automation-sentiment-1.jpg",
-      "/projects/screenshots/automation-sentiment-2.jpg",
-      "/projects/screenshots/automation-sentiment-3.jpg",
-      "/projects/screenshots/automation-sentiment-4.jpg",
-      "/projects/screenshots/automation-sentiment-5.jpg",
-    ],
-    visuals: [
-      { icon: "🤖", gradient: "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)" },
-      { icon: "📊", gradient: "linear-gradient(135deg, #203a43 0%, #2c5364 50%, #0f2027 100%)" },
-      { icon: "💡", gradient: "linear-gradient(135deg, #2c5364 0%, #0f2027 50%, #203a43 100%)" },
-    ],
-    featureModules: [
-      {
-        icon: "🤖",
-        module: "AI Sentiment Analysis Pipeline",
-        features: [
-          { name: "Visual Workflow Langflow", desc: "Membangun pipeline otomasi dengan drag-and-drop komponen: Read File → Prompt Template → Language Model → Chat Output" },
-          { name: "Gemini AI Integration", desc: "Menggunakan model gemini-3.5-flash untuk memproses review CSV dan menghasilkan analisis sentimen akurat" },
-        ],
-      },
-      {
-        icon: "📊",
-        module: "Analisis Sentimen & Ringkasan",
-        features: [
-          { name: "Klasifikasi Sentimen 3 Kategori", desc: "Positive (pujian/kepuasan), Neutral (seimbang/informatif), Negative (keluhan/kekecewaan)" },
-          { name: "Ringkasan Naratif Terstruktur", desc: "Menghasilkan ringkasan kohesif dalam Bahasa Indonesia formal berdasarkan isi review produk e-commerce" },
-        ],
-      },
-      {
-        icon: "💡",
-        module: "Business Action Items & Rekomendasi",
-        features: [
-          { name: "Action Item Berbasis Data", desc: "Rekomendasi teknis & bisnis spesifik (Software/Produk) yang dapat langsung diimplementasikan tim terkait" },
-          { name: "Strategi Pemasaran & Logistik", desc: "Analisis tren review untuk rekomendasi kampanye pemasaran & optimalisasi kemitraan vendor logistik" },
-        ],
-      },
-    ],
-  },
   {
     title: "Kawaii Animal Sticker Studio",
     type: "Full Stack",
@@ -295,12 +245,6 @@ const projects: Project[] = [
     stack: ["React", "TypeScript", "POS Engine", "Tailwind CSS", "Vercel"],
     demoUrl: "https://kasir-cafe-iota.vercel.app/",
     screenshot: "/projects/screenshots/kasir-cafe.jpg",
-    screenshots: [
-      "/projects/screenshots/kasir-cafe.jpg",
-      "/projects/screenshots/kasir-cafe-2.jpg",
-      "/projects/screenshots/kasir-cafe-3.jpg",
-      "/projects/screenshots/kasir-cafe-4.jpg",
-    ],
     visuals: [
       { icon: "☕", gradient: "linear-gradient(135deg, #451a03 0%, #78350f 50%, #9a3412 100%)" },
       { icon: "🛒", gradient: "linear-gradient(135deg, #78350f 0%, #9a3412 50%, #451a03 100%)" },
@@ -660,7 +604,7 @@ const projects: Project[] = [
   },
 ];
 
-const categories = ["All", "Data Science", "Full Stack", "Web Dev", "Network Security", "Education"];
+const categories = ["All", "Full Stack", "Web Dev", "Network Security", "Education"];
 
 // ════ Project Card Component with Hover-Paused 3s Auto-Slideshow ════
 function ProjectCard({
@@ -672,7 +616,6 @@ function ProjectCard({
   index: number;
   openModal: () => void;
 }) {
-  const { language } = useLanguage();
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -742,9 +685,10 @@ function ProjectCard({
                 {images.map((_, dotIdx) => (
                   <div
                     key={dotIdx}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
-                      dotIdx === activeIdx ? "w-4 bg-cyan-400" : "w-1.5 bg-white/40"
-                    }`}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${dotIdx === activeIdx
+                      ? "w-4 bg-cyan-400"
+                      : "w-1.5 bg-white/40"
+                      }`}
                   />
                 ))}
               </div>
@@ -754,7 +698,8 @@ function ProjectCard({
           <div
             className="portfolio-card-image-bg transition-colors duration-500"
             style={{
-              background: project.visuals[activeIdx % project.visuals.length].gradient,
+              background:
+                project.visuals[activeIdx % project.visuals.length].gradient,
             }}
           >
             <span>{project.visuals[activeIdx % project.visuals.length].icon}</span>
@@ -763,7 +708,7 @@ function ProjectCard({
 
         <div className="portfolio-card-overlay">
           <span className="portfolio-card-overlay-btn">
-            <Eye size={14} /> {language === "id" ? "Lihat Detail" : "View Details"}
+            <Eye size={14} /> View Details
           </span>
         </div>
       </div>
@@ -788,7 +733,9 @@ function ProjectCard({
           )}
         </div>
         <h3 className="text-xl font-black text-white">{project.title}</h3>
-        <p className="mt-3 min-h-14 text-sm leading-7 text-sky-100/68">{project.desc}</p>
+        <p className="mt-3 min-h-14 text-sm leading-7 text-sky-100/68">
+          {project.desc}
+        </p>
         <div className="mt-5 flex flex-wrap gap-2">
           {project.stack.slice(0, 3).map((item) => (
             <span
@@ -810,17 +757,10 @@ function ProjectCard({
 }
 
 export default function FeaturedProjects() {
-  const { language } = useLanguage();
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [showAll, setShowAll] = useState(false);
-
-  const getCategoryLabel = (cat: string) => {
-    if (cat === "All") return language === "id" ? "Semua" : "All";
-    if (cat === "Education") return language === "id" ? "Edukasi" : "Education";
-    return cat;
-  };
 
   // Count projects per category
   const projectCounts: Record<string, number> = {
@@ -841,11 +781,14 @@ export default function FeaturedProjects() {
   const visibleProjects = showAll ? filtered : filtered.slice(0, 6);
   const hiddenCount = filtered.length - 6;
 
-  const openModal = useCallback((project: Project) => {
-    const globalIndex = projects.indexOf(project);
-    setSelectedIndex(globalIndex);
-    setActiveImageIndex(0);
-  }, []);
+  const openModal = useCallback(
+    (project: Project) => {
+      const globalIndex = projects.indexOf(project);
+      setSelectedIndex(globalIndex);
+      setActiveImageIndex(0);
+    },
+    []
+  );
 
   const closeModal = useCallback(() => {
     setSelectedIndex(null);
@@ -887,14 +830,8 @@ export default function FeaturedProjects() {
   // Autoplay functionality for images within modal
   useEffect(() => {
     if (!selected) return;
-    const len = selected.screenshots
-      ? selected.screenshots.length
-      : selected.screenshot
-        ? 1
-        : selected.visuals.length;
-    if (len <= 1) return;
     const interval = setInterval(() => {
-      setActiveImageIndex((prev) => (prev + 1) % len);
+      setActiveImageIndex((prev) => (prev + 1) % selected.visuals.length);
     }, 4000);
     return () => clearInterval(interval);
   }, [selected]);
@@ -908,13 +845,11 @@ export default function FeaturedProjects() {
             Portfolio
           </p>
           <h2 className="mt-3 text-4xl font-black text-white md:text-5xl">
-            {language === "id" ? "Proyek Unggulan" : "Featured Projects"}
+            Featured Projects
           </h2>
         </div>
         <p className="max-w-lg text-sm leading-7 text-sky-100/70">
-          {language === "id"
-            ? "Koleksi proyek nyata di bidang Data Science, Full Stack Web Development, Network Security, dan Systems Engineering."
-            : "Collection of real projects across Data Science, Full Stack Web Development, Network Security, and Systems Engineering."}
+          Koleksi proyek nyata di bidang Full Stack Web Development, Network Security, dan Systems Engineering.
         </p>
       </div>
 
@@ -926,7 +861,7 @@ export default function FeaturedProjects() {
             onClick={() => setActiveFilter(cat)}
             className={`portfolio-filter-btn ${activeFilter === cat ? "active" : ""}`}
           >
-            {getCategoryLabel(cat)}
+            {cat}
             <span className={`portfolio-filter-count ${activeFilter === cat ? "active" : ""}`}>
               {projectCounts[cat]}
             </span>
@@ -957,11 +892,11 @@ export default function FeaturedProjects() {
           >
             {showAll ? (
               <>
-                <ChevronUp size={18} /> {language === "id" ? "Tampilkan Lebih Sedikit" : "Show Less"}
+                <ChevronUp size={18} /> Tampilkan Lebih Sedikit
               </>
             ) : (
               <>
-                <ChevronDown size={18} /> {language === "id" ? `Lihat ${hiddenCount} lainnya` : `View ${hiddenCount} more`}
+                <ChevronDown size={18} /> Lihat {hiddenCount} lainnya
               </>
             )}
           </button>
@@ -988,6 +923,7 @@ export default function FeaturedProjects() {
             >
               {/* Modal Image Gallery */}
               {(() => {
+                // Resolve image list: screenshots[] > single screenshot > emoji visuals
                 const gallery = selected.screenshots
                   ? selected.screenshots
                   : selected.screenshot
@@ -1000,10 +936,9 @@ export default function FeaturedProjects() {
                   <div
                     className="portfolio-modal-image overflow-hidden"
                     style={{
-                      background:
-                        selected.visuals[
-                          Math.min(safeClamped, selected.visuals.length - 1)
-                        ].gradient,
+                      background: selected.visuals[
+                        Math.min(safeClamped, selected.visuals.length - 1)
+                      ].gradient,
                       transition: "background 0.5s ease",
                     }}
                   >
@@ -1078,9 +1013,8 @@ export default function FeaturedProjects() {
                           <div
                             key={i}
                             onClick={() => setActiveImageIndex(i)}
-                            className={`h-2 cursor-pointer rounded-full transition-all duration-300 ${
-                              i === safeClamped ? "bg-white w-6" : "bg-white/30 w-2"
-                            }`}
+                            className={`h-2 cursor-pointer rounded-full transition-all duration-300 ${i === safeClamped ? "bg-white w-6" : "bg-white/30 w-2"
+                              }`}
                           />
                         ))}
                       </div>
@@ -1094,20 +1028,9 @@ export default function FeaturedProjects() {
                 <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
                     <span className="portfolio-card-category">{selected.type}</span>
-                    {(() => {
-                      const gallery = selected.screenshots
-                        ? selected.screenshots
-                        : selected.screenshot
-                          ? [selected.screenshot]
-                          : null;
-                      const galleryLen = gallery ? gallery.length : selected.visuals.length;
-                      const safeClamped = Math.min(activeImageIndex, galleryLen - 1);
-                      return (
-                        <span className="text-xs text-sky-100/40">
-                          Visual {safeClamped + 1} / {galleryLen}
-                        </span>
-                      );
-                    })()}
+                    <span className="text-xs text-sky-100/40">
+                      Visual {activeImageIndex + 1} / {selected.visuals.length}
+                    </span>
                   </div>
                   {selected.demoUrl && (
                     <a
@@ -1117,7 +1040,7 @@ export default function FeaturedProjects() {
                       className="inline-flex items-center gap-1.5 rounded-full bg-cyan-500/20 px-3.5 py-1.5 text-xs font-bold text-cyan-200 transition hover:bg-cyan-500/30"
                     >
                       <Globe size={14} />
-                      <span>{language === "id" ? "Kunjungi Website" : "Visit Website"}</span>
+                      <span>Kunjungi Website</span>
                       <ExternalLink size={12} />
                     </a>
                   )}
@@ -1153,7 +1076,7 @@ export default function FeaturedProjects() {
                       className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 to-sky-600 px-6 py-3 text-sm font-black text-white shadow-lg transition hover:scale-[1.02]"
                     >
                       <Globe size={16} />
-                      <span>{language === "id" ? "Buka Live Demo Application" : "Open Live Demo Application"}</span>
+                      <span>Buka Live Demo Application</span>
                       <ExternalLink size={14} />
                     </a>
                   </div>
@@ -1163,7 +1086,7 @@ export default function FeaturedProjects() {
                 {selected.featureModules && selected.featureModules.length > 0 && (
                   <div className="mt-8">
                     <p className="mb-4 text-xs font-black uppercase tracking-[0.28em] text-cyan-200/70">
-                      {language === "id" ? "Fitur Lengkap" : "Key Feature Modules"}
+                      Fitur Lengkap
                     </p>
                     <div className="flex flex-col gap-3">
                       {selected.featureModules.map((mod) => (
@@ -1176,7 +1099,7 @@ export default function FeaturedProjects() {
                               <span>{mod.icon}</span>
                               <span>{mod.module}</span>
                               <span className="rounded-full bg-cyan-500/20 px-2 py-0.5 text-[10px] font-bold text-cyan-300">
-                                {mod.features.length} {language === "id" ? "fitur" : "features"}
+                                {mod.features.length} fitur
                               </span>
                             </span>
                             <span className="text-xs text-sky-100/40 transition-transform duration-200 group-open:rotate-180">
@@ -1203,9 +1126,7 @@ export default function FeaturedProjects() {
 
                 {/* Navigation hint */}
                 <p className="mt-8 text-center text-xs text-sky-100/40">
-                  {language === "id"
-                    ? "Gunakan tombol ← → untuk melihat visual lain, atau klik area gelap untuk menutup."
-                    : "Use ← → buttons to view other visuals, or click the dark area to close."}
+                  Gunakan tombol ← → untuk melihat visual lain, atau klik area gelap untuk menutup.
                 </p>
               </div>
             </motion.div>
@@ -1215,4 +1136,3 @@ export default function FeaturedProjects() {
     </section>
   );
 }
-

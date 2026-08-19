@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://portfolio-naufal-angkasah.vercel.app"),
-  title: "Naufal Angkasah | Portfolio IT Laut Dalam",
+  title: "Naufal Angkasah | Portfolio IT",
   description:
     "Portfolio profesional Naufal Angkasah — Web Developer & Network Security enthusiast. Deep ocean claymorphism design.",
   keywords: [
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Naufal Angkasah" }],
   openGraph: {
-    title: "Naufal Angkasah | Portfolio IT Laut Dalam",
+    title: "Naufal Angkasah | Portfolio IT",
     description: "Web Developer & Network Security Portfolio",
     url: "https://portfolio-naufal-angkasah.vercel.app",
     siteName: "Naufal Angkasah",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Naufal Angkasah | Portfolio IT Laut Dalam",
+    title: "Naufal Angkasah | Portfolio IT",
     description: "Web Developer & Network Security Portfolio",
     images: ["/og-image.png"],
   },

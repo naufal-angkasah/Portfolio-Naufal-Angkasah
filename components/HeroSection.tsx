@@ -7,11 +7,12 @@ import { useLanguage } from "@/context/LanguageContext";
 
 const roles = [
   "Web Developer",
-  "Frontend Developer",
+  // "Frontend Developer",
   "Full Stack Developer",
   "IT Support",
   "Network Security Junior",
   "Cyber Security Enthusiast",
+  "Data Analyst",
 ];
 
 function AnimatedCounter({ target, suffix }: { target: number; suffix: string }) {
