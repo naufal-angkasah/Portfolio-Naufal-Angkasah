@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   Award,
   ExternalLink,
@@ -392,11 +393,20 @@ const certificates: Certificate[] = [
 
 /* ─────────────── Component ─────────────── */
 export default function CertificatesSection() {
+  const { language } = useLanguage();
   const [activeTag, setActiveTag] = useState<CertificateTag>("All");
   const [selected, setSelected] = useState<Certificate | null>(null);
   const [showAll, setShowAll] = useState(false);
 
   const tags = Object.keys(TAG_CONFIG) as CertificateTag[];
+
+  const getTagLabel = (tag: CertificateTag) => {
+    if (tag === "All") return language === "id" ? "Semua" : "All";
+    if (tag === "Organization") return language === "id" ? "Organisasi" : "Organization";
+    if (tag === "Career") return language === "id" ? "Karir" : "Career";
+    if (tag === "Programming") return language === "id" ? "Pemrograman" : "Programming";
+    return tag;
+  };
 
   const filtered = useMemo(
     () =>
@@ -422,10 +432,12 @@ export default function CertificatesSection() {
           Achievements
         </p>
         <h2 className="mt-3 text-4xl font-black text-white md:text-5xl">
-          Sertifikat & Pencapaian
+          {language === "id" ? "Sertifikat & Pencapaian" : "Certificates & Achievements"}
         </h2>
         <p className="mt-4 max-w-2xl text-sm leading-7 text-sky-100/70">
-          Koleksi {certificates.length} sertifikat profesional dengan preview visual halaman pertama.
+          {language === "id"
+            ? `Koleksi ${certificates.length} sertifikat profesional dengan preview visual halaman pertama.`
+            : `Collection of ${certificates.length} professional certificates with page 1 visual previews.`}
         </p>
       </div>
 
@@ -442,7 +454,7 @@ export default function CertificatesSection() {
                 className={`cert-tag ${isActive ? "cert-tag--active" : ""} ${cfg.color}`}
               >
                 {cfg.icon}
-                <span>{tag}</span>
+                <span>{getTagLabel(tag)}</span>
                 {tag !== "All" && (
                   <span className="cert-tag-count">
                     {certificates.filter((c) => c.tags.includes(tag)).length}
@@ -456,9 +468,9 @@ export default function CertificatesSection() {
 
       {/* ── Count ── */}
       <p className="mb-6 text-sm text-sky-100/50">
-        Menampilkan{" "}
-        <span className="font-bold text-cyan-200">{filtered.length}</span> dari{" "}
-        {certificates.length} sertifikat
+        {language === "id" ? "Menampilkan " : "Showing "}
+        <span className="font-bold text-cyan-200">{filtered.length}</span>{" "}
+        {language === "id" ? `dari ${certificates.length} sertifikat` : `of ${certificates.length} certificates`}
       </p>
 
       {/* ── Grid ── */}
@@ -500,7 +512,7 @@ export default function CertificatesSection() {
                   {/* PDF Indicator badge */}
                   {cert.type === "pdf" && (
                     <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-lg bg-rose-950/80 px-2.5 py-1 text-[0.65rem] font-bold text-rose-200 backdrop-blur-md border border-rose-500/30 shadow-lg">
-                      <FileText size={12} /> PDF (Halaman 1)
+                      <FileText size={12} /> {language === "id" ? "PDF (Halaman 1)" : "PDF (Page 1)"}
                     </span>
                   )}
 
@@ -509,7 +521,7 @@ export default function CertificatesSection() {
 
                   {/* Preview badge */}
                   <span className="cert-preview-badge">
-                    <Maximize2 size={14} /> Preview Full
+                    <Maximize2 size={14} /> {language === "id" ? "Preview Full" : "Full Preview"}
                   </span>
                 </button>
 
@@ -522,7 +534,7 @@ export default function CertificatesSection() {
                         key={t}
                         className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-wider ${TAG_CONFIG[t].color}`}
                       >
-                        {TAG_CONFIG[t].icon} {t}
+                        {TAG_CONFIG[t].icon} {getTagLabel(t)}
                       </span>
                     ))}
                   </div>
@@ -555,7 +567,7 @@ export default function CertificatesSection() {
                       onClick={(e) => e.stopPropagation()}
                     >
                       <ExternalLink size={13} />
-                      <span>{cert.type === "pdf" ? "Buka PDF" : "Lihat File"}</span>
+                      <span>{cert.type === "pdf" ? (language === "id" ? "Buka PDF" : "Open PDF") : (language === "id" ? "Lihat File" : "View File")}</span>
                     </a>
                   </div>
                 </div>
@@ -574,11 +586,11 @@ export default function CertificatesSection() {
           >
             {showAll ? (
               <>
-                <ChevronUp size={18} /> Tampilkan Lebih Sedikit
+                <ChevronUp size={18} /> {language === "id" ? "Tampilkan Lebih Sedikit" : "Show Less"}
               </>
             ) : (
               <>
-                <ChevronDown size={18} /> Lihat {hiddenCount} lainnya
+                <ChevronDown size={18} /> {language === "id" ? `Lihat ${hiddenCount} lainnya` : `View ${hiddenCount} more`}
               </>
             )}
           </button>
@@ -624,7 +636,7 @@ export default function CertificatesSection() {
                 />
                 {selected.type === "pdf" && (
                   <span className="absolute left-4 top-4 rounded-xl bg-slate-950/85 px-3 py-1.5 text-xs font-bold text-cyan-200 border border-cyan-500/30 backdrop-blur-md">
-                    📄 Document Preview — Halaman 1
+                    📄 {language === "id" ? "Pratinjau Dokumen — Halaman 1" : "Document Preview — Page 1"}
                   </span>
                 )}
               </div>
@@ -636,7 +648,7 @@ export default function CertificatesSection() {
                     key={t}
                     className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[0.7rem] font-bold uppercase tracking-wider ${TAG_CONFIG[t].color}`}
                   >
-                    {TAG_CONFIG[t].icon} {t}
+                    {TAG_CONFIG[t].icon} {getTagLabel(t)}
                   </span>
                 ))}
               </div>
@@ -666,13 +678,15 @@ export default function CertificatesSection() {
                 >
                   <ExternalLink size={16} />
                   {selected.type === "pdf"
-                    ? "Buka File PDF Asli"
-                    : "Lihat Gambar Asli"}
+                    ? (language === "id" ? "Buka File PDF Asli" : "Open Original PDF")
+                    : (language === "id" ? "Lihat Gambar Asli" : "View Original Image")}
                 </a>
               </div>
 
               <p className="mt-4 text-center text-xs text-sky-100/40">
-                Klik area gelap atau tombol X untuk menutup.
+                {language === "id"
+                  ? "Klik area gelap atau tombol X untuk menutup."
+                  : "Click the dark area or X button to close."}
               </p>
             </motion.div>
           </motion.div>

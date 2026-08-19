@@ -2,8 +2,10 @@
 
 import { Mail, Waves } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Footer() {
+  const { language } = useLanguage();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -33,10 +35,13 @@ export default function Footer() {
           </div>
 
           <p className="text-xs text-sky-100/40">
-            © {currentYear} Naufal Angkasah. Dibuat dengan passion untuk keamanan & web development.
+            {language === "id"
+              ? `© ${currentYear} Naufal Angkasah. Dibuat dengan passion untuk keamanan & web development.`
+              : `© ${currentYear} Naufal Angkasah. Built with passion for security & web development.`}
           </p>
         </div>
       </div>
     </footer>
   );
 }
+

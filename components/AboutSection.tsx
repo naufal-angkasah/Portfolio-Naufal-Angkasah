@@ -119,13 +119,22 @@ export default function AboutSection() {
 
         <div className="clay-panel rounded-[3rem] p-8 md:p-10">
           <p className="text-sm font-black uppercase tracking-[0.35em] text-cyan-200">Deep Lab Notes</p>
-          <h2 className="mt-4 text-4xl font-black text-white md:text-5xl">Arah pengembangan di bidang IT.</h2>
+          <h2 className="mt-4 text-4xl font-black text-white md:text-5xl">
+            {language === "id" ? "Arah pengembangan di bidang IT." : "IT Development Direction."}
+          </h2>
           <div className="mt-6 space-y-4">
-            {[
-              "Membuat UI yang smooth, modern, responsive, dan nyaman dibaca recruiter.",
-              "Menjaga struktur komponen rapi agar mudah dikembangkan ke production.",
-              "Menggabungkan mindset web development dan security: HTTPS, API safety, auth flow, firewall basic.",
-            ].map((note, i) => (
+            {(language === "id"
+              ? [
+                  "Membuat UI yang smooth, modern, responsive, dan nyaman dibaca recruiter.",
+                  "Menjaga struktur komponen rapi agar mudah dikembangkan ke production.",
+                  "Menggabungkan mindset web development dan security: HTTPS, API safety, auth flow, firewall basic.",
+                ]
+              : [
+                  "Building smooth, modern, responsive UI that is clear and recruiter-friendly.",
+                  "Maintaining clean component structures for seamless production scalability.",
+                  "Combining web development with security mindset: HTTPS, API safety, auth flow, firewall basics.",
+                ]
+            ).map((note, i) => (
               <p key={i} className="flex gap-3 leading-7 text-sky-100/72">
                 <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-cyan-300" />
                 {note}

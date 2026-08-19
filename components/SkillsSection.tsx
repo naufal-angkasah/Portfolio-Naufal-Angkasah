@@ -31,6 +31,8 @@ const skills: SkillItem[] = [
   { name: "HTML5 & CSS3", category: "Full Stack", icon: "🌐" },
 
   // ═══ DATA, CLOUD & INTEGRATION ═══
+  { name: "Langflow & AI Agents", category: "Data & Tools", icon: "🤖" },
+  { name: "Data Science & Gemini AI", category: "Data & Tools", icon: "🧠" },
   { name: "PostgreSQL & MySQL", category: "Data & Tools", icon: "🐬" },
   { name: "Redis Cache", category: "Data & Tools", icon: "🔴" },
   { name: "Firebase Firestore", category: "Data & Tools", icon: "🔥" },
@@ -138,25 +140,27 @@ export default function SkillsSection() {
         <div className="mt-12 grid gap-6 md:grid-cols-2">
           <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur-md">
             <p className="text-xs font-black uppercase tracking-[0.28em] text-emerald-300">
-              Pendidikan
+              {language === "id" ? "Pendidikan" : "Education"}
             </p>
             <h3 className="mt-2 text-xl font-black text-white">Universitas Syiah Kuala</h3>
-            <p className="mt-1 text-sm text-sky-100/70">Gelar Sarjana (S.Kom), Informatika</p>
+            <p className="mt-1 text-sm text-sky-100/70">
+              {language === "id" ? "Gelar Sarjana (S.Kom), Informatika" : "Bachelor's Degree (S.Kom), Informatics"}
+            </p>
             <p className="mt-1 text-xs font-semibold text-cyan-200/60">August 2020 - July 2025</p>
           </div>
           <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur-md">
             <p className="text-xs font-black uppercase tracking-[0.28em] text-emerald-300">
-              Kemampuan Bahasa
+              {language === "id" ? "Kemampuan Bahasa" : "Language Proficiency"}
             </p>
             <div className="mt-4 flex flex-wrap gap-2.5">
               <span className="skill-bubble !py-1.5 !px-3.5 !text-xs" style={{ animationDelay: "0s" }}>
-                🇮🇩 Indonesian (Native)
+                🇮🇩 Indonesian ({language === "id" ? "Penutur Asli" : "Native"})
               </span>
               <span className="skill-bubble !py-1.5 !px-3.5 !text-xs" style={{ animationDelay: "0.5s" }}>
-                🇬🇧 English (Limited Working)
+                🇬🇧 English ({language === "id" ? "Tingkat Kerja Terbatas" : "Limited Working"})
               </span>
               <span className="skill-bubble !py-1.5 !px-3.5 !text-xs" style={{ animationDelay: "1s" }}>
-                🇯🇵 Japanese (Elementary)
+                🇯🇵 Japanese ({language === "id" ? "Tingkat Dasar" : "Elementary"})
               </span>
             </div>
           </div>
@@ -165,3 +169,4 @@ export default function SkillsSection() {
     </section>
   );
 }
+

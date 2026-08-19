@@ -20,9 +20,18 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguageState] = useState<Language>("id");
 
   useEffect(() => {
+    // 1) Cek localStorage dulu
     const saved = localStorage.getItem("portfolio_lang") as Language;
     if (saved === "id" || saved === "en") {
       setLanguageState(saved);
+      return;
+    }
+    // 2) Fallback ke bahasa sistem browser
+    const browserLang = navigator.language || "";
+    if (browserLang.startsWith("en")) {
+      setLanguageState("en");
+    } else {
+      setLanguageState("id");
     }
   }, []);
 
