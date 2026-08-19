@@ -245,6 +245,12 @@ const projects: Project[] = [
     stack: ["React", "TypeScript", "POS Engine", "Tailwind CSS", "Vercel"],
     demoUrl: "https://kasir-cafe-iota.vercel.app/",
     screenshot: "/projects/screenshots/kasir-cafe.jpg",
+    screenshots: [
+      "/projects/screenshots/kasir-cafe.jpg",
+      "/projects/screenshots/kasir-cafe-2.jpg",
+      "/projects/screenshots/kasir-cafe-3.jpg",
+      "/projects/screenshots/kasir-cafe-4.jpg",
+    ],
     visuals: [
       { icon: "☕", gradient: "linear-gradient(135deg, #451a03 0%, #78350f 50%, #9a3412 100%)" },
       { icon: "🛒", gradient: "linear-gradient(135deg, #78350f 0%, #9a3412 50%, #451a03 100%)" },
@@ -491,20 +497,6 @@ const projects: Project[] = [
 
   // ═══ EXISTING FEATURED PROJECTS ═══
   {
-    title: "DTP Telkom Landing Page v3",
-    type: "Web Dev",
-    category: "Web Dev",
-    desc: "Upgraded DTP Telkom website to version 3 using Vue3, JavaScript, and CSS.",
-    longDesc:
-      "Full upgrade dari website DTP Telkom ke versi 3. Menggunakan Vue3, JavaScript, dan CSS. Mengerjakan landing pages, integrasi Telkom DTP API, optimalisasi database, dan testing. Proyek ini merupakan bagian dari Kampus Merdeka Batch 5 di Telkom Indonesia.",
-    stack: ["Vue3", "JavaScript", "CSS", "REST API", "Database"],
-    visuals: [
-      { icon: "🌐", gradient: "linear-gradient(135deg, #0c4a6e 0%, #164e63 50%, #0e7490 100%)" },
-      { icon: "💻", gradient: "linear-gradient(135deg, #083344 0%, #155e75 50%, #0e7490 100%)" },
-      { icon: "📱", gradient: "linear-gradient(135deg, #164e63 0%, #0c4a6e 50%, #155e75 100%)" },
-    ],
-  },
-  {
     title: "Ecoliteration — Hydrological Cycle App",
     type: "Full Stack",
     category: "Full Stack",
@@ -514,9 +506,10 @@ const projects: Project[] = [
     stack: ["Vue.js", "JavaScript", "REST API", "Full Stack", "Problem Solving"],
     screenshot: "/projects/screenshots/ecoliteration-1.jpg",
     screenshots: [
+
+      "/projects/screenshots/ecoliteration-3.jpg",
       "/projects/screenshots/ecoliteration-1.jpg",
       "/projects/screenshots/ecoliteration-2.jpg",
-      "/projects/screenshots/ecoliteration-3.jpg",
       "/projects/screenshots/ecoliteration-4.jpg",
     ],
     visuals: [
@@ -607,7 +600,6 @@ const projects: Project[] = [
     screenshot: "/projects/edu-module-1.jpg",
     screenshots: [
       "/projects/edu-module-1.jpg",
-      "/projects/edu-module-2.jpg",
       "/projects/edu-module-3.jpg",
     ],
     visuals: [
@@ -638,8 +630,8 @@ function ProjectCard({
     project.screenshots && project.screenshots.length > 0
       ? project.screenshots
       : project.screenshot
-      ? [project.screenshot]
-      : null;
+        ? [project.screenshot]
+        : null;
 
   const totalSlides = images ? images.length : project.visuals.length;
 
@@ -699,11 +691,10 @@ function ProjectCard({
                 {images.map((_, dotIdx) => (
                   <div
                     key={dotIdx}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
-                      dotIdx === activeIdx
-                        ? "w-4 bg-cyan-400"
-                        : "w-1.5 bg-white/40"
-                    }`}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${dotIdx === activeIdx
+                      ? "w-4 bg-cyan-400"
+                      : "w-1.5 bg-white/40"
+                      }`}
                   />
                 ))}
               </div>
@@ -819,8 +810,8 @@ export default function FeaturedProjects() {
         const len = selected.screenshots
           ? selected.screenshots.length
           : selected.screenshot
-          ? 1
-          : selected.visuals.length;
+            ? 1
+            : selected.visuals.length;
         setActiveImageIndex((prev) => (prev + 1) % len);
       }
     },
@@ -834,8 +825,8 @@ export default function FeaturedProjects() {
         const len = selected.screenshots
           ? selected.screenshots.length
           : selected.screenshot
-          ? 1
-          : selected.visuals.length;
+            ? 1
+            : selected.visuals.length;
         setActiveImageIndex((prev) => (prev - 1 + len) % len);
       }
     },
@@ -942,8 +933,8 @@ export default function FeaturedProjects() {
                 const gallery = selected.screenshots
                   ? selected.screenshots
                   : selected.screenshot
-                  ? [selected.screenshot]
-                  : null;
+                    ? [selected.screenshot]
+                    : null;
                 const galleryLen = gallery ? gallery.length : selected.visuals.length;
                 const safeClamped = Math.min(activeImageIndex, galleryLen - 1);
 
@@ -1028,9 +1019,8 @@ export default function FeaturedProjects() {
                           <div
                             key={i}
                             onClick={() => setActiveImageIndex(i)}
-                            className={`h-2 cursor-pointer rounded-full transition-all duration-300 ${
-                              i === safeClamped ? "bg-white w-6" : "bg-white/30 w-2"
-                            }`}
+                            className={`h-2 cursor-pointer rounded-full transition-all duration-300 ${i === safeClamped ? "bg-white w-6" : "bg-white/30 w-2"
+                              }`}
                           />
                         ))}
                       </div>
