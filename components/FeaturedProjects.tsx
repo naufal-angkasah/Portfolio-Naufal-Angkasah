@@ -33,6 +33,55 @@ type Project = {
 const projects: Project[] = [
   // ═══ FULL STACK & WEB DEV PROJECTS WITH SCREENSHOT GALLERIES ═══
   {
+    title: "Automation Sentiment",
+    type: "Data Science",
+    category: "Full Stack",
+    desc: "Automation untuk analisis sentiment berita menggunakan Langflow & Gemini AI.",
+    longDesc:
+      "Sistem otomasi analisis sentimen berita dan ulasan produk e-commerce menggunakan Langflow sebagai visual workflow builder. Memanfaatkan Gemini AI (gemini-3.5-flash) untuk memproses data review CSV, menghasilkan ringkasan sentimen (Positive/Neutral/Negative), action item bisnis berbasis data, serta rekomendasi teknis dan pemasaran yang terstruktur.",
+    stack: ["Langflow", "API Key", "Data Science", "Data Automation", "Gemini AI"],
+    demoUrl: "https://github.com/naufal-angkasah/automation-sentiment-analyst.git",
+    screenshot: "/projects/screenshots/automation-sentiment-1.jpg",
+    screenshots: [
+      "/projects/screenshots/automation-sentiment-1.jpg",
+      "/projects/screenshots/automation-sentiment-2.jpg",
+      "/projects/screenshots/automation-sentiment-3.jpg",
+      "/projects/screenshots/automation-sentiment-4.jpg",
+      "/projects/screenshots/automation-sentiment-5.jpg",
+    ],
+    visuals: [
+      { icon: "🤖", gradient: "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)" },
+      { icon: "📊", gradient: "linear-gradient(135deg, #203a43 0%, #2c5364 50%, #0f2027 100%)" },
+      { icon: "💡", gradient: "linear-gradient(135deg, #2c5364 0%, #0f2027 50%, #203a43 100%)" },
+    ],
+    featureModules: [
+      {
+        icon: "🤖",
+        module: "AI Sentiment Analysis Pipeline",
+        features: [
+          { name: "Visual Workflow Langflow", desc: "Membangun pipeline otomasi dengan drag-and-drop komponen: Read File → Prompt Template → Language Model → Chat Output" },
+          { name: "Gemini AI Integration", desc: "Menggunakan model gemini-3.5-flash untuk memproses review CSV dan menghasilkan analisis sentimen akurat" },
+        ],
+      },
+      {
+        icon: "📊",
+        module: "Analisis Sentimen & Ringkasan",
+        features: [
+          { name: "Klasifikasi Sentimen 3 Kategori", desc: "Positive (pujian/kepuasan), Neutral (seimbang/informatif), Negative (keluhan/kekecewaan)" },
+          { name: "Ringkasan Naratif Terstruktur", desc: "Menghasilkan ringkasan kohesif dalam Bahasa Indonesia formal berdasarkan isi review produk e-commerce" },
+        ],
+      },
+      {
+        icon: "💡",
+        module: "Business Action Items & Rekomendasi",
+        features: [
+          { name: "Action Item Berbasis Data", desc: "Rekomendasi teknis & bisnis spesifik (Software/Produk) yang dapat langsung diimplementasikan tim terkait" },
+          { name: "Strategi Pemasaran & Logistik", desc: "Analisis tren review untuk rekomendasi kampanye pemasaran & optimalisasi kemitraan vendor logistik" },
+        ],
+      },
+    ],
+  },
+  {
     title: "Kawaii Animal Sticker Studio",
     type: "Full Stack",
     category: "Full Stack",
