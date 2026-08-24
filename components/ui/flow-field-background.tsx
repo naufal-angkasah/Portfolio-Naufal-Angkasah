@@ -6,29 +6,16 @@ import { cn } from "@/lib/utils";
 interface FlowFieldBackgroundProps {
   className?: string;
   color?: string;
-  trailOpacity?: number;
   particleCount?: number;
   speed?: number;
   bgColor?: string;
 }
 
-// ── Lightweight pseudo-noise (no external lib needed) ──────────────────────
-// Multiple sine waves at different frequencies + phases → organic, non-repeating
-function noiseAngle(x: number, y: number, t: number, seed: number): number {
-  const s = seed;
-  return (
-    Math.sin(x * 0.0031 * (1 + s * 0.3) + y * 0.0019 + t * 0.00018) * Math.PI +
-    Math.cos(x * 0.0017 - y * 0.0041 * (1 + s * 0.2) + t * 0.00023 + s) * Math.PI * 0.7 +
-    Math.sin((x + y) * 0.0013 + t * 0.00011 + s * 2.1) * Math.PI * 0.4
-  );
-}
-
 export default function FlowFieldBackground({
   className,
   color = "#22d3ee",
-  trailOpacity = 0.042,
-  particleCount = 580,
-  speed = 0.48,
+  particleCount = 140,
+  speed = 0.5,
   bgColor = "#031226",
 }: FlowFieldBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -45,21 +32,15 @@ export default function FlowFieldBackground({
     let width = window.innerWidth;
     let height = window.innerHeight;
     let animId: number;
-    let tick = 0; // global time counter for animated noise
+    let tick = 0;
 
-    // ── Scroll tracking ────────────────────────────────────────────────────
+    // Scroll
     let lastScrollY = window.scrollY;
-    let scrollVelocity = 0; // smoothed scroll speed
+    let scrollVel = 0;
 
-    // ── Mouse tracking (window-level so pointer-events-none is fine) ───────
+    // Mouse
     let mouseX = -9999;
     let mouseY = -9999;
-
-    const hexRgb = (hex: string) => {
-      const c = hex.replace("#", "");
-      const n = parseInt(c.length === 3 ? c.split("").map(x => x + x).join("") : c, 16);
-      return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
-    };
 
     const setup = () => {
       const dpr = window.devicePixelRatio || 1;
@@ -72,154 +53,172 @@ export default function FlowFieldBackground({
       ctx.scale(dpr, dpr);
     };
 
-    // ── Particle ───────────────────────────────────────────────────────────
+    // Parse hex color to [r,g,b]
+    const parseColor = (hex: string): [number, number, number] => {
+      const c = hex.replace("#", "");
+      const n = parseInt(c.length === 3 ? c.split("").map(x => x + x).join("") : c, 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    };
+    const [cr, cg, cb] = parseColor(color);
+    const [br, bg_, bb] = parseColor(bgColor);
+
     class Particle {
       x!: number;
       y!: number;
-      vx!: number;
-      vy!: number;
+      // Base position for sinusoidal wander
+      baseX!: number;
+      baseY!: number;
+      // Each particle wanders along its own sin/cos path
+      freqX!: number;
+      freqY!: number;
+      phaseX!: number;
+      phaseY!: number;
+      ampX!: number;
+      ampY!: number;
+      // Glow size
+      radius!: number;
+      // Drift speed upward
+      driftSpeed!: number;
+      // Opacity / life
+      alpha!: number;
+      targetAlpha!: number;
+      fadeDir!: number;     // 1 = fading in, -1 = fading out
       age!: number;
       life!: number;
-      size!: number;
-      // Unique noise seed per particle → each one follows a DIFFERENT path
-      seed!: number;
-      // Random speed multiplier so they don't all move the same pace
-      speedMul!: number;
 
-      constructor(scattered = true) {
-        this.init(scattered);
+      constructor() {
+        this.reset(true);
       }
 
-      init(scattered = true) {
-        this.seed = Math.random() * 100;
-        this.speedMul = 0.5 + Math.random() * 1.2; // 0.5× to 1.7× speed
+      reset(scatter = false) {
+        // Scatter across whole screen on init, otherwise appear anywhere
+        this.baseX = Math.random() * width;
+        this.baseY = scatter ? Math.random() * height : Math.random() * height;
 
-        if (scattered) {
-          // Fill the whole screen on startup
-          this.x = Math.random() * width;
-          this.y = Math.random() * height;
-          this.age = Math.floor(Math.random() * 300);
-        } else {
-          // Respawn: random position anywhere (not just edges)
-          // 70% chance → random position across full canvas
-          // 30% chance → spawn near bottom so they drift upward naturally
-          if (Math.random() < 0.7) {
-            this.x = Math.random() * width;
-            this.y = Math.random() * height;
-          } else {
-            this.x = Math.random() * width;
-            this.y = height + Math.random() * 40;
-          }
-          this.age = 0;
-        }
+        this.x = this.baseX;
+        this.y = this.baseY;
 
-        // Small random initial velocity
-        this.vx = (Math.random() - 0.5) * 0.6;
-        this.vy = (Math.random() - 0.5) * 0.6;
-        this.life = Math.random() * 280 + 150;
-        this.size = 0.8 + Math.random() * 1.4;
+        // Unique sinusoidal wobble per particle
+        this.freqX = 0.0008 + Math.random() * 0.0012;
+        this.freqY = 0.0006 + Math.random() * 0.0010;
+        this.phaseX = Math.random() * Math.PI * 2;
+        this.phaseY = Math.random() * Math.PI * 2;
+        this.ampX = 30 + Math.random() * 60;   // horizontal sway width
+        this.ampY = 20 + Math.random() * 40;   // vertical bob amplitude
+
+        this.radius = 3 + Math.random() * 9;
+        this.driftSpeed = (0.08 + Math.random() * 0.18) * speed;
+
+        this.age = scatter ? Math.floor(Math.random() * 400) : 0;
+        this.life = 400 + Math.random() * 500;
+        this.alpha = scatter ? Math.random() * 0.5 : 0;
+        this.targetAlpha = 0.3 + Math.random() * 0.55;
+        this.fadeDir = 1;
       }
 
       update(scrollShift: number) {
-        // ── 1. Animated flow field using per-particle seed ─────────────────
-        //   Each particle has its own noise "lane" → no two particles look the same
-        const angle = noiseAngle(this.x, this.y, tick, this.seed);
-        const f = speed * this.speedMul;
+        this.age++;
 
-        // Flow-field force
-        const flowVX = Math.cos(angle) * 0.38 * f;
-        const flowVY = Math.sin(angle) * 0.38 * f;
+        // Sine/cosine-based wandering — smooth, natural, no jitter
+        const t = tick;
+        const swayX = Math.sin(t * this.freqX + this.phaseX) * this.ampX;
+        const swayY = Math.cos(t * this.freqY + this.phaseY) * this.ampY;
 
-        // Small random Brownian kick each frame → breaks any lingering regularity
-        const randKickX = (Math.random() - 0.5) * 0.25 * f;
-        const randKickY = (Math.random() - 0.5) * 0.25 * f;
+        this.x = this.baseX + swayX;
+        this.y = this.baseY + swayY;
 
-        // Gentle upward drift (bioluminescent particles float)
-        const driftVY = -0.04 * f;
+        // Drift upward slowly
+        this.baseY -= this.driftSpeed;
 
-        // ── 2. Scroll parallax ──────────────────────────────────────────────
-        //   Different particles scroll at slightly different rates (depth illusion)
-        const depth = 0.3 + this.seed * 0.004; // 0.3 – 0.7 based on seed
-        const parallaxVY = scrollShift * depth;
+        // Scroll parallax — deeper particles (smaller radius) scroll slower
+        const depth = 0.2 + (this.radius / 12) * 0.6;
+        this.baseY -= scrollShift * depth;
 
-        // ── 3. Mouse repulsion ──────────────────────────────────────────────
+        // Mouse repulsion — smooth push away
         const dx = mouseX - this.x;
         const dy = mouseY - this.y;
         const dist = Math.hypot(dx, dy);
-        const radius = 130;
-        let repX = 0, repY = 0;
-        if (dist < radius && dist > 0.5) {
-          const power = Math.pow(1 - dist / radius, 2.2) * 7;
-          repX = -(dx / dist) * power;
-          repY = -(dy / dist) * power;
+        const repelRadius = 140;
+        if (dist < repelRadius && dist > 1) {
+          const strength = Math.pow(1 - dist / repelRadius, 2) * 5;
+          this.baseX -= (dx / dist) * strength;
+          this.baseY -= (dy / dist) * strength;
         }
 
-        // ── 4. Accumulate & dampen ──────────────────────────────────────────
-        this.vx = (this.vx + flowVX + randKickX + repX) * 0.88;
-        this.vy = (this.vy + flowVY + randKickY + driftVY - parallaxVY + repY) * 0.88;
-
-        this.x += this.vx;
-        this.y += this.vy;
-        this.age++;
-
-        // ── 5. Lifetime / boundary ──────────────────────────────────────────
-        const expired = this.age > this.life;
-        const offTop = this.y < -40;
-        const offBottom = this.y > height + 40;
-        const offSide = this.x < -40 || this.x > width + 40;
-
-        if (expired || offTop || offBottom || offSide) {
-          this.init(false);
+        // Fade in / out
+        if (this.fadeDir === 1) {
+          this.alpha = Math.min(this.alpha + 0.008, this.targetAlpha);
+          if (this.alpha >= this.targetAlpha) this.fadeDir = -1;
+        } else if (this.age > this.life * 0.7) {
+          this.alpha = Math.max(this.alpha - 0.006, 0);
         }
+
+        // Recycle when it drifts off top or fully fades out
+        if (this.baseY < -this.radius * 3 || (this.age > this.life && this.alpha <= 0)) {
+          this.reset(false);
+        }
+
+        // Constrain base X to stay roughly on screen
+        if (this.baseX < -100) this.baseX = width + 80;
+        if (this.baseX > width + 100) this.baseX = -80;
       }
 
       draw(c: CanvasRenderingContext2D) {
-        const progress = this.age / this.life;
-        const alpha =
-          progress < 0.1 ? (progress / 0.1) * 0.65
-          : progress > 0.8 ? ((1 - progress) / 0.2) * 0.65
-          : 0.65;
+        if (this.alpha <= 0.01) return;
 
-        c.globalAlpha = alpha;
-        c.fillStyle = color;
+        // Soft glowing orb via radial gradient
+        const grad = c.createRadialGradient(
+          this.x, this.y, 0,
+          this.x, this.y, this.radius * 2.5,
+        );
+        grad.addColorStop(0,   `rgba(${cr},${cg},${cb},${this.alpha})`);
+        grad.addColorStop(0.4, `rgba(${cr},${cg},${cb},${this.alpha * 0.5})`);
+        grad.addColorStop(1,   `rgba(${cr},${cg},${cb},0)`);
+
         c.beginPath();
-        c.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        c.arc(this.x, this.y, this.radius * 2.5, 0, Math.PI * 2);
+        c.fillStyle = grad;
         c.fill();
       }
     }
 
-    // ── Bootstrap ──────────────────────────────────────────────────────────
     setup();
-    const particles: Particle[] = Array.from({ length: particleCount }, () => new Particle(true));
+    const particles: Particle[] = Array.from({ length: particleCount }, () => new Particle());
 
-    // ── Render loop ────────────────────────────────────────────────────────
     const loop = () => {
       tick++;
 
-      // Smooth scroll velocity (exponential decay so it doesn't snap)
-      const curScroll = window.scrollY;
-      const rawDelta = curScroll - lastScrollY;
-      lastScrollY = curScroll;
-      // Blend toward raw delta, then decay — gives natural ease-in/out feel
-      scrollVelocity = scrollVelocity * 0.7 + rawDelta * 0.3;
+      // Smooth scroll velocity
+      const curY = window.scrollY;
+      const raw = curY - lastScrollY;
+      lastScrollY = curY;
+      scrollVel = scrollVel * 0.75 + raw * 0.25;
 
-      // Trail: very translucent fill → long ghostly smears
-      ctx.globalAlpha = 1;
-      ctx.fillStyle = `rgba(${hexRgb(bgColor)}, ${trailOpacity})`;
+      // Clear canvas cleanly each frame — no trails, just crisp glowing dots
+      ctx.fillStyle = `rgb(${br},${bg_},${bb})`;
+      ctx.fillRect(0, 0, width, height);
+
+      // Draw a subtle vignette once per frame so it feels immersive
+      const vig = ctx.createRadialGradient(
+        width / 2, height / 2, height * 0.25,
+        width / 2, height / 2, height * 0.85,
+      );
+      vig.addColorStop(0, "rgba(0,0,0,0)");
+      vig.addColorStop(1, "rgba(0,0,0,0.45)");
+      ctx.fillStyle = vig;
       ctx.fillRect(0, 0, width, height);
 
       for (const p of particles) {
-        p.update(scrollVelocity);
+        p.update(scrollVel);
         p.draw(ctx);
       }
-      ctx.globalAlpha = 1;
+
       animId = requestAnimationFrame(loop);
     };
 
     loop();
 
-    // ── Event listeners ────────────────────────────────────────────────────
-    const onMove = (e: MouseEvent) => { mouseX = e.clientX; mouseY = e.clientY; };
+    const onMove  = (e: MouseEvent) => { mouseX = e.clientX; mouseY = e.clientY; };
     const onLeave = () => { mouseX = -9999; mouseY = -9999; };
     const onResize = () => { setup(); };
 
@@ -233,7 +232,7 @@ export default function FlowFieldBackground({
       document.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("resize", onResize);
     };
-  }, [color, trailOpacity, particleCount, speed, bgColor]);
+  }, [color, particleCount, speed, bgColor]);
 
   return (
     <div ref={containerRef} className={cn("absolute inset-0 overflow-hidden", className)}>

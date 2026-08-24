@@ -33,11 +33,10 @@ export default function HomePage() {
         <div className="fixed inset-0 -z-10 pointer-events-none">
           <NeuralBackground
             color="#22d3ee"
-            trailOpacity={0.038}
-            particleCount={520}
-            speed={0.22}
+            particleCount={130}
+            speed={0.5}
             bgColor="#031226"
-            className="opacity-45"
+            className="opacity-70"
           />
         </div>
 
