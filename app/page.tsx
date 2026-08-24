@@ -29,15 +29,15 @@ export default function HomePage() {
         {/* Fixed Background — deep ocean gradient */}
         <div className="fixed inset-0 -z-20 deep-ocean" />
 
-        {/* Flow Field Particle Layer — slow ocean current particles */}
+        {/* Flow Field Particle Layer — scroll parallax + cursor repulsion */}
         <div className="fixed inset-0 -z-10 pointer-events-none">
           <NeuralBackground
-            color="#22d3ee"       /* cyan-400 — bioluminescent particles */
-            trailOpacity={0.035}  /* very low = ultra-long ghostly trails */
-            particleCount={500}
-            speed={0.2}           /* barely drifting, like deep ocean currents */
-            bgColor="#031226"     /* matches deep-ocean bg to blend trails */
-            className="opacity-40"
+            color="#22d3ee"
+            trailOpacity={0.038}
+            particleCount={520}
+            speed={0.22}
+            bgColor="#031226"
+            className="opacity-45"
           />
         </div>
 
