@@ -14,6 +14,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import HowIWorkSection from "@/components/HowIWorkSection";
 
 import { LanguageProvider } from "@/context/LanguageContext";
+import { ReadyProvider } from "@/context/ReadyContext";
 
 const CustomCursor = dynamic(() => import("@/components/CustomCursor"), { ssr: false });
 const SeaCreatures = dynamic(() => import("@/components/SeaCreatures"), { ssr: false });
@@ -21,7 +22,8 @@ const NeuralBackground = dynamic(() => import("@/components/ui/flow-field-backgr
 
 export default function HomePage() {
   return (
-    <LanguageProvider>
+    <ReadyProvider>
+      <LanguageProvider>
       <main className="relative isolate min-h-screen overflow-hidden text-slate-100">
         {/* Loading Screen */}
         <LoadingScreen />
@@ -60,6 +62,7 @@ export default function HomePage() {
         <ContactSection />
         <Footer />
       </main>
-    </LanguageProvider>
+      </LanguageProvider>
+    </ReadyProvider>
   );
 }

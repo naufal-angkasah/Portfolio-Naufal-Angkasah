@@ -1,6 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion } from "framer-motion";
+import { useReady } from "@/context/ReadyContext";
+import { READY_IDS } from "@/components/LoadingScreen";
 
 const creatures = [
   // 1. Anglerfish (Original: RIGHT). Swims RIGHT -> NO flip (1)
@@ -41,6 +44,9 @@ const creatures = [
 ];
 
 export default function SeaCreatures() {
+  const { reportReady } = useReady();
+  useEffect(() => { reportReady(READY_IDS.SEA); }, []); // eslint-disable-line
+
   return (
     <div className="pointer-events-none absolute inset-0 z-[12] overflow-hidden opacity-90">
       {creatures.map((c) => (

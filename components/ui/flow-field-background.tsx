@@ -2,6 +2,8 @@
 
 import React, { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
+import { useReady } from "@/context/ReadyContext";
+import { READY_IDS } from "@/components/LoadingScreen";
 
 interface FlowFieldBackgroundProps {
   className?: string;
@@ -20,6 +22,7 @@ export default function FlowFieldBackground({
 }: FlowFieldBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { reportReady } = useReady();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -210,8 +213,11 @@ export default function FlowFieldBackground({
 
     setup();
 
-    // Spread initial particles across 6× viewport height so all sections are covered
+    // Spread initial particles across viewport so all sections are covered
     const particles: Particle[] = Array.from({ length: particleCount }, () => new Particle());
+
+    // Signal loading screen: canvas is initialized and first frame is ready
+    reportReady(READY_IDS.PARTICLES);
 
     const loop = () => {
       tick++;

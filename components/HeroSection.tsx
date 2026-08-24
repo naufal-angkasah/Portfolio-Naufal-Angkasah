@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, LockKeyhole, Mail } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
-
+import { useReady } from "@/context/ReadyContext";
+import { READY_IDS } from "@/components/LoadingScreen";
 import GlassmorphismProfileCard from "@/components/ui/glassmorphism-profile-card";
 
 const roles = [
@@ -59,6 +60,13 @@ function AnimatedCounter({ target, suffix }: { target: number; suffix: string })
 
 export default function HeroSection() {
   const { language } = useLanguage();
+  const { reportReady } = useReady();
+
+  // Signal loading screen that hero is mounted and rendered
+  useEffect(() => {
+    reportReady(READY_IDS.HERO);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
