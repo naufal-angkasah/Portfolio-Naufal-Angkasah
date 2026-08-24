@@ -11,6 +11,16 @@ export default function ExperienceSection() {
 
   const experiences = [
     {
+      role: "AI Agent & Data Analysis Program (Score: 87.15/100)",
+      company: "IBM SkillsBuild x Hacktiv8",
+      period: language === "id" ? "Juli 2026" : "July 2026",
+      location: "Indonesia (Online)",
+      desc:
+        language === "id"
+          ? "Program IBM SkillsBuild University Education. Mengembangkan prototype AI Agent end-to-end, klasifikasi data dengan model IBM Granite, Vibe Coding & IBM Bob, dan otomasi workflow Langflow dengan skor kelulusan proyek 87.15/100."
+          : "IBM SkillsBuild University Education program. Developed end-to-end AI Agent prototypes, data classification with IBM Granite models, Vibe Coding & IBM Bob, and Langflow workflow automation with a project score of 87.15/100.",
+    },
+    {
       role: "Research Assistant (Cybersecurity SOC)",
       company: "Swiss German University",
       period: language === "id" ? "Juni 2026 - Juli 2026" : "June 2026 - July 2026",

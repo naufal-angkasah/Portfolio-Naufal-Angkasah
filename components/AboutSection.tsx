@@ -69,17 +69,17 @@ export default function AboutSection() {
             <div>
               <p className="text-xs font-black uppercase tracking-[0.28em] text-emerald-300">{language === "id" ? "Tersedia" : "Available"}</p>
               <p className="mt-1 text-xl font-black text-white">Future IT Professional</p>
-              <p className="text-sm text-sky-100/68">Web Dev • Network Security • IT Ops</p>
+              <p className="text-sm text-sky-100/68">Web Dev • AI Agents & Data • Network Security</p>
             </div>
           </div>
           <p className="text-sm font-black uppercase tracking-[0.35em] text-cyan-200">{language === "id" ? "Tentang Saya" : "About Me"}</p>
           <h2 className="mt-4 text-4xl font-black text-white md:text-5xl">
-            {language === "id" ? "Web developer yang juga peduli keamanan." : "Web developer who also cares about security."}
+            {language === "id" ? "Web developer & AI practitioner yang peduli keamanan." : "Web developer & AI practitioner who cares about security."}
           </h2>
           <p className="mt-5 leading-8 text-sky-100/75">
             {language === "id"
-              ? "Saya Naufal Angkasah, fokus mendalami Web Development (Front-end & Full-stack) dan Network Security. Dengan pengalaman di Telkom Indonesia, Swiss German University SOC Lab, dan mengajar 280+ siswa coding, saya menggabungkan UI yang nyaman, kode yang maintainable, serta kebiasaan security-first."
-              : "I am Naufal Angkasah, focusing on Web Development (Front-end & Full-stack) and Network Security. With experience at Telkom Indonesia, Swiss German University SOC Lab, and teaching 280+ coding students, I combine comfortable UI, maintainable code, and a security-first mindset."}
+              ? "Saya Naufal Angkasah, fokus mendalami Web Development (Front-end & Full-stack), AI Agent & Data Analysis (IBM SkillsBuild), serta Network Security. Dengan pengalaman di Telkom Indonesia, Swiss German University SOC Lab, dan mengajar 280+ siswa coding, saya menggabungkan UI yang nyaman, otomasi AI yang cerdas, kode yang maintainable, serta kebiasaan security-first."
+              : "I am Naufal Angkasah, focusing on Web Development (Front-end & Full-stack), AI Agent & Data Analysis (IBM SkillsBuild), and Network Security. With experience at Telkom Indonesia, Swiss German University SOC Lab, and teaching 280+ coding students, I combine comfortable UI, smart AI automation, maintainable code, and a security-first mindset."}
           </p>
         </div>
 

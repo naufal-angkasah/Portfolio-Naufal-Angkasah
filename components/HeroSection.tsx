@@ -2,17 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, LockKeyhole, Mail, Network } from "lucide-react";
+import { ArrowRight, LockKeyhole, Mail } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+
+import GlassmorphismProfileCard from "@/components/ui/glassmorphism-profile-card";
 
 const roles = [
   "Web Developer",
-  // "Frontend Developer",
   "Full Stack Developer",
-  "IT Support",
-  "Network Security Junior",
+  "AI Agent Developer",
+  "Network Security",
   "Cyber Security Enthusiast",
-  "Data Analyst",
+  "Data & AI Analyst",
+  "IT Support",
 ];
 
 function AnimatedCounter({ target, suffix }: { target: number; suffix: string }) {
@@ -63,18 +65,21 @@ export default function HeroSection() {
   };
 
   const t = {
-    badge: language === "id" ? "Terbuka untuk Peran Web Dev & Network Security" : "Open to Web Dev & Network Security Roles",
+    badge: language === "id" ? "Terbuka untuk Peran Web Dev, AI Agent & Security" : "Open to Web Dev, AI Agent & Security Roles",
     titleSub: language === "id" ? "Portfolio IT" : "IT Portfolio",
     subtitle:
       language === "id"
-        ? "Saya profesional IT yang fokus pada pengembangan web modern, UI responsive, dan fondasi network security. Siap membantu membuat produk digital yang rapi, aman, cepat, dan mudah dirawat."
-        : "I am an IT professional focusing on modern web development, responsive UI, and network security foundations. Ready to help build clean, secure, fast, and easily maintainable digital products.",
+        ? "Saya profesional IT yang fokus pada pengembangan web modern, integrasi AI Agent cerdas, dan fondasi network security. Siap membantu membuat produk digital yang rapi, aman, cepat, dan mudah dirawat."
+        : "I am an IT professional focusing on modern web development, smart AI Agent integration, and network security foundations. Ready to help build clean, secure, fast, and easily maintainable digital products.",
     viewProjects: language === "id" ? "Lihat Proyek" : "View Projects",
     contactBtn: language === "id" ? "Kontak" : "Contact",
+    statusText: language === "id" ? "Tersedia untuk Pekerjaan" : "Available for work",
+    glowText: language === "id" ? "Kreativitas & IT Security Siap Pakai" : "High on Creativity & IT Security",
     stats: [
+      { value: 16, suffix: "+", label: language === "id" ? "Proyek Selesai" : "Projects Built" },
+      { value: 25, suffix: "+", label: language === "id" ? "Sertifikat Diraih" : "Certificates Earned" },
       { value: 280, suffix: "+", label: language === "id" ? "Siswa Diajar" : "Students Taught" },
-      { value: 6, suffix: "+", label: language === "id" ? "Proyek Diselesaikan" : "Projects Delivered" },
-      { value: 4, suffix: "+", label: language === "id" ? "Tahun Pengalaman Tech" : "Years in Tech" },
+      { value: 5, suffix: "+", label: language === "id" ? "Tahun di Tech" : "Years in Tech" },
     ],
   };
 
@@ -100,13 +105,13 @@ export default function HeroSection() {
         <div className="mt-6 flex flex-col gap-3.5 sm:flex-row">
           <button
             onClick={() => scrollTo("projects")}
-            className="clay-button group inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-black text-slate-950 md:text-base"
+            className="clay-button group inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-black text-slate-950 md:text-base cursor-pointer"
           >
             {t.viewProjects} <ArrowRight className="transition group-hover:translate-x-1" size={18} />
           </button>
           <button
             onClick={() => scrollTo("contact")}
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-cyan-200/25 bg-white/10 px-6 py-3.5 text-sm font-black text-cyan-50 backdrop-blur-xl transition hover:bg-white/16 md:text-base"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-cyan-200/25 bg-white/10 px-6 py-3.5 text-sm font-black text-cyan-50 backdrop-blur-xl transition hover:bg-white/16 md:text-base cursor-pointer"
           >
             <Mail size={18} /> {t.contactBtn}
           </button>
@@ -115,59 +120,35 @@ export default function HeroSection() {
         {/* Roles Pills */}
         <div className="mt-6 flex flex-wrap gap-2">
           {roles.map((role) => (
-            <span key={role} className="rounded-full bg-sky-200/10 px-3.5 py-1.5 text-xs font-bold text-sky-100 shadow-[inset_3px_3px_8px_rgba(255,255,255,0.1)]">
+            <span key={role} className="rounded-full bg-sky-200/10 px-3.5 py-1.5 text-xs font-bold text-sky-100 shadow-[inset_3px_3px_8px_rgba(255,255,255,0.1)] border border-cyan-200/15">
               {role}
             </span>
           ))}
         </div>
 
         {/* Animated Stats Counter */}
-        <div className="mt-6 grid gap-3 sm:grid-cols-3">
+        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {t.stats.map((stat) => (
             <div key={stat.label} className="stat-counter-card">
               <AnimatedCounter target={stat.value} suffix={stat.suffix} />
-              <p className="mt-1 text-[0.65rem] font-black uppercase tracking-[0.18em] text-cyan-200/70 md:text-xs">{stat.label}</p>
+              <p className="mt-1 text-[0.65rem] font-black uppercase tracking-[0.16em] text-cyan-200/70 md:text-xs">{stat.label}</p>
             </div>
           ))}
         </div>
       </motion.div>
 
-      {/* 3D Console Graphic */}
-      <motion.div initial={{ opacity: 0, scale: 0.86 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.9, delay: 0.1 }} className="perspective-3d">
-        <div className="relative mx-auto aspect-square max-w-[480px] preserve-3d lg:max-w-[540px]">
-          <div className="absolute inset-10 rounded-[4rem] bg-cyan-300/15 blur-3xl" />
-          <div className="submarine-card absolute inset-0 rounded-[3rem] border border-white/22 bg-gradient-to-br from-sky-100/18 to-cyan-900/18 p-6 shadow-[25px_35px_80px_rgba(0,0,0,0.42)] backdrop-blur-2xl preserve-3d md:p-8">
-            <div className="absolute left-6 top-6 rounded-full bg-white/12 px-3.5 py-1.5 text-xs font-black text-cyan-100 md:left-8 md:top-8 md:text-sm">3D Clay Console</div>
-            <div className="scene-3d absolute inset-0 grid place-items-center">
-              <div className="orb-3d">
-                <div className="ring ring-one" />
-                <div className="ring ring-two" />
-                <div className="ring ring-three" />
-                <div className="core">
-                  <img src="/uploads/foto_akun1.jpg" alt="Foto profil Naufal Angkasah" className="profile-orb-img" />
-                  <span className="absolute -bottom-2 -right-2 grid h-12 w-12 place-items-center rounded-2xl bg-slate-950/80 text-cyan-200 shadow-xl backdrop-blur-xl md:h-14 md:w-14">
-                    <Network size={24} />
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="absolute bottom-6 left-6 right-6 grid gap-2.5 rounded-[1.8rem] bg-slate-950/35 p-4 backdrop-blur-xl md:bottom-8 md:left-8 md:right-8 md:p-5">
-              <div className="flex items-center justify-between text-xs text-sky-100/75 md:text-sm">
-                <span>Naufal&apos;s IT profile</span>
-                <span className="font-black text-emerald-300">Healthy</span>
-              </div>
-              <div className="h-2.5 overflow-hidden rounded-full bg-white/10 md:h-3">
-                <div className="h-full w-[86%] rounded-full bg-gradient-to-r from-cyan-300 to-emerald-300" />
-              </div>
-              <div className="grid grid-cols-3 gap-2.5 pt-1 text-center text-[0.7rem] font-bold text-cyan-50 md:text-xs">
-                <span className="rounded-xl bg-white/10 py-2 md:rounded-2xl md:py-3">HTTPS</span>
-                <span className="rounded-xl bg-white/10 py-2 md:rounded-2xl md:py-3">Firewall</span>
-                <span className="rounded-xl bg-white/10 py-2 md:rounded-2xl md:py-3">API</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </motion.div>
+      {/* Glassmorphism Profile Card */}
+      <div className="flex justify-center items-center py-6 lg:py-0">
+        <GlassmorphismProfileCard
+          name="Naufal Angkasah"
+          role="Web Developer & Network Security"
+          email="naufalangkasah@gmail.com"
+          avatarSrc="/uploads/naufal-profile.jpg"
+          statusText={t.statusText}
+          glowText={t.glowText}
+          onHireClick={() => scrollTo("contact")}
+        />
+      </div>
     </section>
   );
 }

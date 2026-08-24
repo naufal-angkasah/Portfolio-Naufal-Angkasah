@@ -70,7 +70,7 @@ export default function Navbar() {
             <Waves size={24} />
           </span>
           <span className="text-left">
-            <span className="block text-sm font-black tracking-[0.28em] text-cyan-100">ABYSS</span>
+            <span className="block text-sm font-black tracking-[0.28em] text-cyan-100">PORTFOLIO</span>
             <span className="block text-xs text-sky-200/80">Naufal Angkasah</span>
           </span>
         </button>
@@ -82,9 +82,8 @@ export default function Navbar() {
               <button
                 key={item.id}
                 onClick={() => scrollTo(item.id)}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition hover:bg-white/12 hover:text-white ${
-                  isActive ? "nav-link-active" : "text-sky-100/80"
-                }`}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition hover:bg-white/12 hover:text-white ${isActive ? "nav-link-active" : "text-sky-100/80"
+                  }`}
               >
                 {item.label}
               </button>
@@ -129,9 +128,8 @@ export default function Navbar() {
               <button
                 key={item.id}
                 onClick={() => scrollTo(item.id)}
-                className={`rounded-2xl px-4 py-3 text-left font-semibold hover:bg-white/10 ${
-                  isActive ? "bg-white/10 text-cyan-200" : "text-cyan-50"
-                }`}
+                className={`rounded-2xl px-4 py-3 text-left font-semibold hover:bg-white/10 ${isActive ? "bg-white/10 text-cyan-200" : "text-cyan-50"
+                  }`}
               >
                 {item.label}
               </button>

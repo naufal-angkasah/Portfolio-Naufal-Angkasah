@@ -17,7 +17,7 @@ export default function Footer() {
               <Waves size={20} />
             </span>
             <div>
-              <p className="text-sm font-black tracking-[0.2em] text-cyan-100">ABYSS</p>
+              <p className="text-sm font-black tracking-[0.2em] text-cyan-100">PORTFOLIO</p>
               <p className="text-xs text-sky-100/50">Naufal Angkasah</p>
             </div>
           </div>

@@ -4,6 +4,13 @@ import React from "react";
 
 const experiences = [
   {
+    company: "IBM SkillsBuild x Hacktiv8",
+    role: "AI Agent & Data Analysis Program (Score: 87.15/100)",
+    period: "July 2026",
+    location: "Indonesia (Online)",
+    description: "IBM SkillsBuild University Education program. Developed end-to-end AI Agent prototypes, data classification using IBM Granite models, Vibe Coding & IBM Bob, and Langflow workflow orchestration with a final project score of 87.15/100 (Certificate ID: 02055/H8/CSR/ISUE/V/2026).",
+  },
+  {
     company: "Swiss German University",
     role: "Research Assistant (Cybersecurity SOC)",
     period: "June 2026 - July 2026",

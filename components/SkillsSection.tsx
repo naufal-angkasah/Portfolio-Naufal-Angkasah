@@ -32,12 +32,16 @@ const skills: SkillItem[] = [
 
   // ═══ DATA, CLOUD & INTEGRATION ═══
   { name: "Langflow & AI Agents", category: "Data & Tools", icon: "🤖" },
+  { name: "IBM Granite & IBM Bob", category: "Data & Tools", icon: "⚡" },
+  { name: "Vibe Coding & Prompt Eng.", category: "Data & Tools", icon: "💡" },
+  { name: "Data Classification & Analytics", category: "Data & Tools", icon: "📊" },
+  { name: "Tableau Data Visualization", category: "Data & Tools", icon: "📈" },
   { name: "Data Science & Gemini AI", category: "Data & Tools", icon: "🧠" },
   { name: "PostgreSQL & MySQL", category: "Data & Tools", icon: "🐬" },
   { name: "Redis Cache", category: "Data & Tools", icon: "🔴" },
   { name: "Firebase Firestore", category: "Data & Tools", icon: "🔥" },
   { name: "Midtrans QRIS Gateway", category: "Data & Tools", icon: "💳" },
-  { name: "Google Sheets API Pipeline", category: "Data & Tools", icon: "📊" },
+  { name: "Google Sheets API Pipeline", category: "Data & Tools", icon: "📑" },
   { name: "Leaflet & GeoJSON Maps", category: "Data & Tools", icon: "🗺️" },
   { name: "Web Audio & Speech API", category: "Data & Tools", icon: "🔔" },
   { name: "POS Engine & Receipt Print", category: "Data & Tools", icon: "🧾" },

@@ -78,7 +78,7 @@ export default function LoadingScreen() {
             {/* Top Badge */}
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-950/60 px-4 py-1 text-[11px] font-black uppercase tracking-[0.25em] text-cyan-200 shadow-inner">
               <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>ABYSS PROTOCOL • NAUFAL ANGKASAH</span>
+              <span>PORTFOLIO PROTOCOL • NAUFAL ANGKASAH</span>
             </div>
 
             {/* Central Hologram Core / Avatar with Sonar Rings */}
