@@ -92,30 +92,38 @@ export default function FlowFieldBackground({
 
       reset(scatter = false) {
         this.worldX = Math.random() * width;
-        this.worldY = scatter
-          ? Math.random() * height * 4
-          : currentScrollY + height + Math.random() * 100;
+
+        // Always spawn INSIDE the current viewport (screen-relative worldY)
+        // This way particles are visible in every section immediately.
+        // worldY = screenY + parallaxOffset  →  particle appears at random screen Y
+        const targetScreenY = scatter
+          ? Math.random() * height           // spread across full viewport on init
+          : Math.random() * height;          // respawn anywhere in viewport
+
+        // Convert desired screen Y back to worldY
+        // screenY = worldY - currentScrollY * depth  →  worldY = screenY + currentScrollY * depth
+        // We don't know depth yet so use a mid estimate — corrected after depth is set
+        const tempDepth = 0.1 + Math.random() * 0.15;
+        this.worldY = targetScreenY + currentScrollY * tempDepth;
 
         // Very slow sine frequencies → ultra-smooth sway
         this.freqX = 0.00035 + Math.random() * 0.00055;
         this.freqY = 0.00025 + Math.random() * 0.00045;
         this.phaseX = Math.random() * Math.PI * 2;
         this.phaseY = Math.random() * Math.PI * 2;
-        // Wider amplitude for more visible, graceful motion
         this.ampX = 40 + Math.random() * 80;
         this.ampY = 20 + Math.random() * 50;
 
         this.radius = 3 + Math.random() * 10;
-        this.driftSpeed = (0.05 + Math.random() * 0.14) * speed;
-        this.depth = 0.06 + (this.radius / 13) * 0.25;
+        this.driftSpeed = (0.18 + Math.random() * 0.32) * speed; // faster drift so they move visibly
+        this.depth = tempDepth;
 
-        // Start velocity at 0
         this.velX = 0;
         this.velY = 0;
 
-        this.age  = scatter ? Math.floor(Math.random() * 500) : 0;
-        this.life = 500 + Math.random() * 600;
-        this.alpha = scatter ? Math.random() * 0.5 : 0;
+        this.age  = scatter ? Math.floor(Math.random() * 400) : 0;
+        this.life = 400 + Math.random() * 500;
+        this.alpha = scatter ? Math.random() * 0.45 : 0;
         this.targetAlpha = 0.25 + Math.random() * 0.55;
         this.fadeDir = 1;
       }
