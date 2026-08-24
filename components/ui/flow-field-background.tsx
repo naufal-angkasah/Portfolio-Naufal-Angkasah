@@ -126,46 +126,54 @@ export default function FlowFieldBackground({
         // ── Smooth upward drift ─────────────────────────────────────────
         this.worldY -= this.driftSpeed;
 
-        // ── Compute current screen position (for mouse test) ────────────
+        // Accumulate cursor velocity directly into world position each frame
+        // so the displacement is permanent (particle never snaps back)
+        this.worldX += this.velX;
+        this.worldY += this.velY;
+
+        // ── Compute current screen position ─────────────────────────────
         const parallax = currentScrollY * this.depth;
         const swayX = Math.sin(tick * this.freqX + this.phaseX) * this.ampX;
         const swayY = Math.cos(tick * this.freqY + this.phaseY) * this.ampY;
-        const sx = this.worldX + swayX + this.velX;
-        const sy = this.worldY - parallax + swayY + this.velY;
+        const sx = this.worldX + swayX;
+        const sy = this.worldY - parallax + swayY;
 
-        // ── Cursor interaction: burst velocity → smooth friction decay ──
+        // ── Cursor: strong burst, very low friction → keeps drifting away ──
         const dx = mouseX - sx;
         const dy = mouseY - sy;
         const dist = Math.hypot(dx, dy);
         const repelR = 150;
 
         if (dist < repelR && dist > 1) {
-          // Quadratic falloff: closer = exponentially faster scatter
           const t = 1 - dist / repelR;
-          const burst = t * t * 11 * speed; // ← strong burst
+          const burst = t * t * 14 * speed;
           this.velX -= (dx / dist) * burst;
           this.velY -= (dy / dist) * burst;
         }
 
-        // Heavy friction so velocity decays back to 0 smoothly
-        // Slower decay (0.88) = particle glides away, then gracefully returns
-        this.velX *= 0.88;
-        this.velY *= 0.88;
+        // Very light friction → particle keeps drifting away, never returns
+        this.velX *= 0.97;
+        this.velY *= 0.97;
 
-        // ── Fade in / out ───────────────────────────────────────────────
+        // ── Fade: also fade out when moving fast (fleeing from cursor) ──
+        const spd = Math.hypot(this.velX, this.velY);
         if (this.fadeDir === 1) {
           this.alpha = Math.min(this.alpha + 0.006, this.targetAlpha);
           if (this.alpha >= this.targetAlpha) this.fadeDir = -1;
-        } else if (this.age > this.life * 0.70) {
-          this.alpha = Math.max(this.alpha - 0.004, 0);
+        } else if (this.age > this.life * 0.70 || spd > 3.5) {
+          // Speed threshold: fade out quickly when fleeing fast
+          const fadeRate = spd > 3.5 ? 0.022 : 0.004;
+          this.alpha = Math.max(this.alpha - fadeRate, 0);
         }
 
-        // ── Wrap X ──────────────────────────────────────────────────────
-        if (this.worldX + this.velX < -100) this.worldX = width + 80;
-        if (this.worldX + this.velX > width + 100) this.worldX = -80;
+        // ── Off-screen on any edge → recycle ────────────────────────────
+        const offScreen =
+          sy < -this.radius * 6 ||
+          sy > height + this.radius * 6 ||
+          sx < -this.radius * 6 ||
+          sx > width + this.radius * 6;
 
-        // ── Recycle ──────────────────────────────────────────────────────
-        if (sy < -this.radius * 5 || (this.age > this.life && this.alpha <= 0)) {
+        if (offScreen || (this.age > this.life && this.alpha <= 0)) {
           this.reset(false);
         }
       }
@@ -176,8 +184,8 @@ export default function FlowFieldBackground({
         const parallax = currentScrollY * this.depth;
         const swayX = Math.sin(tick * this.freqX + this.phaseX) * this.ampX;
         const swayY = Math.cos(tick * this.freqY + this.phaseY) * this.ampY;
-        const sx = this.worldX + swayX + this.velX;
-        const sy = this.worldY - parallax + swayY + this.velY;
+        const sx = this.worldX + swayX;
+        const sy = this.worldY - parallax + swayY;
 
         const r = this.radius * 2.8;
         const g = c.createRadialGradient(sx, sy, 0, sx, sy, r);
