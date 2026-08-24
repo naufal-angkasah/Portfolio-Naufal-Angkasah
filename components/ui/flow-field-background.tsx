@@ -14,7 +14,7 @@ interface FlowFieldBackgroundProps {
 export default function FlowFieldBackground({
   className,
   color = "#22d3ee",
-  particleCount = 130,
+  particleCount = 260,
   speed = 0.5,
   bgColor = "#031226",
 }: FlowFieldBackgroundProps) {
@@ -34,11 +34,10 @@ export default function FlowFieldBackground({
     let animId: number;
     let tick = 0;
 
-    // ── Scroll: track absolute position, NOT delta/velocity ──────────────
-    // This eliminates lag — particles are always computed from current scrollY
+    // Absolute scroll — zero lag
     let currentScrollY = window.scrollY;
 
-    // ── Mouse ─────────────────────────────────────────────────────────────
+    // Mouse in viewport coords
     let mouseX = -9999;
     let mouseY = -9999;
 
@@ -62,12 +61,16 @@ export default function FlowFieldBackground({
     const [br, bg_, bb] = parseColor(bgColor);
 
     class Particle {
-      // "World" Y — the particle's position as if page doesn't scroll
-      // Rendered Y = worldY - scrollY * depth  (instant, no lag)
+      // World-space base position
       worldX!: number;
       worldY!: number;
 
-      // Sinusoidal wander (applied on top of world position)
+      // Accumulated velocity from cursor interaction only
+      // (organic drift handled by sine, not physics)
+      velX!: number;
+      velY!: number;
+
+      // Sinusoidal wander parameters
       freqX!: number;
       freqY!: number;
       phaseX!: number;
@@ -75,100 +78,94 @@ export default function FlowFieldBackground({
       ampX!: number;
       ampY!: number;
 
-      // Drift (world Y decreases = drifts upward in world space)
       driftSpeed!: number;
-
-      // Parallax depth: 0 = no parallax, 1 = 1:1 with scroll
-      // Deeper particles (larger) move more with scroll
       depth!: number;
-
       radius!: number;
+
       alpha!: number;
       targetAlpha!: number;
       fadeDir!: number;
       age!: number;
       life!: number;
 
-      constructor() {
-        this.reset(true);
-      }
+      constructor() { this.reset(true); }
 
       reset(scatter = false) {
         this.worldX = Math.random() * width;
+        this.worldY = scatter
+          ? Math.random() * height * 4
+          : currentScrollY + height + Math.random() * 100;
 
-        if (scatter) {
-          // Spread across the entire scrollable area on init
-          // Use a virtual "world height" several times taller than viewport
-          this.worldY = Math.random() * height * 4;
-        } else {
-          // Respawn: place near the current bottom of viewport in world coords
-          // so it will drift upward into view naturally
-          this.worldY = currentScrollY + height + Math.random() * 80;
-        }
-
-        this.freqX = 0.0007 + Math.random() * 0.0010;
-        this.freqY = 0.0005 + Math.random() * 0.0009;
+        // Very slow sine frequencies → ultra-smooth sway
+        this.freqX = 0.00035 + Math.random() * 0.00055;
+        this.freqY = 0.00025 + Math.random() * 0.00045;
         this.phaseX = Math.random() * Math.PI * 2;
         this.phaseY = Math.random() * Math.PI * 2;
-        this.ampX   = 25 + Math.random() * 55;
-        this.ampY   = 15 + Math.random() * 35;
+        // Wider amplitude for more visible, graceful motion
+        this.ampX = 40 + Math.random() * 80;
+        this.ampY = 20 + Math.random() * 50;
 
-        this.radius     = 3 + Math.random() * 9;
-        this.driftSpeed = (0.07 + Math.random() * 0.16) * speed;
+        this.radius = 3 + Math.random() * 10;
+        this.driftSpeed = (0.05 + Math.random() * 0.14) * speed;
+        this.depth = 0.06 + (this.radius / 13) * 0.25;
 
-        // Depth based on radius: bigger = "closer" = more parallax offset
-        this.depth = 0.08 + (this.radius / 12) * 0.22;
+        // Start velocity at 0
+        this.velX = 0;
+        this.velY = 0;
 
-        this.age  = scatter ? Math.floor(Math.random() * 400) : 0;
-        this.life = 450 + Math.random() * 500;
-
-        this.alpha       = scatter ? Math.random() * 0.45 : 0;
-        this.targetAlpha = 0.28 + Math.random() * 0.52;
-        this.fadeDir     = 1;
+        this.age  = scatter ? Math.floor(Math.random() * 500) : 0;
+        this.life = 500 + Math.random() * 600;
+        this.alpha = scatter ? Math.random() * 0.5 : 0;
+        this.targetAlpha = 0.25 + Math.random() * 0.55;
+        this.fadeDir = 1;
       }
 
       update() {
         this.age++;
 
-        // ── Drift upward in world space ──────────────────────────────────
+        // ── Smooth upward drift ─────────────────────────────────────────
         this.worldY -= this.driftSpeed;
 
-        // ── Compute screen position: instant, lag-free ───────────────────
-        // parallaxOffset = how much this particle shifts due to scroll
-        // Positive scrollY (scrolled down) → particle appears higher → subtract
-        const parallaxOffset = currentScrollY * this.depth;
-
+        // ── Compute current screen position (for mouse test) ────────────
+        const parallax = currentScrollY * this.depth;
         const swayX = Math.sin(tick * this.freqX + this.phaseX) * this.ampX;
         const swayY = Math.cos(tick * this.freqY + this.phaseY) * this.ampY;
+        const sx = this.worldX + swayX + this.velX;
+        const sy = this.worldY - parallax + swayY + this.velY;
 
-        const screenX = this.worldX + swayX;
-        const screenY = this.worldY - parallaxOffset + swayY;
-
-        // ── Mouse repulsion (in screen space) ────────────────────────────
-        const dx = mouseX - screenX;
-        const dy = mouseY - screenY;
+        // ── Cursor interaction: burst velocity → smooth friction decay ──
+        const dx = mouseX - sx;
+        const dy = mouseY - sy;
         const dist = Math.hypot(dx, dy);
-        const repelR = 130;
+        const repelR = 150;
+
         if (dist < repelR && dist > 1) {
-          const strength = Math.pow(1 - dist / repelR, 2) * 4;
-          this.worldX -= (dx / dist) * strength;
-          this.worldY -= (dy / dist) * strength;
+          // Quadratic falloff: closer = exponentially faster scatter
+          const t = 1 - dist / repelR;
+          const burst = t * t * 11 * speed; // ← strong burst
+          this.velX -= (dx / dist) * burst;
+          this.velY -= (dy / dist) * burst;
         }
 
-        // ── Fade in/out ──────────────────────────────────────────────────
+        // Heavy friction so velocity decays back to 0 smoothly
+        // Slower decay (0.88) = particle glides away, then gracefully returns
+        this.velX *= 0.88;
+        this.velY *= 0.88;
+
+        // ── Fade in / out ───────────────────────────────────────────────
         if (this.fadeDir === 1) {
-          this.alpha = Math.min(this.alpha + 0.007, this.targetAlpha);
+          this.alpha = Math.min(this.alpha + 0.006, this.targetAlpha);
           if (this.alpha >= this.targetAlpha) this.fadeDir = -1;
-        } else if (this.age > this.life * 0.72) {
-          this.alpha = Math.max(this.alpha - 0.005, 0);
+        } else if (this.age > this.life * 0.70) {
+          this.alpha = Math.max(this.alpha - 0.004, 0);
         }
 
-        // ── Wrap X ───────────────────────────────────────────────────────
-        if (this.worldX < -80) this.worldX = width + 60;
-        if (this.worldX > width + 80) this.worldX = -60;
+        // ── Wrap X ──────────────────────────────────────────────────────
+        if (this.worldX + this.velX < -100) this.worldX = width + 80;
+        if (this.worldX + this.velX > width + 100) this.worldX = -80;
 
-        // ── Recycle when gone above viewport or fully faded ──────────────
-        if (screenY < -this.radius * 4 || (this.age > this.life && this.alpha <= 0)) {
+        // ── Recycle ──────────────────────────────────────────────────────
+        if (sy < -this.radius * 5 || (this.age > this.life && this.alpha <= 0)) {
           this.reset(false);
         }
       }
@@ -176,44 +173,45 @@ export default function FlowFieldBackground({
       draw(c: CanvasRenderingContext2D) {
         if (this.alpha <= 0.01) return;
 
-        const parallaxOffset = currentScrollY * this.depth;
+        const parallax = currentScrollY * this.depth;
         const swayX = Math.sin(tick * this.freqX + this.phaseX) * this.ampX;
         const swayY = Math.cos(tick * this.freqY + this.phaseY) * this.ampY;
-        const sx = this.worldX + swayX;
-        const sy = this.worldY - parallaxOffset + swayY;
+        const sx = this.worldX + swayX + this.velX;
+        const sy = this.worldY - parallax + swayY + this.velY;
 
-        const r = this.radius * 2.5;
-        const grad = c.createRadialGradient(sx, sy, 0, sx, sy, r);
-        grad.addColorStop(0,   `rgba(${cr},${cg},${cb},${this.alpha})`);
-        grad.addColorStop(0.45,`rgba(${cr},${cg},${cb},${this.alpha * 0.45})`);
-        grad.addColorStop(1,   `rgba(${cr},${cg},${cb},0)`);
+        const r = this.radius * 2.8;
+        const g = c.createRadialGradient(sx, sy, 0, sx, sy, r);
+        g.addColorStop(0,    `rgba(${cr},${cg},${cb},${this.alpha})`);
+        g.addColorStop(0.42, `rgba(${cr},${cg},${cb},${(this.alpha * 0.4).toFixed(3)})`);
+        g.addColorStop(1,    `rgba(${cr},${cg},${cb},0)`);
 
         c.beginPath();
         c.arc(sx, sy, r, 0, Math.PI * 2);
-        c.fillStyle = grad;
+        c.fillStyle = g;
         c.fill();
       }
     }
 
     setup();
+
+    // Spread initial particles across 6× viewport height so all sections are covered
     const particles: Particle[] = Array.from({ length: particleCount }, () => new Particle());
 
     const loop = () => {
       tick++;
-      // Read scroll position fresh every frame — no smoothing, no lag
       currentScrollY = window.scrollY;
 
-      // Clear canvas fully each frame
+      // Full clear each frame (no trail artifacts)
       ctx.fillStyle = `rgb(${br},${bg_},${bb})`;
       ctx.fillRect(0, 0, width, height);
 
-      // Subtle vignette
+      // Vignette
       const vig = ctx.createRadialGradient(
-        width / 2, height / 2, height * 0.22,
-        width / 2, height / 2, height * 0.9,
+        width / 2, height / 2, height * 0.20,
+        width / 2, height / 2, height * 0.88,
       );
       vig.addColorStop(0, "rgba(0,0,0,0)");
-      vig.addColorStop(1, "rgba(0,0,0,0.4)");
+      vig.addColorStop(1, "rgba(0,0,0,0.38)");
       ctx.fillStyle = vig;
       ctx.fillRect(0, 0, width, height);
 
