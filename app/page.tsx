@@ -10,7 +10,6 @@ import CertificatesSection from "@/components/CertificatesSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import FloatingBubbles from "@/components/FloatingBubbles";
 import LoadingScreen from "@/components/LoadingScreen";
 import HowIWorkSection from "@/components/HowIWorkSection";
 
@@ -18,38 +17,50 @@ import { LanguageProvider } from "@/context/LanguageContext";
 
 const CustomCursor = dynamic(() => import("@/components/CustomCursor"), { ssr: false });
 const SeaCreatures = dynamic(() => import("@/components/SeaCreatures"), { ssr: false });
+const NeuralBackground = dynamic(() => import("@/components/ui/flow-field-background"), { ssr: false });
 
 export default function HomePage() {
   return (
     <LanguageProvider>
       <main className="relative isolate min-h-screen overflow-hidden text-slate-100">
-      {/* Loading Screen */}
-      <LoadingScreen />
+        {/* Loading Screen */}
+        <LoadingScreen />
 
-      {/* Fixed Background */}
-      <div className="fixed inset-0 -z-20 deep-ocean" />
+        {/* Fixed Background — deep ocean gradient */}
+        <div className="fixed inset-0 -z-20 deep-ocean" />
 
-      {/* Ambient Layers */}
-      <SeaCreatures />
-      <FloatingBubbles />
+        {/* Flow Field Particle Layer — slow ocean current particles */}
+        <div className="fixed inset-0 -z-10 pointer-events-none">
+          <NeuralBackground
+            color="#22d3ee"       /* cyan-400 — bioluminescent particles */
+            trailOpacity={0.035}  /* very low = ultra-long ghostly trails */
+            particleCount={500}
+            speed={0.2}           /* barely drifting, like deep ocean currents */
+            bgColor="#031226"     /* matches deep-ocean bg to blend trails */
+            className="opacity-40"
+          />
+        </div>
 
-      {/* Custom Cursor (desktop only) */}
-      <CustomCursor />
+        {/* Ambient Sea Creatures Layer */}
+        <SeaCreatures />
 
-      {/* Navigation */}
-      <Navbar />
+        {/* Custom Cursor (desktop only) */}
+        <CustomCursor />
 
-      {/* Content Sections */}
-      <HeroSection />
-      <AboutSection />
-      <SkillsSection />
-      <HowIWorkSection />
-      <FeaturedProjects />
-      <CertificatesSection />
-      <ExperienceSection />
-      <ContactSection />
-      <Footer />
-    </main>
+        {/* Navigation */}
+        <Navbar />
+
+        {/* Content Sections */}
+        <HeroSection />
+        <AboutSection />
+        <SkillsSection />
+        <HowIWorkSection />
+        <FeaturedProjects />
+        <CertificatesSection />
+        <ExperienceSection />
+        <ContactSection />
+        <Footer />
+      </main>
     </LanguageProvider>
   );
 }
