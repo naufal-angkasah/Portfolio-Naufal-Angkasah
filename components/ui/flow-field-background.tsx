@@ -14,7 +14,7 @@ interface FlowFieldBackgroundProps {
 export default function FlowFieldBackground({
   className,
   color = "#22d3ee",
-  particleCount = 140,
+  particleCount = 130,
   speed = 0.5,
   bgColor = "#031226",
 }: FlowFieldBackgroundProps) {
@@ -34,11 +34,11 @@ export default function FlowFieldBackground({
     let animId: number;
     let tick = 0;
 
-    // Scroll
-    let lastScrollY = window.scrollY;
-    let scrollVel = 0;
+    // ── Scroll: track absolute position, NOT delta/velocity ──────────────
+    // This eliminates lag — particles are always computed from current scrollY
+    let currentScrollY = window.scrollY;
 
-    // Mouse
+    // ── Mouse ─────────────────────────────────────────────────────────────
     let mouseX = -9999;
     let mouseY = -9999;
 
@@ -53,7 +53,6 @@ export default function FlowFieldBackground({
       ctx.scale(dpr, dpr);
     };
 
-    // Parse hex color to [r,g,b]
     const parseColor = (hex: string): [number, number, number] => {
       const c = hex.replace("#", "");
       const n = parseInt(c.length === 3 ? c.split("").map(x => x + x).join("") : c, 16);
@@ -63,26 +62,30 @@ export default function FlowFieldBackground({
     const [br, bg_, bb] = parseColor(bgColor);
 
     class Particle {
-      x!: number;
-      y!: number;
-      // Base position for sinusoidal wander
-      baseX!: number;
-      baseY!: number;
-      // Each particle wanders along its own sin/cos path
+      // "World" Y — the particle's position as if page doesn't scroll
+      // Rendered Y = worldY - scrollY * depth  (instant, no lag)
+      worldX!: number;
+      worldY!: number;
+
+      // Sinusoidal wander (applied on top of world position)
       freqX!: number;
       freqY!: number;
       phaseX!: number;
       phaseY!: number;
       ampX!: number;
       ampY!: number;
-      // Glow size
-      radius!: number;
-      // Drift speed upward
+
+      // Drift (world Y decreases = drifts upward in world space)
       driftSpeed!: number;
-      // Opacity / life
+
+      // Parallax depth: 0 = no parallax, 1 = 1:1 with scroll
+      // Deeper particles (larger) move more with scroll
+      depth!: number;
+
+      radius!: number;
       alpha!: number;
       targetAlpha!: number;
-      fadeDir!: number;     // 1 = fading in, -1 = fading out
+      fadeDir!: number;
       age!: number;
       life!: number;
 
@@ -91,92 +94,102 @@ export default function FlowFieldBackground({
       }
 
       reset(scatter = false) {
-        // Scatter across whole screen on init, otherwise appear anywhere
-        this.baseX = Math.random() * width;
-        this.baseY = scatter ? Math.random() * height : Math.random() * height;
+        this.worldX = Math.random() * width;
 
-        this.x = this.baseX;
-        this.y = this.baseY;
+        if (scatter) {
+          // Spread across the entire scrollable area on init
+          // Use a virtual "world height" several times taller than viewport
+          this.worldY = Math.random() * height * 4;
+        } else {
+          // Respawn: place near the current bottom of viewport in world coords
+          // so it will drift upward into view naturally
+          this.worldY = currentScrollY + height + Math.random() * 80;
+        }
 
-        // Unique sinusoidal wobble per particle
-        this.freqX = 0.0008 + Math.random() * 0.0012;
-        this.freqY = 0.0006 + Math.random() * 0.0010;
+        this.freqX = 0.0007 + Math.random() * 0.0010;
+        this.freqY = 0.0005 + Math.random() * 0.0009;
         this.phaseX = Math.random() * Math.PI * 2;
         this.phaseY = Math.random() * Math.PI * 2;
-        this.ampX = 30 + Math.random() * 60;   // horizontal sway width
-        this.ampY = 20 + Math.random() * 40;   // vertical bob amplitude
+        this.ampX   = 25 + Math.random() * 55;
+        this.ampY   = 15 + Math.random() * 35;
 
-        this.radius = 3 + Math.random() * 9;
-        this.driftSpeed = (0.08 + Math.random() * 0.18) * speed;
+        this.radius     = 3 + Math.random() * 9;
+        this.driftSpeed = (0.07 + Math.random() * 0.16) * speed;
 
-        this.age = scatter ? Math.floor(Math.random() * 400) : 0;
-        this.life = 400 + Math.random() * 500;
-        this.alpha = scatter ? Math.random() * 0.5 : 0;
-        this.targetAlpha = 0.3 + Math.random() * 0.55;
-        this.fadeDir = 1;
+        // Depth based on radius: bigger = "closer" = more parallax offset
+        this.depth = 0.08 + (this.radius / 12) * 0.22;
+
+        this.age  = scatter ? Math.floor(Math.random() * 400) : 0;
+        this.life = 450 + Math.random() * 500;
+
+        this.alpha       = scatter ? Math.random() * 0.45 : 0;
+        this.targetAlpha = 0.28 + Math.random() * 0.52;
+        this.fadeDir     = 1;
       }
 
-      update(scrollShift: number) {
+      update() {
         this.age++;
 
-        // Sine/cosine-based wandering — smooth, natural, no jitter
-        const t = tick;
-        const swayX = Math.sin(t * this.freqX + this.phaseX) * this.ampX;
-        const swayY = Math.cos(t * this.freqY + this.phaseY) * this.ampY;
+        // ── Drift upward in world space ──────────────────────────────────
+        this.worldY -= this.driftSpeed;
 
-        this.x = this.baseX + swayX;
-        this.y = this.baseY + swayY;
+        // ── Compute screen position: instant, lag-free ───────────────────
+        // parallaxOffset = how much this particle shifts due to scroll
+        // Positive scrollY (scrolled down) → particle appears higher → subtract
+        const parallaxOffset = currentScrollY * this.depth;
 
-        // Drift upward slowly
-        this.baseY -= this.driftSpeed;
+        const swayX = Math.sin(tick * this.freqX + this.phaseX) * this.ampX;
+        const swayY = Math.cos(tick * this.freqY + this.phaseY) * this.ampY;
 
-        // Scroll parallax — deeper particles (smaller radius) scroll slower
-        const depth = 0.2 + (this.radius / 12) * 0.6;
-        this.baseY -= scrollShift * depth;
+        const screenX = this.worldX + swayX;
+        const screenY = this.worldY - parallaxOffset + swayY;
 
-        // Mouse repulsion — smooth push away
-        const dx = mouseX - this.x;
-        const dy = mouseY - this.y;
+        // ── Mouse repulsion (in screen space) ────────────────────────────
+        const dx = mouseX - screenX;
+        const dy = mouseY - screenY;
         const dist = Math.hypot(dx, dy);
-        const repelRadius = 140;
-        if (dist < repelRadius && dist > 1) {
-          const strength = Math.pow(1 - dist / repelRadius, 2) * 5;
-          this.baseX -= (dx / dist) * strength;
-          this.baseY -= (dy / dist) * strength;
+        const repelR = 130;
+        if (dist < repelR && dist > 1) {
+          const strength = Math.pow(1 - dist / repelR, 2) * 4;
+          this.worldX -= (dx / dist) * strength;
+          this.worldY -= (dy / dist) * strength;
         }
 
-        // Fade in / out
+        // ── Fade in/out ──────────────────────────────────────────────────
         if (this.fadeDir === 1) {
-          this.alpha = Math.min(this.alpha + 0.008, this.targetAlpha);
+          this.alpha = Math.min(this.alpha + 0.007, this.targetAlpha);
           if (this.alpha >= this.targetAlpha) this.fadeDir = -1;
-        } else if (this.age > this.life * 0.7) {
-          this.alpha = Math.max(this.alpha - 0.006, 0);
+        } else if (this.age > this.life * 0.72) {
+          this.alpha = Math.max(this.alpha - 0.005, 0);
         }
 
-        // Recycle when it drifts off top or fully fades out
-        if (this.baseY < -this.radius * 3 || (this.age > this.life && this.alpha <= 0)) {
+        // ── Wrap X ───────────────────────────────────────────────────────
+        if (this.worldX < -80) this.worldX = width + 60;
+        if (this.worldX > width + 80) this.worldX = -60;
+
+        // ── Recycle when gone above viewport or fully faded ──────────────
+        if (screenY < -this.radius * 4 || (this.age > this.life && this.alpha <= 0)) {
           this.reset(false);
         }
-
-        // Constrain base X to stay roughly on screen
-        if (this.baseX < -100) this.baseX = width + 80;
-        if (this.baseX > width + 100) this.baseX = -80;
       }
 
       draw(c: CanvasRenderingContext2D) {
         if (this.alpha <= 0.01) return;
 
-        // Soft glowing orb via radial gradient
-        const grad = c.createRadialGradient(
-          this.x, this.y, 0,
-          this.x, this.y, this.radius * 2.5,
-        );
+        const parallaxOffset = currentScrollY * this.depth;
+        const swayX = Math.sin(tick * this.freqX + this.phaseX) * this.ampX;
+        const swayY = Math.cos(tick * this.freqY + this.phaseY) * this.ampY;
+        const sx = this.worldX + swayX;
+        const sy = this.worldY - parallaxOffset + swayY;
+
+        const r = this.radius * 2.5;
+        const grad = c.createRadialGradient(sx, sy, 0, sx, sy, r);
         grad.addColorStop(0,   `rgba(${cr},${cg},${cb},${this.alpha})`);
-        grad.addColorStop(0.4, `rgba(${cr},${cg},${cb},${this.alpha * 0.5})`);
+        grad.addColorStop(0.45,`rgba(${cr},${cg},${cb},${this.alpha * 0.45})`);
         grad.addColorStop(1,   `rgba(${cr},${cg},${cb},0)`);
 
         c.beginPath();
-        c.arc(this.x, this.y, this.radius * 2.5, 0, Math.PI * 2);
+        c.arc(sx, sy, r, 0, Math.PI * 2);
         c.fillStyle = grad;
         c.fill();
       }
@@ -187,29 +200,25 @@ export default function FlowFieldBackground({
 
     const loop = () => {
       tick++;
+      // Read scroll position fresh every frame — no smoothing, no lag
+      currentScrollY = window.scrollY;
 
-      // Smooth scroll velocity
-      const curY = window.scrollY;
-      const raw = curY - lastScrollY;
-      lastScrollY = curY;
-      scrollVel = scrollVel * 0.75 + raw * 0.25;
-
-      // Clear canvas cleanly each frame — no trails, just crisp glowing dots
+      // Clear canvas fully each frame
       ctx.fillStyle = `rgb(${br},${bg_},${bb})`;
       ctx.fillRect(0, 0, width, height);
 
-      // Draw a subtle vignette once per frame so it feels immersive
+      // Subtle vignette
       const vig = ctx.createRadialGradient(
-        width / 2, height / 2, height * 0.25,
-        width / 2, height / 2, height * 0.85,
+        width / 2, height / 2, height * 0.22,
+        width / 2, height / 2, height * 0.9,
       );
       vig.addColorStop(0, "rgba(0,0,0,0)");
-      vig.addColorStop(1, "rgba(0,0,0,0.45)");
+      vig.addColorStop(1, "rgba(0,0,0,0.4)");
       ctx.fillStyle = vig;
       ctx.fillRect(0, 0, width, height);
 
       for (const p of particles) {
-        p.update(scrollVel);
+        p.update();
         p.draw(ctx);
       }
 
