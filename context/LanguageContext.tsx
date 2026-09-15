@@ -21,17 +21,20 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // 1) Cek localStorage dulu
-    const saved = localStorage.getItem("portfolio_lang") as Language;
+    const saved = localStorage.getItem("portfolio_lang") as Language | null;
+    let initial: Language = "id";
     if (saved === "id" || saved === "en") {
-      setLanguageState(saved);
-      return;
-    }
-    // 2) Fallback ke bahasa sistem browser
-    const browserLang = navigator.language || "";
-    if (browserLang.startsWith("en")) {
-      setLanguageState("en");
+      initial = saved;
     } else {
-      setLanguageState("id");
+      const browserLang = navigator.language || "";
+      if (browserLang.startsWith("en")) {
+        initial = "en";
+      }
+    }
+    if (initial !== "id") {
+      queueMicrotask(() => {
+        setLanguageState(initial);
+      });
     }
   }, []);
 

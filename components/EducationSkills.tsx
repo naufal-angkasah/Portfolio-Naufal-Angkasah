@@ -29,15 +29,30 @@ export default function EducationSkills() {
           <div className="skills-card">
             <h4>Top Skills</h4>
             <div className="skills-tags">
-              <span className="skill-tag">Software Industry</span>
-              <span className="skill-tag">Redis</span>
-              <span className="skill-tag">Honeypots</span>
-              <span className="skill-tag">Network Security</span>
               <span className="skill-tag">Web Development</span>
+              <span className="skill-tag">Machine Learning & AI</span>
+              <span className="skill-tag">Prompt Engineering</span>
+              <span className="skill-tag">Network Security</span>
+              <span className="skill-tag">AI Agent & Langflow</span>
+              <span className="skill-tag">Software Industry</span>
             </div>
 
             <h4 style={{ marginTop: "1.5rem" }}>Sertifikasi Utama</h4>
             <ul className="cert-list">
+              <li>
+                <span className="cert-icon">📜</span>
+                <div>
+                  <strong>Prompt Engineering & ML Developer</strong>
+                  <p>Dicoding Indonesia (Google Partners) - 2026</p>
+                </div>
+              </li>
+              <li>
+                <span className="cert-icon">📜</span>
+                <div>
+                  <strong>AI Agent for Data Analysis (87.15/100)</strong>
+                  <p>IBM SkillsBuild x Hacktiv8 - 2026</p>
+                </div>
+              </li>
               <li>
                 <span className="cert-icon">📜</span>
                 <div>

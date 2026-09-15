@@ -150,16 +150,27 @@ function UnderwaterBubbles({ count = 40 }: { count?: number }) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
 
   const bubbleData = useMemo(() => {
-    return Array.from({ length: count }, () => ({
-      position: new THREE.Vector3(
-        (Math.random() - 0.5) * 14,
-        (Math.random() - 0.5) * 8,
-        (Math.random() - 0.5) * 8
-      ),
-      speed: Math.random() * 0.3 + 0.1,
-      size: Math.random() * 0.08 + 0.02,
-      offset: Math.random() * Math.PI * 2,
-    }));
+    return Array.from({ length: count }, (_, i) => {
+      const f1 = (Math.sin(i * 12.9898) * 43758.5453) % 1;
+      const f2 = (Math.sin(i * 78.233) * 43758.5453) % 1;
+      const f3 = (Math.sin(i * 45.164) * 43758.5453) % 1;
+      const f4 = (Math.sin(i * 91.345) * 43758.5453) % 1;
+      const p1 = f1 < 0 ? f1 + 1 : f1;
+      const p2 = f2 < 0 ? f2 + 1 : f2;
+      const p3 = f3 < 0 ? f3 + 1 : f3;
+      const p4 = f4 < 0 ? f4 + 1 : f4;
+
+      return {
+        position: new THREE.Vector3(
+          (p1 - 0.5) * 14,
+          (p2 - 0.5) * 8,
+          (p3 - 0.5) * 8
+        ),
+        speed: p4 * 0.3 + 0.1,
+        size: p1 * 0.08 + 0.02,
+        offset: p2 * Math.PI * 2,
+      };
+    });
   }, [count]);
 
   useFrame((state) => {
@@ -235,7 +246,7 @@ function UnderwaterScene() {
     [-4, -3, -2, 2, 3, 4.5].map((x, i) => ({
       x,
       i,
-      height: 1.5 + Math.random() * 1.5,
+      height: 1.5 + ((i * 3 + 7) % 15) / 10,
       color: i % 2 === 0 ? "#1b5e20" : "#2e7d32",
     }))
   ), []);

@@ -31,9 +31,11 @@ const skills: SkillItem[] = [
   { name: "HTML5 & CSS3", category: "Full Stack", icon: "🌐" },
 
   // ═══ DATA, CLOUD & INTEGRATION ═══
+  { name: "Machine Learning (Supervised & Unsupervised)", category: "Data & Tools", icon: "⚙️" },
+  { name: "Prompt Engineering & GenAI", category: "Data & Tools", icon: "🎯" },
   { name: "Langflow & AI Agents", category: "Data & Tools", icon: "🤖" },
   { name: "IBM Granite & IBM Bob", category: "Data & Tools", icon: "⚡" },
-  { name: "Vibe Coding & Prompt Eng.", category: "Data & Tools", icon: "💡" },
+  { name: "Vibe Coding & LLM Workflows", category: "Data & Tools", icon: "💡" },
   { name: "Data Classification & Analytics", category: "Data & Tools", icon: "📊" },
   { name: "Tableau Data Visualization", category: "Data & Tools", icon: "📈" },
   { name: "Data Science & Gemini AI", category: "Data & Tools", icon: "🧠" },

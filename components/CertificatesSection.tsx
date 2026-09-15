@@ -43,6 +43,8 @@ type Certificate = {
   /** "image" for png/jpg, "pdf" for pdf */
   type: "image" | "pdf";
   icon: React.ReactNode;
+  /** optional credential verification link */
+  verifyUrl?: string;
 };
 
 /* ─────────────── Tag config ─────────────── */
@@ -224,6 +226,39 @@ const certificates: Certificate[] = [
 
   // ═══ DATA & AI ═══
   {
+    title: "Prompt Engineering untuk Software Developer",
+    issuer: "Dicoding Indonesia (Google Developers ATP)",
+    date: "2026",
+    tags: ["Data & AI", "Programming", "Web Development"],
+    file: "sertifikat_Prompt_Engineering_untuk_Software_Developer.pdf",
+    type: "pdf",
+    icon: <Brain size={28} />,
+    desc: "Sertifikat kompetensi Prompt Engineering untuk Software Developer (16 jam). Menguasai pola-pola prompt adaptif, best practices integrasi AI pada aktivitas development, serta limitasi dan etika AI (ID: 2VX3VY5YQPYQ).",
+    verifyUrl: "https://www.dicoding.com/certificates/2VX3VY5YQPYQ",
+  },
+  {
+    title: "Belajar Machine Learning untuk Pemula",
+    issuer: "Dicoding Indonesia (Google Developers ATP)",
+    date: "2026",
+    tags: ["Data & AI", "Programming"],
+    file: "sertifikat_Belajar_Machine_Learning_untuk_Pemula.pdf",
+    type: "pdf",
+    icon: <Database size={28} />,
+    desc: "Sertifikat kompetensi Machine Learning untuk Pemula (90 jam). Alur kerja ML, Supervised Learning (Klasifikasi KNN & Decision Tree, Regresi Linear), Unsupervised Clustering (K-Means), Feature Engineering, Hyperparameter Tuning, dan proyek tabular (ID: JMZVL90QQXN9).",
+    verifyUrl: "https://www.dicoding.com/certificates/JMZVL90QQXN9",
+  },
+  {
+    title: "Belajar Dasar AI",
+    issuer: "Dicoding Indonesia (Google Cloud Partner)",
+    date: "2026",
+    tags: ["Data & AI"],
+    file: "sertifikat_Belajar_Dasar_AI.pdf",
+    type: "pdf",
+    icon: <Brain size={28} />,
+    desc: "Sertifikat kelulusan Belajar Dasar AI (10 jam). Konsep dasar Artificial Intelligence, pemanfaatan data dalam pengembangan AI, pengantar Machine Learning, dan implementasi Deep Learning (ID: GRX509302Z0M).",
+    verifyUrl: "https://www.dicoding.com/certificates/GRX509302Z0M",
+  },
+  {
     title: "Data - AI Agent for Data Analysis",
     issuer: "IBM SkillsBuild x Hacktiv8",
     date: "2026",
@@ -377,6 +412,28 @@ const certificates: Certificate[] = [
   },
 
   // ═══ CAREER ═══
+  {
+    title: "Belajar Strategi Pengembangan Diri",
+    issuer: "Dicoding Indonesia",
+    date: "2026",
+    tags: ["Career"],
+    file: "sertifikat_Belajar_Strategi_Pengembangan_Diri.pdf",
+    type: "pdf",
+    icon: <Briefcase size={28} />,
+    desc: "Sertifikat strategi pengembangan diri profesional melalui pengelolaan pola pikir (growth mindset), manajemen waktu, adaptabilitas, serta perancangan Personal Development Plan (ID: NVP7WO3G4ZR0).",
+    verifyUrl: "https://www.dicoding.com/certificates/NVP7WO3G4ZR0",
+  },
+  {
+    title: "Introduction to Financial Literacy",
+    issuer: "Dicoding x DBS Foundation",
+    date: "2026",
+    tags: ["Career"],
+    file: "sertifikat_Introduction_to_Financial_Literacy.pdf",
+    type: "pdf",
+    icon: <Award size={28} />,
+    desc: "Sertifikat literasi finansial program Coding Camp powered by DBS Foundation 2026 (6 jam). Pemahaman prinsip dasar keuangan harian, strategi investasi masa depan, dan smart borrowing (ID: 53XEMJD40PRN).",
+    verifyUrl: "https://www.dicoding.com/certificates/53XEMJD40PRN",
+  },
   {
     title: "Kampus Merdeka — Telkom Indonesia",
     issuer: "Telkom Indonesia",
@@ -575,20 +632,35 @@ export default function CertificatesSection() {
                   </p>
 
                   {/* Footer */}
-                  <div className="mt-4 flex items-center justify-between">
+                  <div className="mt-4 flex items-center justify-between gap-2">
                     <span className="text-xs font-black text-emerald-300">
                       📅 {cert.date}
                     </span>
-                    <a
-                      href={rawFilePath(cert.file)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="cert-open-link"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <ExternalLink size={13} />
-                      <span>{cert.type === "pdf" ? (language === "id" ? "Buka PDF" : "Open PDF") : (language === "id" ? "Lihat File" : "View File")}</span>
-                    </a>
+                    <div className="flex items-center gap-2">
+                      {cert.verifyUrl && (
+                        <a
+                          href={cert.verifyUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 rounded-full border border-cyan-400/40 bg-cyan-500/15 px-2.5 py-1 text-[0.7rem] font-bold text-cyan-200 transition hover:bg-cyan-500/30"
+                          onClick={(e) => e.stopPropagation()}
+                          title={language === "id" ? "Verifikasi sertifikat online" : "Verify certificate online"}
+                        >
+                          <Award size={12} />
+                          <span>{language === "id" ? "Verifikasi" : "Verify"}</span>
+                        </a>
+                      )}
+                      <a
+                        href={rawFilePath(cert.file)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="cert-open-link"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <ExternalLink size={13} />
+                        <span>{cert.type === "pdf" ? (language === "id" ? "Buka PDF" : "Open PDF") : (language === "id" ? "Lihat File" : "View File")}</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </motion.article>
@@ -689,7 +761,7 @@ export default function CertificatesSection() {
               </p>
 
               {/* Action Button */}
-              <div className="mt-6 flex justify-center gap-3">
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <a
                   href={rawFilePath(selected.file)}
                   target="_blank"
@@ -701,6 +773,17 @@ export default function CertificatesSection() {
                     ? (language === "id" ? "Buka File PDF Asli" : "Open Original PDF")
                     : (language === "id" ? "Lihat Gambar Asli" : "View Original Image")}
                 </a>
+                {selected.verifyUrl && (
+                  <a
+                    href={selected.verifyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full border border-cyan-400/50 bg-cyan-500/20 px-6 py-3 text-sm font-bold text-cyan-100 transition hover:bg-cyan-500/35 backdrop-blur-md shadow-[0_0_20px_rgba(34,211,238,0.25)]"
+                  >
+                    <Award size={16} />
+                    <span>{language === "id" ? "Verifikasi Sertifikat Online" : "Verify Certificate Online"}</span>
+                  </a>
+                )}
               </div>
 
               <p className="mt-4 text-center text-xs text-sky-100/40">
