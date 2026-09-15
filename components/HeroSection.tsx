@@ -85,7 +85,7 @@ export default function HeroSection() {
     glowText: language === "id" ? "Kreativitas & IT Security Siap Pakai" : "High on Creativity & IT Security",
     stats: [
       { value: 16, suffix: "+", label: language === "id" ? "Proyek Selesai" : "Projects Built" },
-      { value: 28, suffix: "+", label: language === "id" ? "Sertifikat Diraih" : "Certificates Earned" },
+      { value: 29, suffix: "+", label: language === "id" ? "Sertifikat Diraih" : "Certificates Earned" },
       { value: 280, suffix: "+", label: language === "id" ? "Siswa Diajar" : "Students Taught" },
       { value: 5, suffix: "+", label: language === "id" ? "Tahun di Tech" : "Years in Tech" },
     ],

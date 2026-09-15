@@ -361,6 +361,17 @@ const certificates: Certificate[] = [
 
   // ═══ PROGRAMMING ═══
   {
+    title: "Memulai Pemrograman dengan Python",
+    issuer: "Dicoding Indonesia (Google Developers ATP)",
+    date: "2026",
+    tags: ["Programming", "Data & AI"],
+    file: "sertifikat_Memulai_Pemrograman_dengan_Python.pdf",
+    type: "pdf",
+    icon: <Code size={28} />,
+    desc: "Sertifikat kompetensi Pemrograman Python standar industri (60 jam). Menguasai alur kontrol, array & matriks, subprogram/fungsi, OOP Python, PEP8, unit testing, dan pemanfaatan library populer (ID: 0LZ0JGJ80X65).",
+    verifyUrl: "https://www.dicoding.com/certificates/0LZ0JGJ80X65",
+  },
+  {
     title: "Pengenalan ke Logika Pemrograman",
     issuer: "Dicoding Indonesia",
     date: "2023",

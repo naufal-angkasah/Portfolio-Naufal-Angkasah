@@ -30,6 +30,7 @@ export default function EducationSkills() {
             <h4>Top Skills</h4>
             <div className="skills-tags">
               <span className="skill-tag">Web Development</span>
+              <span className="skill-tag">Python Programming</span>
               <span className="skill-tag">Machine Learning & AI</span>
               <span className="skill-tag">Prompt Engineering</span>
               <span className="skill-tag">Network Security</span>
