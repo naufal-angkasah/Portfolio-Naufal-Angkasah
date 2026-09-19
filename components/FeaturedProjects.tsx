@@ -33,6 +33,68 @@ type Project = {
 const projects: Project[] = [
   // ═══ FULL STACK & WEB DEV PROJECTS WITH SCREENSHOT GALLERIES ═══
   {
+    title: "Grand Tamansari (Wimala-Land)",
+    type: "Full Stack",
+    category: "Full Stack",
+    desc: "Sistem informasi pengelolaan kawasan perumahan, portal warga & siteplan digital interaktif.",
+    longDesc:
+      "Aplikasi web full-stack Sistem Pengelolaan Kawasan Perumahan Grand Tamansari (Wimala-Land) yang dibangun dengan Next.js 15.5 App Router, React 19, TypeScript, dan Tailwind CSS v4. Dilengkapi peta siteplan digital interaktif 65 kavling dengan color-coded pin status, portal warga (tagihan IPL, tagihan air meteran m³, upload bukti transfer, kuitansi digital, pengumuman & pengaduan), serta dashboard pengelola super admin (verifikasi bayar, rekapitulasi per cluster, chart Recharts, ekspor Excel .xlsx, dan log audit).",
+    stack: ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS v4", "Supabase PostgreSQL", "Recharts", "SheetJS (Excel)", "Vercel"],
+    demoUrl: "https://wimala-land.vercel.app/",
+    screenshot: "/projects/screenshots/wimala-land-1.png",
+    screenshots: [
+      "/projects/screenshots/wimala-land-1.png",
+      "/projects/screenshots/wimala-land-2.png",
+      "/projects/screenshots/wimala-land-3.png",
+      "/projects/screenshots/wimala-land-4.png",
+      "/projects/screenshots/wimala-land-5.png",
+    ],
+    visuals: [
+      { icon: "🏡", gradient: "linear-gradient(135deg, #1e3a8a 0%, #2067A1 50%, #1F7D4E 100%)" },
+      { icon: "🗺️", gradient: "linear-gradient(135deg, #2067A1 0%, #1F7D4E 50%, #047857 100%)" },
+      { icon: "📊", gradient: "linear-gradient(135deg, #1F7D4E 0%, #1e3a8a 50%, #2067A1 100%)" },
+    ],
+    featureModules: [
+      {
+        icon: "🗺️",
+        module: "Peta Siteplan Digital Interaktif & Kavling",
+        features: [
+          { name: "Peta Kawasan Visual 65 Kavling", desc: "Denah klaster interaktif (Kamala, Lily, Bougenvile) dengan pin indikator warna status unit (Lunas, Belum Lunas, Verifikasi, Booking)" },
+          { name: "Modal Tooltip Detail & Editor Titik", desc: "Klik pin untuk info luas tanah/bangunan, penghuni & tagihan, serta editor koordinat marker visual untuk admin" },
+        ],
+      },
+      {
+        icon: "🔐",
+        module: "Autentikasi Multi-Role & Akun Demo Instan",
+        features: [
+          { name: "Multi-Layer Role-Based Auth", desc: "Pemisahan hak akses Super Admin (Pengelola) & Warga (Penghuni) via secure HTTP-only cookies (gt_session)" },
+          { name: "Box Akun Demo 1-Click Auto-Fill", desc: "Panel akun uji coba responsif dengan tombol instan 'Gunakan Akun Ini' + fitur copy kredensial cepat" },
+          { name: "Dark Mode & Lupa Password", desc: "Theme toggle Dark/Light terintegrasi penuh + reset password mandiri via email maupun reset manual oleh admin" },
+        ],
+      },
+      {
+        icon: "🏠",
+        module: "Portal Warga (Resident Portal)",
+        features: [
+          { name: "Dashboard Unit & Tagihan IPL", desc: "Ringkasan data unit kavling, rincian biaya pemeliharaan lingkungan/kebersihan/keamanan, status & jatuh tempo" },
+          { name: "Tagihan Air Bersih (Meteran m³)", desc: "Pencatatan angka meter awal & akhir, total pemakaian air m³, serta kalkulasi biaya otomatis" },
+          { name: "Upload Bukti Transfer & Kuitansi", desc: "Form kirim bukti bayar rekening bank pengelola + simulator payment gateway & download kuitansi digital" },
+          { name: "Lonceng Notifikasi & Pengaduan Warga", desc: "Popover baca pengumuman resmi tanpa reload + form kirim pesan pengaduan fasilitas dengan pelacakan status" },
+        ],
+      },
+      {
+        icon: "📊",
+        module: "Portal Pengelola (Executive Admin Dashboard)",
+        features: [
+          { name: "Executive Dashboard & Rekap Cluster", desc: "Metrik 65 unit kavling, persentase penagihan, total kas masuk Rp 14.300.000, & rekapitulasi status per cluster" },
+          { name: "Verifikasi Pembayaran & Approval", desc: "Antrean verifikasi transaksi masuk, modal periksa screenshot bukti transfer, tombol Setujui/Tolak real-time" },
+          { name: "Laporan Keuangan & Ekspor Excel", desc: "Grafik tren keuangan dengan Recharts + tombol ekspor rekapitulasi laporan kas ke file Microsoft Excel (.xlsx)" },
+          { name: "Broadcast Pengumuman & Audit Trail", desc: "Publikasi pengumuman baru ke lonceng warga, manajemen data penghuni, reset password, & log riwayat aktivitas" },
+        ],
+      },
+    ],
+  },
+  {
     title: "Roti Manis Bahagia",
     type: "Full Stack",
     category: "Full Stack",

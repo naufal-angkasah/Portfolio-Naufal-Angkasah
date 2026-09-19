@@ -32,6 +32,9 @@ const skills: SkillItem[] = [
   { name: "HTML5 & CSS3", category: "Full Stack", icon: "🌐" },
 
   // ═══ DATA, CLOUD & INTEGRATION ═══
+  { name: "Supabase & PostgreSQL", category: "Data & Tools", icon: "⚡" },
+  { name: "Recharts Financial Analytics", category: "Data & Tools", icon: "📊" },
+  { name: "SheetJS Excel Engine", category: "Data & Tools", icon: "📑" },
   { name: "Vite 8 Build Tool", category: "Data & Tools", icon: "⚡" },
   { name: "WhatsApp Order API", category: "Data & Tools", icon: "💬" },
   { name: "Machine Learning (Supervised & Unsupervised)", category: "Data & Tools", icon: "⚙️" },
