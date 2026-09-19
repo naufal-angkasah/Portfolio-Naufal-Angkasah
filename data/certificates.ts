@@ -17,6 +17,8 @@ export type Certificate = {
   tags: CertificateTag[];
   /** file path relative to /certificates/ */
   file: string;
+  /** explicit preview path override for cache busting */
+  preview?: string;
   /** "image" for png/jpg, "pdf" for pdf */
   type: "image" | "pdf";
   /** optional credential verification link */
@@ -24,6 +26,9 @@ export type Certificate = {
 };
 
 export function getPreviewImage(cert: Certificate): string {
+  if (cert.preview) {
+    return cert.preview;
+  }
   if (cert.type === "image") {
     return `/certificates/${cert.file}`;
   }
@@ -207,6 +212,7 @@ export const certificates: Certificate[] = [
     date: "2026",
     tags: ["Data & AI", "Career"],
     file: "IBM_SkillsBuild_AI_Agent_for_Data_Analysis_Naufal_Angkasah.pdf",
+    preview: "/certificates/previews/ibm-skillsbuild-ai-agent-cert-2026.jpg",
     type: "pdf",
     desc: "Sertifikat kelulusan program IBM SkillsBuild University Education: Data - AI Agent for Data Analysis & penyelesaian final project AI workflow (ID: 02055/H8/CSR/ISUE/V/2026).",
   },
@@ -217,6 +223,7 @@ export const certificates: Certificate[] = [
     date: "2026",
     tags: ["Data & AI"],
     file: "IBM_SkillsBuild_AI_Agent_Transcript_Naufal_Angkasah.pdf",
+    preview: "/certificates/previews/ibm-skillsbuild-ai-agent-transcript-2026.jpg",
     type: "pdf",
     desc: "Transkrip nilai & skor project building (87.15/100) mencakup Foundation & AI Intro (IBM Granite, Vibe Coding), AI Agent Development (IBM Bob), & Langflow (ID: 03560/H8/CSR/ISUE/V/2026).",
   },
