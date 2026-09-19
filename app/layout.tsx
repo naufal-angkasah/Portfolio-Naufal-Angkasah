@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import CustomCursor from "@/components/CustomCursor";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://portfolio-naufal-angkasah.vercel.app"),
@@ -52,6 +53,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body suppressHydrationWarning>
+        <CustomCursor />
         {children}
       </body>
     </html>

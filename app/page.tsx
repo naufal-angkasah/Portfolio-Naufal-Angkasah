@@ -16,7 +16,6 @@ import HowIWorkSection from "@/components/HowIWorkSection";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ReadyProvider } from "@/context/ReadyContext";
 
-const CustomCursor = dynamic(() => import("@/components/CustomCursor"), { ssr: false });
 const SeaCreatures = dynamic(() => import("@/components/SeaCreatures"), { ssr: false });
 const NeuralBackground = dynamic(() => import("@/components/ui/flow-field-background"), { ssr: false });
 
@@ -44,9 +43,6 @@ export default function HomePage() {
 
         {/* Ambient Sea Creatures Layer */}
         <SeaCreatures />
-
-        {/* Custom Cursor (desktop only) */}
-        <CustomCursor />
 
         {/* Navigation */}
         <Navbar />
