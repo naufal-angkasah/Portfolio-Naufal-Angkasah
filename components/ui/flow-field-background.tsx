@@ -16,7 +16,7 @@ interface FlowFieldBackgroundProps {
 export default function FlowFieldBackground({
   className,
   color = "#22d3ee",
-  particleCount = 260,
+  particleCount,
   speed = 0.5,
   bgColor = "#031226",
 }: FlowFieldBackgroundProps) {
@@ -29,13 +29,18 @@ export default function FlowFieldBackground({
     const container = containerRef.current;
     if (!canvas || !container) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) return;
 
     let width = window.innerWidth;
     let height = window.innerHeight;
     let animId: number;
     let tick = 0;
+    let isPaused = false;
+
+    // Adaptive particle count based on device screen / capability
+    const isMobile = width < 768;
+    const count = particleCount ?? (isMobile ? 80 : 150);
 
     // Absolute scroll — zero lag
     let currentScrollY = window.scrollY;
@@ -44,88 +49,107 @@ export default function FlowFieldBackground({
     let mouseX = -9999;
     let mouseY = -9999;
 
-    const setup = () => {
-      const dpr = window.devicePixelRatio || 1;
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      ctx.scale(dpr, dpr);
-    };
-
     const parseColor = (hex: string): [number, number, number] => {
       const c = hex.replace("#", "");
-      const n = parseInt(c.length === 3 ? c.split("").map(x => x + x).join("") : c, 16);
+      const n = parseInt(c.length === 3 ? c.split("").map((x) => x + x).join("") : c, 16);
       return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
     };
     const [cr, cg, cb] = parseColor(color);
     const [br, bg_, bb] = parseColor(bgColor);
 
+    // ── High Performance Offscreen Sprite Caching ────────────────────────────
+    // Create 1 pre-rendered glow texture so we don't call createRadialGradient 15,000x / sec!
+    const SPRITE_SIZE = 64;
+    const spriteCanvas = document.createElement("canvas");
+    spriteCanvas.width = SPRITE_SIZE;
+    spriteCanvas.height = SPRITE_SIZE;
+    const sCtx = spriteCanvas.getContext("2d");
+    if (sCtx) {
+      const half = SPRITE_SIZE / 2;
+      const grad = sCtx.createRadialGradient(half, half, 0, half, half, half);
+      grad.addColorStop(0, `rgba(${cr},${cg},${cb},1)`);
+      grad.addColorStop(0.35, `rgba(${cr},${cg},${cb},0.55)`);
+      grad.addColorStop(0.7, `rgba(${cr},${cg},${cb},0.15)`);
+      grad.addColorStop(1, `rgba(${cr},${cg},${cb},0)`);
+      sCtx.fillStyle = grad;
+      sCtx.fillRect(0, 0, SPRITE_SIZE, SPRITE_SIZE);
+    }
+
+    // ── Cached Vignette Gradient ─────────────────────────────────────────────
+    let vigCanvas: HTMLCanvasElement | null = null;
+    const createVignette = (w: number, h: number) => {
+      vigCanvas = document.createElement("canvas");
+      vigCanvas.width = Math.min(w, 512);
+      vigCanvas.height = Math.min(h, 512);
+      const vCtx = vigCanvas.getContext("2d");
+      if (vCtx) {
+        const vw = vigCanvas.width;
+        const vh = vigCanvas.height;
+        const vig = vCtx.createRadialGradient(vw / 2, vh / 2, vh * 0.2, vw / 2, vh / 2, vh * 0.9);
+        vig.addColorStop(0, "rgba(0,0,0,0)");
+        vig.addColorStop(1, "rgba(0,0,0,0.38)");
+        vCtx.fillStyle = vig;
+        vCtx.fillRect(0, 0, vw, vh);
+      }
+    };
+
+    const setup = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2); // Cap at 2x DPR to save mobile GPU
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.scale(dpr, dpr);
+      createVignette(width, height);
+    };
+
     class Particle {
-      // World-space base position
       worldX!: number;
       worldY!: number;
-
-      // Accumulated velocity from cursor interaction only
-      // (organic drift handled by sine, not physics)
       velX!: number;
       velY!: number;
-
-      // Sinusoidal wander parameters
       freqX!: number;
       freqY!: number;
       phaseX!: number;
       phaseY!: number;
       ampX!: number;
       ampY!: number;
-
       driftSpeed!: number;
       depth!: number;
       radius!: number;
-
       alpha!: number;
       targetAlpha!: number;
       fadeDir!: number;
       age!: number;
       life!: number;
 
-      constructor() { this.reset(true); }
+      constructor() {
+        this.reset(true);
+      }
 
       reset(scatter = false) {
         this.worldX = Math.random() * width;
-
-        // Always spawn INSIDE the current viewport (screen-relative worldY)
-        // This way particles are visible in every section immediately.
-        // worldY = screenY + parallaxOffset  →  particle appears at random screen Y
-        const targetScreenY = scatter
-          ? Math.random() * height           // spread across full viewport on init
-          : Math.random() * height;          // respawn anywhere in viewport
-
-        // Convert desired screen Y back to worldY
-        // screenY = worldY - currentScrollY * depth  →  worldY = screenY + currentScrollY * depth
-        // We don't know depth yet so use a mid estimate — corrected after depth is set
+        const targetScreenY = Math.random() * height;
         const tempDepth = 0.1 + Math.random() * 0.15;
         this.worldY = targetScreenY + currentScrollY * tempDepth;
 
-        // Very slow sine frequencies → ultra-smooth sway
         this.freqX = 0.00035 + Math.random() * 0.00055;
         this.freqY = 0.00025 + Math.random() * 0.00045;
         this.phaseX = Math.random() * Math.PI * 2;
         this.phaseY = Math.random() * Math.PI * 2;
-        this.ampX = 40 + Math.random() * 80;
-        this.ampY = 20 + Math.random() * 50;
+        this.ampX = 35 + Math.random() * 70;
+        this.ampY = 18 + Math.random() * 45;
 
-        this.radius = 3 + Math.random() * 10;
-        this.driftSpeed = (0.18 + Math.random() * 0.32) * speed; // faster drift so they move visibly
+        this.radius = 3 + Math.random() * 9;
+        this.driftSpeed = (0.16 + Math.random() * 0.28) * speed;
         this.depth = tempDepth;
-
         this.velX = 0;
         this.velY = 0;
 
-        this.age  = scatter ? Math.floor(Math.random() * 400) : 0;
-        this.life = 400 + Math.random() * 500;
+        this.age = scatter ? Math.floor(Math.random() * 400) : 0;
+        this.life = 380 + Math.random() * 450;
         this.alpha = scatter ? Math.random() * 0.45 : 0;
         this.targetAlpha = 0.25 + Math.random() * 0.55;
         this.fadeDir = 1;
@@ -133,51 +157,41 @@ export default function FlowFieldBackground({
 
       update() {
         this.age++;
-
-        // ── Smooth upward drift ─────────────────────────────────────────
         this.worldY -= this.driftSpeed;
-
-        // Accumulate cursor velocity directly into world position each frame
-        // so the displacement is permanent (particle never snaps back)
         this.worldX += this.velX;
         this.worldY += this.velY;
 
-        // ── Compute current screen position ─────────────────────────────
         const parallax = currentScrollY * this.depth;
         const swayX = Math.sin(tick * this.freqX + this.phaseX) * this.ampX;
         const swayY = Math.cos(tick * this.freqY + this.phaseY) * this.ampY;
         const sx = this.worldX + swayX;
         const sy = this.worldY - parallax + swayY;
 
-        // ── Cursor: strong burst, very low friction → keeps drifting away ──
+        // Cursor repulsion
         const dx = mouseX - sx;
         const dy = mouseY - sy;
         const dist = Math.hypot(dx, dy);
-        const repelR = 150;
+        const repelR = 140;
 
         if (dist < repelR && dist > 1) {
           const t = 1 - dist / repelR;
-          const burst = t * t * 14 * speed;
+          const burst = t * t * 12 * speed;
           this.velX -= (dx / dist) * burst;
           this.velY -= (dy / dist) * burst;
         }
 
-        // Very light friction → particle keeps drifting away, never returns
-        this.velX *= 0.97;
-        this.velY *= 0.97;
+        this.velX *= 0.96;
+        this.velY *= 0.96;
 
-        // ── Fade: also fade out when moving fast (fleeing from cursor) ──
         const spd = Math.hypot(this.velX, this.velY);
         if (this.fadeDir === 1) {
-          this.alpha = Math.min(this.alpha + 0.006, this.targetAlpha);
+          this.alpha = Math.min(this.alpha + 0.008, this.targetAlpha);
           if (this.alpha >= this.targetAlpha) this.fadeDir = -1;
-        } else if (this.age > this.life * 0.70 || spd > 3.5) {
-          // Speed threshold: fade out quickly when fleeing fast
-          const fadeRate = spd > 3.5 ? 0.022 : 0.004;
+        } else if (this.age > this.life * 0.7 || spd > 3.5) {
+          const fadeRate = spd > 3.5 ? 0.024 : 0.004;
           this.alpha = Math.max(this.alpha - fadeRate, 0);
         }
 
-        // ── Off-screen on any edge → recycle ────────────────────────────
         const offScreen =
           sy < -this.radius * 6 ||
           sy > height + this.radius * 6 ||
@@ -198,48 +212,40 @@ export default function FlowFieldBackground({
         const sx = this.worldX + swayX;
         const sy = this.worldY - parallax + swayY;
 
-        const r = this.radius * 2.8;
-        const g = c.createRadialGradient(sx, sy, 0, sx, sy, r);
-        g.addColorStop(0,    `rgba(${cr},${cg},${cb},${this.alpha})`);
-        g.addColorStop(0.42, `rgba(${cr},${cg},${cb},${(this.alpha * 0.4).toFixed(3)})`);
-        g.addColorStop(1,    `rgba(${cr},${cg},${cb},0)`);
-
-        c.beginPath();
-        c.arc(sx, sy, r, 0, Math.PI * 2);
-        c.fillStyle = g;
-        c.fill();
+        const diameter = this.radius * 5.2;
+        c.globalAlpha = this.alpha;
+        // Superfast GPU texture blit
+        c.drawImage(spriteCanvas, sx - diameter / 2, sy - diameter / 2, diameter, diameter);
       }
     }
 
     setup();
+    const particles: Particle[] = Array.from({ length: count }, () => new Particle());
 
-    // Spread initial particles across viewport so all sections are covered
-    const particles: Particle[] = Array.from({ length: particleCount }, () => new Particle());
-
-    // Signal loading screen: canvas is initialized and first frame is ready
     reportReady(READY_IDS.PARTICLES);
 
     const loop = () => {
+      if (isPaused) {
+        animId = requestAnimationFrame(loop);
+        return;
+      }
+
       tick++;
       currentScrollY = window.scrollY;
 
-      // Full clear each frame (no trail artifacts)
+      // Fast background clear
+      ctx.globalAlpha = 1;
       ctx.fillStyle = `rgb(${br},${bg_},${bb})`;
       ctx.fillRect(0, 0, width, height);
 
-      // Vignette
-      const vig = ctx.createRadialGradient(
-        width / 2, height / 2, height * 0.20,
-        width / 2, height / 2, height * 0.88,
-      );
-      vig.addColorStop(0, "rgba(0,0,0,0)");
-      vig.addColorStop(1, "rgba(0,0,0,0.38)");
-      ctx.fillStyle = vig;
-      ctx.fillRect(0, 0, width, height);
+      // Blit cached vignette
+      if (vigCanvas) {
+        ctx.drawImage(vigCanvas, 0, 0, width, height);
+      }
 
-      for (const p of particles) {
-        p.update();
-        p.draw(ctx);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw(ctx);
       }
 
       animId = requestAnimationFrame(loop);
@@ -247,21 +253,34 @@ export default function FlowFieldBackground({
 
     loop();
 
-    const onMove  = (e: MouseEvent) => { mouseX = e.clientX; mouseY = e.clientY; };
-    const onLeave = () => { mouseX = -9999; mouseY = -9999; };
-    const onResize = () => { setup(); };
+    const onMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    };
+    const onLeave = () => {
+      mouseX = -9999;
+      mouseY = -9999;
+    };
+    const onResize = () => {
+      setup();
+    };
+    const onVisibilityChange = () => {
+      isPaused = document.hidden;
+    };
 
-    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mousemove", onMove, { passive: true });
     document.addEventListener("mouseleave", onLeave);
-    window.addEventListener("resize", onResize);
+    window.addEventListener("resize", onResize, { passive: true });
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
-  }, [color, particleCount, speed, bgColor]);
+  }, [color, particleCount, speed, bgColor, reportReady]);
 
   return (
     <div ref={containerRef} className={cn("absolute inset-0 overflow-hidden", className)}>

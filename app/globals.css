@@ -1503,3 +1503,14 @@ body.cursor-interactive .octopus-body::before {
     transform: translateY(-6px);
   }
 }
+
+/* ── Performance Optimization: Content Visibility for Below-the-Fold Sections ── */
+#skills,
+#how-i-work,
+#projects,
+#certificates,
+#experience,
+#contact {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 800px;
+}

@@ -45,14 +45,14 @@ const creatures = [
 
 export default function SeaCreatures() {
   const { reportReady } = useReady();
-  useEffect(() => { reportReady(READY_IDS.SEA); }, []); // eslint-disable-line
+  useEffect(() => { reportReady(READY_IDS.SEA); }, [reportReady]);
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-[12] overflow-hidden opacity-90">
-      {creatures.map((c) => (
+    <div className="pointer-events-none absolute inset-0 z-[12] overflow-hidden opacity-85">
+      {creatures.map((c, index) => (
         <motion.div
           key={c.id}
-          className="deep-creature"
+          className={`deep-creature ${index >= 6 ? "hidden md:block" : ""}`}
           style={{ left: "0%", top: c.top, x: c.x[0], y: c.y[0] }}
           animate={{ x: c.x, y: c.y, rotate: c.rotate, scale: c.scale }}
           transition={{ duration: c.duration, delay: c.delay, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
@@ -64,6 +64,8 @@ export default function SeaCreatures() {
               alt={c.alt}
               className="creature-img"
               draggable="false"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </motion.div>
