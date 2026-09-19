@@ -20,6 +20,7 @@ import {
   Briefcase,
   ChevronDown,
   ChevronUp,
+  Calendar,
 } from "lucide-react";
 
 /* ─────────────────── Types ─────────────────── */
@@ -81,9 +82,11 @@ const TAG_CONFIG: Record<
 
 /* ─────────────── Helper to get preview image path ─────────────── */
 function getPreviewImage(cert: Certificate): string {
+  // Image-type certs (.png/.jpg): use the file directly from /certificates/
   if (cert.type === "image") {
     return `/certificates/${cert.file}`;
   }
+  // PDF-type certs: look for a pre-rendered page-1 JPG in /certificates/previews/
   const previewFilename = cert.file.replace(/\.pdf$/i, ".jpg");
   return `/certificates/previews/${previewFilename}`;
 }
@@ -483,10 +486,17 @@ const certificates: Certificate[] = [
 export default function CertificatesSection() {
   const { language } = useLanguage();
   const [activeTag, setActiveTag] = useState<CertificateTag>("All");
+  const [activeYear, setActiveYear] = useState<string>("All");
   const [selected, setSelected] = useState<Certificate | null>(null);
   const [showAll, setShowAll] = useState(false);
 
   const tags = Object.keys(TAG_CONFIG) as CertificateTag[];
+
+  /* Extract unique years sorted descending */
+  const years = useMemo(() => {
+    const uniqueYears = [...new Set(certificates.map((c) => c.date))];
+    return uniqueYears.sort((a, b) => Number(b) - Number(a));
+  }, []);
 
   const getTagLabel = (tag: CertificateTag) => {
     if (tag === "All") return language === "id" ? "Semua" : "All";
@@ -496,18 +506,31 @@ export default function CertificatesSection() {
     return tag;
   };
 
-  const filtered = useMemo(
-    () =>
-      activeTag === "All"
-        ? certificates
-        : certificates.filter((c) => c.tags.includes(activeTag)),
-    [activeTag]
-  );
+  const filtered = useMemo(() => {
+    let result = certificates;
+    if (activeTag !== "All") {
+      result = result.filter((c) => c.tags.includes(activeTag));
+    }
+    if (activeYear !== "All") {
+      result = result.filter((c) => c.date === activeYear);
+    }
+    // Sort newest first
+    return [...result].sort((a, b) => Number(b.date) - Number(a.date));
+  }, [activeTag, activeYear]);
 
   const visibleCertificates = showAll ? filtered : filtered.slice(0, 6);
   const hiddenCount = filtered.length - 6;
 
   const rawFilePath = (file: string) => `/certificates/${file}`;
+
+  const handleTagChange = (tag: CertificateTag) => {
+    setActiveTag(tag);
+    setShowAll(false);
+  };
+  const handleYearChange = (year: string) => {
+    setActiveYear(year);
+    setShowAll(false);
+  };
 
   return (
     <section
@@ -530,7 +553,7 @@ export default function CertificatesSection() {
       </div>
 
       {/* ── Filter Tags ── */}
-      <div className="cert-tags-wrapper mb-10">
+      <div className="cert-tags-wrapper mb-4">
         <div className="cert-tags-scroll">
           {tags.map((tag) => {
             const cfg = TAG_CONFIG[tag];
@@ -538,7 +561,7 @@ export default function CertificatesSection() {
             return (
               <button
                 key={tag}
-                onClick={() => setActiveTag(tag)}
+                onClick={() => handleTagChange(tag)}
                 className={`cert-tag ${isActive ? "cert-tag--active" : ""} ${cfg.color}`}
               >
                 {cfg.icon}
@@ -552,6 +575,37 @@ export default function CertificatesSection() {
             );
           })}
         </div>
+      </div>
+
+      {/* ── Year Filter ── */}
+      <div className="mb-10 flex flex-wrap items-center gap-2">
+        <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-sky-100/50">
+          <Calendar size={13} />
+          {language === "id" ? "Tahun:" : "Year:"}
+        </span>
+        <button
+          onClick={() => handleYearChange("All")}
+          className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-bold transition-all ${
+            activeYear === "All"
+              ? "bg-cyan-500/30 text-cyan-200 ring-1 ring-cyan-400/50"
+              : "bg-white/8 text-sky-100/60 hover:bg-white/15 hover:text-white"
+          }`}
+        >
+          {language === "id" ? "Semua" : "All"}
+        </button>
+        {years.map((year) => (
+          <button
+            key={year}
+            onClick={() => handleYearChange(year)}
+            className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-bold transition-all ${
+              activeYear === year
+                ? "bg-emerald-500/30 text-emerald-200 ring-1 ring-emerald-400/50"
+                : "bg-white/8 text-sky-100/60 hover:bg-white/15 hover:text-white"
+            }`}
+          >
+            {year}
+          </button>
+        ))}
       </div>
 
       {/* ── Count ── */}
