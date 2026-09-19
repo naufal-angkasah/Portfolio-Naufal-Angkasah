@@ -16,6 +16,7 @@ const skills: SkillItem[] = [
   // ═══ FULL STACK & WEB DEV ═══
   { name: "Next.js 16", category: "Full Stack", icon: "⚡" },
   { name: "React.js", category: "Full Stack", icon: "⚛️" },
+  { name: "Svelte 5 & SvelteKit", category: "Full Stack", icon: "🧡" },
   { name: "Vue.js 3", category: "Full Stack", icon: "🟢" },
   { name: "Angular", category: "Full Stack", icon: "🅰️" },
   { name: "TypeScript", category: "Full Stack", icon: "📘" },
@@ -31,6 +32,8 @@ const skills: SkillItem[] = [
   { name: "HTML5 & CSS3", category: "Full Stack", icon: "🌐" },
 
   // ═══ DATA, CLOUD & INTEGRATION ═══
+  { name: "Vite 8 Build Tool", category: "Data & Tools", icon: "⚡" },
+  { name: "WhatsApp Order API", category: "Data & Tools", icon: "💬" },
   { name: "Machine Learning (Supervised & Unsupervised)", category: "Data & Tools", icon: "⚙️" },
   { name: "Prompt Engineering & GenAI", category: "Data & Tools", icon: "🎯" },
   { name: "Langflow & AI Agents", category: "Data & Tools", icon: "🤖" },

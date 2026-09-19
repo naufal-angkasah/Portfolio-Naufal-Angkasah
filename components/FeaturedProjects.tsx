@@ -33,6 +33,81 @@ type Project = {
 const projects: Project[] = [
   // ═══ FULL STACK & WEB DEV PROJECTS WITH SCREENSHOT GALLERIES ═══
   {
+    title: "Roti Manis Bahagia",
+    type: "Full Stack",
+    category: "Full Stack",
+    desc: "Website toko roti artisan modern dengan pemesanan instan WhatsApp & Custom Cake Builder.",
+    longDesc:
+      "Website e-commerce & katalog toko roti modern 'Roti Manis Bahagia' (Artisan Bakery & Pastry) yang dibangun dengan Svelte 5 (Runes) dan SvelteKit 2. Dilengkapi sistem pemesanan otomatis via WhatsApp (One-Click Order), formulir kustom kue (Custom Cake Builder) dengan live order preview, pencarian & filter reaktif, integrasi Google Maps, jam buka toko real-time, serta antarmuka elegan berkinerja tinggi (0 error, 0 warning).",
+    stack: ["Svelte 5 (Runes)", "SvelteKit 2", "TypeScript", "Tailwind CSS v4", "Vite 8", "WhatsApp API", "Vercel"],
+    demoUrl: "https://tokoroti-rho.vercel.app/",
+    screenshot: "/projects/screenshots/roti-manis-1.png",
+    screenshots: [
+      "/projects/screenshots/roti-manis-1.png",
+      "/projects/screenshots/roti-manis-2.png",
+      "/projects/screenshots/roti-manis-3.png",
+      "/projects/screenshots/roti-manis-4.png",
+      "/projects/screenshots/roti-manis-5.png",
+    ],
+    visuals: [
+      { icon: "🍞", gradient: "linear-gradient(135deg, #451a03 0%, #78350f 50%, #b45309 100%)" },
+      { icon: "🎂", gradient: "linear-gradient(135deg, #78350f 0%, #b45309 50%, #f59e0b 100%)" },
+      { icon: "🥐", gradient: "linear-gradient(135deg, #b45309 0%, #f59e0b 50%, #451a03 100%)" },
+    ],
+    featureModules: [
+      {
+        icon: "🍞",
+        module: "Pemesanan Otomatis WhatsApp (One-Click Order)",
+        features: [
+          { name: "Pesan Produk Sekali Klik", desc: "Setiap produk memiliki tombol direct-order WhatsApp dengan pesan terformat otomatis (Nama Produk, Kategori, Harga, Jumlah)" },
+          { name: "Format Rupiah Otomatis", desc: "Format mata uang Rupiah standar perbankan Indonesia menggunakan JavaScript Intl.NumberFormat" },
+        ],
+      },
+      {
+        icon: "🎂",
+        module: "Formulir Pemesanan Kue Custom (Custom Cake Builder)",
+        features: [
+          { name: "Input Pesanan & Validasi Lengkap", desc: "Input nama, WhatsApp, date picker validasi min H+1, pilihan rasa (6 varian), dan ukuran (16cm-2 tingkat)" },
+          { name: "Live Order Preview Panel", desc: "Panel interaktif samping form yang menampilkan preview teks ringkasan pesanan WA secara real-time" },
+          { name: "Catatan Khusus & Reset Form", desc: "Kolom instruksi tulisan kue/dekorasi lilin serta tombol reset form instan" },
+        ],
+      },
+      {
+        icon: "🔍",
+        module: "Katalog Reaktif, Filter & Modal Quick-View",
+        features: [
+          { name: "Filter Kategori Dinamis", desc: "Pill filter kategori (Semua, Roti Manis, Roti Tawar, Pastry, Kue Ulang Tahun, Snack Box) dengan badge counter" },
+          { name: "Pencarian Real-Time & Quick View", desc: "Pencarian instan tanpa reload + modal detail pop-up foto besar, masa simpan & info kehalalan 100%" },
+        ],
+      },
+      {
+        icon: "🧭",
+        module: "Navbar Modern, Status Toko & Hero Banner",
+        features: [
+          { name: "Sticky Glassmorphic Header", desc: "Header dengan backdrop-blur, smooth scrolling, status aktif 'Buka: 07.00 - 21.00 WIB', & mobile drawer" },
+          { name: "Hero Banner & Review Badge", desc: "Tagline 'Roti Segar Setiap Hari, Dibuat dengan Cinta', floating review badge 4.9/5.0, & tombol CTA cepat" },
+        ],
+      },
+      {
+        icon: "📖",
+        module: "Story Toko, Galeri Lightbox & Testimoni Carousel",
+        features: [
+          { name: "Cerita Toko & 4 Pilar Kualitas", desc: "Sejarah berdiri sejak 2015 di Banda Aceh, bahan alami tanpa pengawet buatan, & dipanggang jam 05.00 WIB" },
+          { name: "Galeri Interaktif & Carousel Ulasan", desc: "Grid foto dapur & produk dengan modal lightbox zoom, plus slider ulasan pelanggan dengan navigasi Prev/Next" },
+        ],
+      },
+      {
+        icon: "📍",
+        module: "Lokasi Google Maps, Floating WA & Tech Excellence",
+        features: [
+          { name: "Google Maps Embed & Kontak CS", desc: "Embed peta interaktif Jl. Melati No. 12 Banda Aceh + tombol chat customer service" },
+          { name: "Floating WhatsApp Button", desc: "Tombol melayang tetap di sudut kanan bawah dengan efek radar pulse dan tooltip interaktif" },
+          { name: "Arsitektur Svelte 5 Runes & Vite 8", desc: "Performa ultra cepat, ukuran bundle sangat ringan, 100% strict TypeScript (0 error, 0 warning)" },
+        ],
+      },
+    ],
+  },
+  {
     title: "Kawaii Animal Sticker Studio",
     type: "Full Stack",
     category: "Full Stack",
