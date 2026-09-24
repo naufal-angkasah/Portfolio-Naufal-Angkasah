@@ -26,6 +26,7 @@ const skills: SkillItem[] = [
   { name: "Node.js", category: "Full Stack", icon: "🟩" },
   { name: "Express.js", category: "Full Stack", icon: "🚂" },
   { name: "PHP 8.3 & Laravel", category: "Full Stack", icon: "🐘" },
+  { name: "PWA & Service Worker", category: "Full Stack", icon: "📱" },
   { name: "RESTful API", category: "Full Stack", icon: "🔌" },
   { name: "GraphQL", category: "Full Stack", icon: "🕸️" },
   { name: "Python", category: "Full Stack", icon: "🐍" },
@@ -37,7 +38,7 @@ const skills: SkillItem[] = [
   { name: "SheetJS Excel Engine", category: "Data & Tools", icon: "📑" },
   { name: "Vite 8 Build Tool", category: "Data & Tools", icon: "⚡" },
   { name: "WhatsApp Gateway (Fonnte API)", category: "Data & Tools", icon: "💬" },
-  { name: "Email Service (Resend API)", category: "Data & Tools", icon: "📧" },
+  { name: "Nodemailer (SMTP Service)", category: "Data & Tools", icon: "📧" },
   { name: "Interactive SVG Siteplan Engine", category: "Data & Tools", icon: "🗺️" },
   { name: "Machine Learning (Supervised & Unsupervised)", category: "Data & Tools", icon: "⚙️" },
   { name: "Prompt Engineering & GenAI", category: "Data & Tools", icon: "🎯" },
@@ -57,6 +58,7 @@ const skills: SkillItem[] = [
   { name: "POS Engine & Receipt Print", category: "Data & Tools", icon: "🧾" },
 
   // ═══ SECURITY, NETWORKING & DEVOPS ═══
+  { name: "Dual-Session Isolation & Middleware", category: "Security", icon: "🛡️" },
   { name: "Web Penetration Testing", category: "Security", icon: "🔍" },
   { name: "Vulnerability Patching", category: "Security", icon: "🛡️" },
   { name: "OWASP Top 10 Security", category: "Security", icon: "🔐" },
