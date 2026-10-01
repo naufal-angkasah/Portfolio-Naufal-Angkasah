@@ -40,7 +40,7 @@ export default function FlowFieldBackground({
 
     // Adaptive particle count based on device screen / capability
     const isMobile = width < 768;
-    const count = particleCount ?? (isMobile ? 80 : 150);
+    const count = isMobile ? Math.min(particleCount ?? 60, 60) : (particleCount ?? 130);
 
     // Absolute scroll — zero lag
     let currentScrollY = window.scrollY;

@@ -151,7 +151,7 @@ export default function CustomCursor() {
         >
           <div className="octopus-body flex items-center justify-center">
             <div className="octopus-glow" />
-            <img src="/creatures/octopus-cursor.png" alt="" className="octopus-sprite" draggable="false" />
+            <img src="/creatures/octopus-cursor.webp" alt="" className="octopus-sprite" draggable="false" />
           </div>
         </motion.div>
       </motion.div>

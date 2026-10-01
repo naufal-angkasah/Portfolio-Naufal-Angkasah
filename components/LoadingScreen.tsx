@@ -15,12 +15,11 @@ export const READY_IDS = {
   SEA:       "sea",        // SeaCreatures mounted
 } as const;
 
+// Fast critical path: Only wait for DOM and Hero so the page shows immediately
 const MILESTONES: { id: string; weight: number }[] = [
-  { id: READY_IDS.FONTS,     weight: 20 },
-  { id: READY_IDS.DOM,       weight: 25 },
-  { id: READY_IDS.HERO,      weight: 25 },
-  { id: READY_IDS.PARTICLES, weight: 15 },
-  { id: READY_IDS.SEA,       weight: 15 },
+  { id: READY_IDS.DOM,       weight: 45 },
+  { id: READY_IDS.HERO,      weight: 45 },
+  { id: READY_IDS.FONTS,     weight: 10 },
 ];
 const TOTAL_WEIGHT = MILESTONES.reduce((s, m) => s + m.weight, 0);
 
@@ -28,7 +27,7 @@ export default function LoadingScreen() {
   const { language } = useLanguage();
   const { onAllReady, reportReady } = useReady();
 
-  const [progress, setProgress] = useState(15);
+  const [progress, setProgress] = useState(35);
   const [visible, setVisible] = useState(true);
   const completedWeight = useRef(0);
   const dismissed = useRef(false);
@@ -38,11 +37,26 @@ export default function LoadingScreen() {
     if (dismissed.current) return;
     dismissed.current = true;
     setProgress(100);
-    // Smooth, fast transition to unlock view
-    setTimeout(() => setVisible(false), 220);
+    try {
+      sessionStorage.setItem("portfolio_loaded", "true");
+    } catch {
+      // ignore
+    }
+    // Fast exit to unlock view
+    setTimeout(() => setVisible(false), 100);
   };
 
   useEffect(() => {
+    // If already visited in this session, dismiss ultra-fast
+    try {
+      if (sessionStorage.getItem("portfolio_loaded")) {
+        dismiss();
+        return;
+      }
+    } catch {
+      // ignore
+    }
+
     const advance = (id: string) => {
       const m = MILESTONES.find((x) => x.id === id);
       if (!m) return;
@@ -50,7 +64,7 @@ export default function LoadingScreen() {
         completedWeight.current + m.weight,
         TOTAL_WEIGHT,
       );
-      setProgress(Math.max(20, Math.round((completedWeight.current / TOTAL_WEIGHT) * 100)));
+      setProgress(Math.max(35, Math.round((completedWeight.current / TOTAL_WEIGHT) * 100)));
     };
 
     // ── 1. Fonts ready ────────────────────────────────────────────────────
@@ -79,14 +93,14 @@ export default function LoadingScreen() {
       document.addEventListener("DOMContentLoaded", onDomReady, { once: true });
     }
 
-    // ── 3. Wait for critical component signals ────────────────────────────
-    const allIds = Object.values(READY_IDS);
-    const unsub = onAllReady(allIds, dismiss);
+    // ── 3. Critical Above-the-fold Trigger (DOM + HERO) ───────────────────
+    const criticalIds = [READY_IDS.DOM, READY_IDS.HERO];
+    const unsub = onAllReady(criticalIds, dismiss);
 
-    // ── 4. Fast Safety Fallback (2.0s maximum) ─────────────────────────────
+    // ── 4. Ultra-Fast Safety Fallback (700ms maximum) ─────────────────────
     const safety = setTimeout(() => {
       if (!dismissed.current) dismiss();
-    }, 2000);
+    }, 700);
 
     return () => {
       unsub();
@@ -120,8 +134,8 @@ export default function LoadingScreen() {
         <motion.div
           className="fixed inset-0 z-[120] grid place-items-center bg-[#020b17] overflow-hidden select-none"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.03 }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          exit={{ opacity: 0, scale: 1.02 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
         >
           {/* Sonar rings */}
           <div className="absolute inset-0 grid place-items-center pointer-events-none opacity-25">
