@@ -30,6 +30,95 @@ export const categories = ["All", "Full Stack", "Web Dev", "Network Security", "
 export const projects: Project[] = [
   // ═══ FULL STACK & WEB DEV PROJECTS WITH SCREENSHOT GALLERIES ═══
   {
+    slug: "alvin-swalayan",
+    title: "Alvin Swalayan — Grocery Delivery E-Commerce & Admin POS",
+    type: "Full Stack",
+    category: "Full Stack",
+    desc: "Platform e-commerce supermarket lokal terpadu di Banda Aceh: Katalog 109 produk & 14 kategori, checkout multi-metode (Midtrans QRIS/VA, Transfer Bank, COD), panel kasir cerdas berfitur Text-to-Speech audio notification, optimasi 0ms optimistic UI, dan ekspor pembukuan Excel.",
+    longDesc:
+      "Aplikasi web e-commerce supermarket lokal full-stack untuk jaringan ritel fisik Alvin Swalayan (Banda Aceh) yang dibangun dengan Next.js 15.5.26 App Router (Server Components & Route Handlers), React 19.1.0, TypeScript 5, dan Tailwind CSS v4. Menghadirkan katalog dinamis 14 kategori dan 109 produk dengan pencarian cerdas multi-keyword & fuzzy matching, perhitungan otomatis subtotal, voucher promo, dan proteksi batas stok toko. Dilengkapi 3 alur pembayaran fleksibel (Midtrans Snap untuk QRIS & Virtual Account Bank, Transfer Manual dengan verifikasi bukti bayar kasir, serta COD tunai), integrasi WhatsApp Gateway (Fonnte API) untuk broadcast pesanan otomatis, sistem suara pengumuman kasir Text-to-Speech (Web Audio API & SpeechSynthesis), arsitektur dual-layer storage (Optimistic UI 0ms + Supabase PostgreSQL Cloud Sync with pending queue), manajemen banner dan voucher diskon dinamis, serta ekspor pembukuan omset kasir otomatis ke format spreadsheet Microsoft Excel (.xlsx).",
+    stack: [
+      "Next.js 15.5 (App Router)",
+      "React 19.1 & TypeScript 5",
+      "Tailwind CSS v4",
+      "Supabase PostgreSQL",
+      "Midtrans Payment Gateway (QRIS & VA)",
+      "WhatsApp Gateway (Fonnte API)",
+      "Web Audio & SpeechSynthesis TTS",
+      "Vercel Serverless Edge",
+      "Vercel Web Analytics",
+      "write-excel-file (.xlsx)",
+      "Lucide React Icons",
+      "Optimistic UI & BroadcastChannel",
+    ],
+    demoUrl: "https://ecomerce-swalayan.vercel.app/",
+    screenshot: "/projects/screenshots/alvin-swalayan-1.png",
+    screenshots: [
+      "/projects/screenshots/alvin-swalayan-1.png",
+      "/projects/screenshots/alvin-swalayan-2.png",
+      "/projects/screenshots/alvin-swalayan-3.png",
+      "/projects/screenshots/alvin-swalayan-4.png",
+      "/projects/screenshots/alvin-swalayan-5.png",
+    ],
+    visuals: [
+      { icon: "🛒", gradient: "linear-gradient(135deg, #E5391B 0%, #C62818 50%, #FF6D00 100%)" },
+      { icon: "🛍️", gradient: "linear-gradient(135deg, #FF6D00 0%, #E5391B 50%, #991B1B 100%)" },
+      { icon: "💳", gradient: "linear-gradient(135deg, #10B981 0%, #059669 50%, #047857 100%)" },
+    ],
+    featureModules: [
+      {
+        icon: "🛒",
+        module: "Etalase Pelanggan: Katalog, Pencarian Cerdas & Detail Produk",
+        features: [
+          { name: "Grid 14 Kategori & 109 Produk", desc: "Navigasi cepat kategori sembako, minuman, mie instan, bumbu masak, personal care, perlengkapan bayi, produk segar, frozen food, hingga pet care" },
+          { name: "Pencarian Multi-Keyword & Fuzzy", desc: "Pencarian cerdas yang memecah kata kunci majemuk dan menampilkan saran pencarian populer dengan sinkronisasi live real-time" },
+          { name: "Filter Dinamis & Pengurutan", desc: "Filter kategori, filter merek/brand yang stoknya tersedia, filter diskon khusus, serta sortir berdasarkan terlaris, harga termurah, harga termahal, dan produk terbaru" },
+          { name: "Detail Produk Komprehensif", desc: "Galeri foto jernih dengan fallback gambar anti-rusak, SKU unik, brand, satuan kemasan, indikator stok jujur real-time, dan rekomendasi produk terkait" },
+        ],
+      },
+      {
+        icon: "🛍️",
+        module: "Transaksi & Checkout: Keranjang Belanja, Kupon & Multi-Metode Bayar",
+        features: [
+          { name: "Keranjang Belanja Persistent", desc: "Kontrol kuantitas instan, perhitungan otomatis subtotal & penghematan diskon, batas kuantitas sesuai stok rak toko, dan fitur pesan ulang cepat" },
+          { name: "Checkout Fleksibel & Ongkir Otomatis", desc: "Opsi pengantaran kurir swalayan ke alamat rumah di Banda Aceh atau ambil mandiri di toko (pickup)" },
+          { name: "Voucher Diskon & Kupon Promosi", desc: "Sistem validasi kode voucher untuk potongan harga nominal (Rp) maupun persen (%) dengan proteksi minimal belanja" },
+          { name: "Jalur Pembayaran Lengkap", desc: "Terintegrasi Midtrans Snap untuk QRIS (GoPay, ShopeePay, OVO, Dana) & Virtual Account, Transfer Bank Manual (BCA, BRI, BSI, Bank Aceh Syariah), serta opsi COD tunai" },
+        ],
+      },
+      {
+        icon: "📦",
+        module: "Pelacakan Pesanan & Akun Pembeli: Tracking, Bukti Bayar & SSO Google",
+        features: [
+          { name: "Stepper Pelacakan 5 Tahap", desc: "Timeline interaktif status pesanan dari Menunggu Pembayaran ➔ Verifikasi Bukti ➔ Diproses Toko ➔ Dikirim Kurir ➔ Selesai" },
+          { name: "Unggah & Verifikasi Bukti Transfer", desc: "Upload bukti transfer interaktif langsung dari HP/laptop dengan status verifikasi kasir dan tampilan penolakan tegas jika mutasi belum masuk" },
+          { name: "WhatsApp Order Tracker", desc: "Tautan chat langsung ke WhatsApp kasir toko swalayan dengan format pesan otomatis memuat nomor pesanan dan rincian item" },
+          { name: "Autentikasi & Multi-Alamat", desc: "Login resmi Google OAuth (Gmail SSO), 1-Tap Quick Demo Login, serta buku alamat pengiriman tersimpan dengan fitur jadikan alamat utama" },
+        ],
+      },
+      {
+        icon: "🏪",
+        module: "Admin & POS Kasir: Notifikasi Suara (TTS) & Verifikasi Pesanan",
+        features: [
+          { name: "Pengumuman Suara Kasir (TTS)", desc: "Web Audio & SpeechSynthesis cerdas yang otomatis berbicara mengumumkan pesanan baru masuk dan bukti transfer baru berbahasa Indonesia" },
+          { name: "Dashboard Statistik Omset", desc: "Kartu ringkasan omset penjualan harian/mingguan/bulanan, total transaksi, antrean pesanan perlu diproses, dan peringatan stok menipis (≤ 5 unit)" },
+          { name: "Verifikasi Pembayaran & Bukti Struk", desc: "Modal pratinjau bukti bayar resolusi tinggi dengan tombol zoom, verifikasi 1-klik, dan modal penolakan bukti dengan alasan custom" },
+          { name: "Pemberitahuan WhatsApp Otomatis (Fonnte)", desc: "Pengiriman pesan WhatsApp otomatis ke pelanggan saat bukti bayar diterima, ditolak, atau pesanan mulai dikirim kurir" },
+        ],
+      },
+      {
+        icon: "📊",
+        module: "Manajemen Toko: Optimistic 0ms UI, Import CSV & Ekspor Excel",
+        features: [
+          { name: "Manajemen Produk Instan (0ms)", desc: "Penyimpanan optimistik tanpa jeda, upload foto file/Google Drive/URL internet, validasi SKU unik, dan tool pembersih data ganda" },
+          { name: "Import CSV Produk Massal", desc: "Unggah ratusan katalog produk sekaligus via template CSV dengan pratinjau baris valid dan deteksi duplikasi sebelum simpan" },
+          { name: "Kelola Kategori, Banner & Voucher", desc: "Pengaturan mandiri 14 kategori utama swalayan, slider banner promosi beranda, dan kupon potongan harga" },
+          { name: "Laporan Penjualan & Ekspor Excel (.xlsx)", desc: "Analisis performa produk terlaris dan unduh rekap pembukuan penjualan kasir langsung ke format spreadsheet Excel resmi" },
+        ],
+      },
+    ],
+  },
+  {
     slug: "grand-tamansari-wimala-land",
     title: "Grand Tamansari (Wimala-Land) — Kumala Cluster",
     type: "Full Stack",
