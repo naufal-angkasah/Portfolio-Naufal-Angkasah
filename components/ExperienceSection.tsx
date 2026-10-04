@@ -53,12 +53,12 @@ export default function ExperienceSection() {
     {
       role: "Frontend & Full-stack Web Developer",
       company: "Freelance",
-      period: language === "id" ? "Januari 2024 - Agustus 2025" : "January 2024 - August 2025",
+      period: language === "id" ? "Januari 2024 - Sekarang" : "January 2024 - Present",
       location: "Banda Aceh",
       desc:
         language === "id"
-          ? "Mengembangkan layanan penulisan skripsi, proyek Siklus Hidrologi (rework antarmuka, integrasi API), dan website full-stack dengan autentikasi serta database."
-          : "Developed thesis writing services, Hydrological Cycle project (interface rework, API integration), and full-stack website with auth and database.",
+          ? "Mengembangkan ekosistem web enterprise Wimala Land (Tata Kelola Kumala Cluster & Rekap Meteran Air PDAM berbasis Google Gemini AI Vision), proyek Siklus Hidrologi, dan aplikasi web modern dengan integrasi database real-time & payment gateway."
+          : "Developed Wimala Land enterprise systems (Kumala Cluster Management & PDAM Water Meter Scanner powered by Google Gemini AI Vision), Hydrological Cycle project, and full-stack web applications with real-time databases and payment gateways.",
     },
     {
       role: "Laboratory Assistant",

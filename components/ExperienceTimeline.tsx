@@ -34,9 +34,9 @@ const experiences = [
   {
     company: "Pekerja Lepas (Freelance)",
     role: "Frontend & Full-stack Web Developer",
-    period: "January 2024 - August 2025",
+    period: "January 2024 - Present",
     location: "Banda Aceh, Indonesia",
-    description: "Developed various projects including thesis writing/typing services, Hydrological Cycle project (reworking interface, API integration, back-end alignment), and a full-stack foundation website with client authentication, admin front-end, and database integration.",
+    description: "Developed Wimala Land enterprise systems (Kumala Cluster Management & PDAM Water Meter Scanner with Google Gemini AI Vision OCR), Hydrological Cycle project, and full-stack web applications with client authentication, admin front-end, and database integration.",
   },
   {
     company: "Universitas Syiah Kuala",

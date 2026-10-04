@@ -152,6 +152,101 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "rekap-meteran-air-pdam-wimala-land",
+    title: "Rekap Meteran Air PDAM • Wimala Land",
+    type: "Full Stack",
+    category: "Full Stack",
+    desc: "Aplikasi cerdas pencatatan meteran air PDAM: Deteksi ganda Google Gemini AI Vision (angka hitam m³ & stiker kavling), sinkronisasi real-time Cloud Firestore, skema tarif bertingkat 4-tier & live simulator, cetak stiker A4, dan export Excel.",
+    longDesc:
+      "Aplikasi web modern pencatatan dan tata kelola konsumsi air PDAM kawasan perumahan Wimala Land berbasis mobile-first PWA dan Web Dashboard Admin yang dibangun dengan React 18, TypeScript, Vite 6, dan Tailwind CSS 3. Menghadirkan teknologi Photo-First Dual Detection berbasis Google Gemini Multimodal Vision API (gemini-3.5-flash-lite, gemini-flash-lite-latest, dan fallback gemini-3.8-flash) yang mampu mendeteksi digit angka hitam meteran kubikasi (m³) sekaligus membaca teks stiker fisik boks meteran (Cluster, Blok, dan Pengguna) hanya dalam 1 jepretan foto. Dilengkapi sinkronisasi data real-time Google Cloud Firestore via event stream WebSocket (onSnapshot) tanpa reload browser, penanganan unit baru otomatis di lapangan, normalisasi pencarian blok pintar, deteksi anomali cerdas (angka mundur & lonjakan pemakaian ekstrem), sistem penyimpanan failover Base64 anti-gagal, panel Super Admin untuk monitoring dan koreksi angka, skema tarif air bertingkat 4-tier dengan simulator kalkulasi interaktif, cetak lembar stiker teks siap print A4 (grid 3 kolom), manajemen akun petugas lapangan (kuota terkontrol 2 worker), import-export spreadsheet Excel (SheetJS), serta proteksi serverless endpoint Vercel dan Firestore Security Rules.",
+    stack: [
+      "React 18 & TypeScript",
+      "Vite 6",
+      "Google Gemini Vision API",
+      "Firebase Cloud Firestore",
+      "Firebase Authentication",
+      "Firebase Storage & Base64 Failover",
+      "Vercel Serverless Functions",
+      "Tailwind CSS 3",
+      "SheetJS (Excel .xlsx)",
+      "Lucide React",
+      "Canvas Confetti",
+    ],
+    demoUrl: "https://scan-meteran-wimala.vercel.app/",
+    screenshot: "/projects/screenshots/scan-meteran-1.png",
+    screenshots: [
+      "/projects/screenshots/scan-meteran-1.png",
+      "/projects/screenshots/scan-meteran-2.png",
+      "/projects/screenshots/scan-meteran-3.png",
+      "/projects/screenshots/scan-meteran-4.png",
+    ],
+    visuals: [
+      { icon: "💧", gradient: "linear-gradient(135deg, #042f2e 0%, #0d9488 50%, #14b8a6 100%)" },
+      { icon: "📷", gradient: "linear-gradient(135deg, #064e3b 0%, #059669 50%, #10b981 100%)" },
+      { icon: "📊", gradient: "linear-gradient(135deg, #0f172a 0%, #334155 50%, #0d9488 100%)" },
+    ],
+    featureModules: [
+      {
+        icon: "📷",
+        module: "Petugas Lapangan: Photo-First AI Vision & Deteksi Ganda",
+        features: [
+          { name: "Photo-First Dual Detection (1 Foto untuk Semua)", desc: "Petugas cukup mengambil 1 foto yang memuat dial meteran air sekaligus stiker boks, AI mengekstrak nomor unit rumah dan angka meteran secara bersamaan" },
+          { name: "Standar Meteran PDAM Otomatis", desc: "Model AI dilatih khusus hanya membaca digit angka hitam (m³) dan secara akurat mengabaikan angka merah serta jarum putar merah (liter)" },
+          { name: "Auto-Tambah Unit Baru di Lapangan", desc: "Jika stiker terbaca namun unit kavling belum ada di database, sistem langsung memunculkan formulir pra-terisi agar petugas bisa langsung menambahkan dan lanjut mencatat" },
+          { name: "Pencarian & Normalisasi Blok Pintar", desc: "Mendukung pencarian manual toleran variasi (misal D-15, D15, Unit D-15, atau 15) dengan normalisasi string otomatis dan aksi Enter dari keyboard ponsel" },
+          { name: "Tombol Konfirmasi Cepat ('Sesuai')", desc: "Aksi satu-klik untuk memverifikasi kebenaran angka jika foto buram, seketika membersihkan label anomali 'OCR rendah'" },
+        ],
+      },
+      {
+        icon: "🚨",
+        module: "Petugas Lapangan: Deteksi Anomali Cerdas & Failover Penyimpanan",
+        features: [
+          { name: "Peringatan Dini Angka Mundur", desc: "Pencegahan kesalahan catat otomatis jika angka meter saat ini terdeteksi lebih kecil dari stand pemakaian bulan sebelumnya" },
+          { name: "Deteksi Lonjakan Konsumsi Ekstrem", desc: "Peringatan dini otomatis jika pemakaian air melonjak drastis di luar batas toleransi rata-rata historis unit rumah" },
+          { name: "Dual Storage Failover (Anti-Gagal Simpan)", desc: "Jika koneksi internet lambat atau storage cloud terkendala, foto otomatis disimpan dalam format Base64 sehingga data pencatatan tidak pernah macet atau hilang" },
+          { name: "Riwayat Pencatatan Harian Worker", desc: "Tab riwayat khusus petugas untuk meninjau kavling mana saja yang sudah dicatat hari ini beserta timestamp jam pencatatan dan status validasinya" },
+        ],
+      },
+      {
+        icon: "💻",
+        module: "Super Admin: Monitoring Real-Time & Koreksi Tagihan",
+        features: [
+          { name: "Sinkronisasi Real-Time Tanpa Refresh (onSnapshot)", desc: "Stream data Firestore WebSocket menampilkan catatan petugas secara instan di layar Admin tanpa reload browser F5, zero-polling, hemat memori & kuota, disertai indikator visual 'Real-time Aktif'" },
+          { name: "Tabel Rekapitulasi Pemakaian Komprehensif", desc: "Menampilkan Blok, Nama Pemilik, Stand Bulan Lalu, Stand Bulan Ini, Selisih Pemakaian (m³), dan Total Tagihan (Rp) terhitung otomatis" },
+          { name: "Modal Preview Foto Fisik & Koreksi Angka", desc: "Admin dapat melihat foto bukti fisik meteran di tempat dan mengoreksi angka kubikasi dengan kalkulasi ulang tagihan secara otomatis" },
+          { name: "Penyaringan & Pencarian Multi-Kriteria", desc: "Filter pencatatan berdasarkan nomor blok, nama petugas pencatat, dan status validasi (Normal, Perlu Cek, Valid)" },
+        ],
+      },
+      {
+        icon: "🏘️",
+        module: "Super Admin: Manajemen Pelanggan & Cetak Stiker A4",
+        features: [
+          { name: "CRUD Master Data Pelanggan Lengkap", desc: "Tambah, ubah, dan hapus data kavling pelanggan lengkap dengan Cluster, Blok, Nama Pemilik, No. Meteran, Stand Awal, dan Status Rumah (Terhuni, Renovasi, Dibangun, Booking, Kosong)" },
+          { name: "Verifikasi Cepat Unit Baru dari Petugas", desc: "Filter khusus 'Perlu Disesuaikan (N)' untuk menyaring rumah yang dibuat oleh worker di lapangan dengan badge status dan tombol centang 'Tandai Sesuai'" },
+          { name: "Cetak Lembar Stiker Teks Siap Print A4", desc: "Desain stiker teks bersih (Cluster, Blok tebal, Nama Pengguna) berformat grid 3 kolom yang teroptimasi presisi untuk cetak stiker/kertas A4 via dialog Ctrl+P" },
+        ],
+      },
+      {
+        icon: "💵",
+        module: "Super Admin: Tarif Air Bertingkat (4 Tier) & Excel Engine",
+        features: [
+          { name: "Pengaturan Skema Tarif Progresif 4 Tier", desc: "Nilai tarif bertingkat dapat diubah dan disimpan langsung dari antarmuka Admin (Tier 1: 0-10 m³, Tier 2: 10-20 m³, Tier 3: 20-30 m³, Tier 4: >30 m³)" },
+          { name: "Simulator Kalkulasi Pemakaian Interaktif", desc: "Kalkulator interaktif simulasi input volume kubikasi air untuk memverifikasi kalkulasi rincian biaya per tier dan total tagihan sebelum disimpan" },
+          { name: "Import & Export Massal Spreadsheet (SheetJS)", desc: "Unduh template resmi pelanggan, impor massal database kavling via file Excel (.xlsx/.xls/.csv), serta ekspor laporan rekapitulasi bulanan ke Excel dan CSV" },
+        ],
+      },
+      {
+        icon: "🛡️",
+        module: "Super Admin: Manajemen Petugas & Keamanan Enterprise",
+        features: [
+          { name: "Kelola Akun Worker (Kuota Terkontrol 2 Petugas)", desc: "Edit nama tampilan worker, aktifkan/nonaktifkan hak akses login seketika, hapus akun, buat akun baru, dan kirim tautan reset kata sandi ke email" },
+          { name: "Perlindungan Kredensial AI Serverless", desc: "Endpoint Vercel Serverless Function (/api/baca-meteran.ts) memproses AI Vision Gemini di sisi server sehingga Google API Key tidak pernah bocor ke browser client" },
+          { name: "Multi-Role Route Guard & Firestore Security Rules", desc: "Pembatasan navigasi ProtectedRoute (Admin langsung ke dashboard pengelola, Worker langsung ke kamera scanner) dan aturan Firestore berbasis UID" },
+        ],
+      },
+    ],
+  },
+  {
     slug: "roti-manis-bahagia",
     title: "Roti Manis Bahagia",
     type: "Full Stack",

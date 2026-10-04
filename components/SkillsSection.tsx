@@ -27,12 +27,15 @@ const skills: SkillItem[] = [
   { name: "Express.js", category: "Full Stack", icon: "🚂" },
   { name: "PHP 8.3 & Laravel", category: "Full Stack", icon: "🐘" },
   { name: "PWA & Service Worker", category: "Full Stack", icon: "📱" },
+  { name: "Vercel Serverless Functions", category: "Full Stack", icon: "⚡" },
   { name: "RESTful API", category: "Full Stack", icon: "🔌" },
   { name: "GraphQL", category: "Full Stack", icon: "🕸️" },
   { name: "Python", category: "Full Stack", icon: "🐍" },
   { name: "HTML5 & CSS3", category: "Full Stack", icon: "🌐" },
 
   // ═══ DATA, CLOUD & INTEGRATION ═══
+  { name: "Google Gemini Vision API", category: "Data & Tools", icon: "👁️" },
+  { name: "AI Vision & Dual OCR", category: "Data & Tools", icon: "📷" },
   { name: "Supabase & PostgreSQL", category: "Data & Tools", icon: "⚡" },
   { name: "Recharts Financial Analytics", category: "Data & Tools", icon: "📊" },
   { name: "SheetJS Excel Engine", category: "Data & Tools", icon: "📑" },

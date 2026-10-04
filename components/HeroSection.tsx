@@ -7,6 +7,8 @@ import { useLanguage } from "@/context/LanguageContext";
 import { useReady } from "@/context/ReadyContext";
 import { READY_IDS } from "@/components/LoadingScreen";
 import GlassmorphismProfileCard from "@/components/ui/glassmorphism-profile-card";
+import { projects } from "@/data/projects";
+import { certificates } from "@/data/certificates";
 
 const roles = [
   "Web Developer",
@@ -84,8 +86,8 @@ export default function HeroSection() {
     statusText: language === "id" ? "Tersedia untuk Pekerjaan" : "Available for work",
     glowText: language === "id" ? "Kreativitas & IT Security Siap Pakai" : "High on Creativity & IT Security",
     stats: [
-      { value: 18, suffix: "+", label: language === "id" ? "Proyek Selesai" : "Projects Built" },
-      { value: 29, suffix: "+", label: language === "id" ? "Sertifikat Diraih" : "Certificates Earned" },
+      { value: projects.length, suffix: "+", label: language === "id" ? "Proyek Selesai" : "Projects Built" },
+      { value: certificates.length, suffix: "+", label: language === "id" ? "Sertifikat Diraih" : "Certificates Earned" },
       { value: 280, suffix: "+", label: language === "id" ? "Siswa Diajar" : "Students Taught" },
       { value: 5, suffix: "+", label: language === "id" ? "Tahun di Tech" : "Years in Tech" },
     ],
