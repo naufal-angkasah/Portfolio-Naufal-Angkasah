@@ -71,6 +71,8 @@ a {
     inset 8px 8px 18px rgba(255, 255, 255, 0.11),
     inset -10px -10px 22px rgba(0, 26, 56, 0.34);
   backdrop-filter: blur(22px);
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .loader-panel::before {
@@ -770,6 +772,8 @@ body.cursor-interactive .octopus-body::before {
 /* ── Card ── */
 .cert-card {
   transition: box-shadow 0.4s ease, border-color 0.3s ease;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 .cert-card:hover {
   border-color: rgba(103,232,249,0.2);
@@ -1118,6 +1122,8 @@ body.cursor-interactive .octopus-body::before {
   overflow: hidden;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .portfolio-card:hover {

@@ -134,15 +134,15 @@ export default function SkillsSection() {
 
         {/* Floating Glassmorphism Skill Bubbles Cloud */}
         <motion.div layout className="flex flex-wrap gap-3.5">
-          <AnimatePresence mode="popLayout">
+          <AnimatePresence mode="popLayout" initial={false}>
             {filteredSkills.map((skill, i) => (
               <motion.span
                 key={skill.name}
                 layout
-                initial={{ opacity: 0, scale: 0.8, y: 15 }}
+                initial={false}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8, y: -10 }}
-                transition={{ duration: 0.3, delay: i * 0.02 }}
+                transition={{ duration: 0.2 }}
                 className="skill-bubble"
                 style={{
                   animationDelay: `${(i % 6) * 0.45}s`,

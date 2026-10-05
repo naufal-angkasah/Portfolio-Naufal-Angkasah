@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useMemo } from "react";
 import Image from "next/image";
@@ -198,17 +198,17 @@ export default function CertificatesSection() {
         layout
         className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3"
       >
-        <AnimatePresence mode="popLayout">
-          {visibleCertificates.map((cert) => {
+        <AnimatePresence mode="popLayout" initial={false}>
+          {visibleCertificates.map((cert, index) => {
             const previewUrl = getPreviewImage(cert);
             return (
               <motion.article
                 key={cert.slug}
                 layout
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={false}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.25 }}
                 whileHover={{ y: -6 }}
                 className="cert-card clay-panel group overflow-hidden rounded-[2.5rem] p-4"
               >
@@ -225,7 +225,9 @@ export default function CertificatesSection() {
                       width={600}
                       height={450}
                       className="cert-img transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
+                      loading={index < 6 ? "eager" : "lazy"}
+                      priority={index < 3}
+                      decoding="async"
                     />
                   </div>
 

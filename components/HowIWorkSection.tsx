@@ -82,10 +82,10 @@ export default function HowIWorkSection() {
           return (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+              viewport={{ once: true, margin: "250px 0px" }}
+              transition={{ delay: i * 0.03, duration: 0.2 }}
               className="work-style-card"
             >
               <div className="mb-5 grid h-12 w-12 place-items-center rounded-2xl bg-cyan-300/15 text-cyan-200">
@@ -101,9 +101,10 @@ export default function HowIWorkSection() {
       {/* Fit / Not Fit */}
       <div className="mt-10 grid gap-6 md:grid-cols-2">
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
+          initial={{ opacity: 0, x: -12 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "250px 0px" }}
+          transition={{ duration: 0.2 }}
           className="fit-card good-fit"
         >
           <div className="mb-5 flex items-center gap-3">
@@ -125,9 +126,10 @@ export default function HowIWorkSection() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
+          initial={{ opacity: 0, x: 12 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "250px 0px" }}
+          transition={{ duration: 0.2 }}
           className="fit-card not-fit"
         >
           <div className="mb-5 flex items-center gap-3">

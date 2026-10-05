@@ -121,15 +121,15 @@ export default function ExperienceSection() {
       </div>
 
       <div className="grid gap-5 md:grid-cols-2">
-        <AnimatePresence mode="popLayout">
-          {visibleExperiences.map((exp, i) => (
+        <AnimatePresence mode="popLayout" initial={false}>
+          {visibleExperiences.map((exp) => (
             <motion.div
               key={exp.role + exp.company}
               layout
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              transition={{ delay: i * 0.06, duration: 0.3 }}
+              transition={{ duration: 0.25 }}
               className="clay-panel rounded-[2rem] p-6"
             >
               <div className="mb-3 flex items-start gap-3">

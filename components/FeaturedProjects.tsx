@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -43,10 +43,10 @@ function ProjectCard({
   return (
     <motion.article
       layout
-      initial={{ opacity: 0, scale: 0.9, y: 20 }}
+      initial={false}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9, y: -10 }}
-      transition={{ duration: 0.35, delay: index * 0.05 }}
+      transition={{ duration: 0.25 }}
       className="portfolio-card group block cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -59,19 +59,22 @@ function ProjectCard({
               className="portfolio-card-image-bg relative h-full w-full"
               style={{ background: project.visuals[0].gradient, padding: 0 }}
             >
-              <AnimatePresence mode="wait">
+              <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={activeIdx}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4 }}
+                  transition={{ duration: 0.2 }}
                   className="absolute inset-0 h-full w-full"
                 >
                   <Image
                     src={images[activeIdx]}
                     alt={`${project.title} — Slide ${activeIdx + 1}`}
                     fill
+                    priority={index < 4}
+                    loading={index < 6 ? "eager" : "lazy"}
+                    decoding="async"
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-contain p-1.5 transition-transform duration-500 group-hover:scale-105"
                   />
@@ -254,7 +257,7 @@ export default function FeaturedProjects() {
         layout
         className="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-3"
       >
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence mode="popLayout" initial={false}>
           {visibleProjects.map((project, index) => (
             <ProjectCard
               key={project.slug}
